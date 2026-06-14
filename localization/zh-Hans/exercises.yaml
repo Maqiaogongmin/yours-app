@@ -1,0 +1,30 @@
+bench_press:
+  name: 杠铃卧推
+  body_part: 胸
+  equipment: 卧推凳、杠铃
+  primary_muscles: 胸大肌 · 三头肌 · 三角肌前束
+  description: 仰卧在卧推凳上，稳定肩胛，控制杠铃下降至胸前，再用胸部和三头肌协同推起。
+deadlift:
+  name: 传统硬拉
+  body_part: 背
+  equipment: 杠铃
+  primary_muscles: 后侧链 · 背部 · 核心
+  description: 靠近杠铃站立，保持背部中立，髋膝协同伸展将杠铃拉起，再有控制地下放。
+lateral_raise:
+  name: 哑铃侧平举
+  body_part: 肩
+  equipment: 哑铃
+  primary_muscles: 三角肌中束
+  description: 手肘微屈，将哑铃向身体两侧抬起至接近肩高，稍停后有控制地下放。
+barbell_squat:
+  name: 杠铃深蹲
+  body_part: 腿
+  equipment: 杠铃
+  primary_muscles: 股四头肌 · 臀部 · 核心
+  description: 保持核心收紧，膝盖沿脚尖方向下蹲，再有控制地站起。
+plank:
+  name: 平板支撑
+  body_part: 核心
+  equipment: 自重
+  primary_muscles: 腹肌 · 腹斜肌 · 核心稳定
+  description: 用前臂支撑，身体保持直线，收紧核心并避免塌腰。

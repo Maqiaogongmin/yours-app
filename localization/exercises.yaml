@@ -1,0 +1,32 @@
+exercises:
+  bench_press:
+    remote_id: 73
+    legacy_names:
+      - 杠铃卧推
+      - Bench Press
+      - Barbell Bench Press
+  deadlift:
+    remote_id: 184
+    legacy_names:
+      - 传统硬拉
+      - Deadlift
+      - Deadlifts
+  lateral_raise:
+    remote_id: 348
+    legacy_names:
+      - 哑铃侧平举
+      - Lateral Raise
+      - Lateral Raises
+  barbell_squat:
+    remote_id: 615
+    legacy_names:
+      - 杠铃深蹲
+      - 深蹲
+      - Barbell Squat
+      - Squat
+      - Squats
+  plank:
+    remote_id: 458
+    legacy_names:
+      - 平板支撑
+      - Plank

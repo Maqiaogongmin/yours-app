@@ -1,0 +1,39 @@
+{
+  "name": "AI 示例训练计划",
+  "weeks": [
+    {
+      "week": 1,
+      "days": [
+        {
+          "day": 1,
+          "name": "推日 A",
+          "actions": [
+            {
+              "exercise": "杠铃卧推",
+              "sets": 4,
+              "reps": 6,
+              "weight": 60
+            },
+            {
+              "exercise": "上斜哑铃卧推",
+              "sets": 3,
+              "reps": 10,
+              "weight": 20
+            }
+          ]
+        },
+        {
+          "day": 2,
+          "name": "有氧恢复",
+          "actions": [
+            {
+              "exercise": "慢跑",
+              "sets": 1,
+              "reps": 30
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

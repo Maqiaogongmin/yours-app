@@ -1,0 +1,30 @@
+bench_press:
+  name: Bench Press
+  body_part: Chest
+  equipment: Bench · Barbell
+  primary_muscles: Pectorals · Triceps · Front deltoids
+  description: Lie on the bench with your shoulder blades set. Lower the bar under control, then press it up using your chest and triceps.
+deadlift:
+  name: Deadlift
+  body_part: Back
+  equipment: Barbell
+  primary_muscles: Posterior chain · Back · Core
+  description: Stand close to the bar, keep your back neutral, and extend your hips and knees together before lowering the bar with control.
+lateral_raise:
+  name: Lateral Raise
+  body_part: Shoulders
+  equipment: Dumbbells
+  primary_muscles: Lateral deltoids
+  description: Raise the dumbbells out to the sides with a slight bend in the elbows, pause near shoulder height, then lower with control.
+barbell_squat:
+  name: Barbell Squat
+  body_part: Legs
+  equipment: Barbell
+  primary_muscles: Quadriceps · Glutes · Core
+  description: Keep your core braced as you squat with your knees tracking over your toes, then stand back up under control.
+plank:
+  name: Plank
+  body_part: Core
+  equipment: Bodyweight
+  primary_muscles: Abdominals · Obliques · Core stability
+  description: Support yourself on your forearms, keep your body in a straight line, and brace your core without letting your hips sag.

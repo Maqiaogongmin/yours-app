@@ -1,0 +1,14 @@
+source_locale: zh-Hans
+languages:
+  - locale: zh-Hans
+    flutter_locale: zh
+    native_name: 简体中文
+    enabled: true
+  - locale: en
+    flutter_locale: en
+    native_name: English
+    enabled: true
+  - locale: ja
+    flutter_locale: ja
+    native_name: 日本語
+    enabled: true

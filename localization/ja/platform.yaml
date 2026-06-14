@@ -1,0 +1,13 @@
+app_name: Yours
+icloud_container_name: Yours
+camera_usage: トレーニング記録用の写真を撮影するためにカメラを使用します。
+photo_library_usage: トレーニングデータのバックアップファイルを選択して復元します。
+native_messages:
+  icloud_signed_out: このデバイスはiCloudにサインインしていないか、iCloud Driveが無効になっています。
+  icloud_container_unavailable: iCloudのデータフォルダを利用できません。iCloud DriveとApp IDの設定を確認してください。
+  icloud_available: iCloud Driveを利用できます。
+  missing_file_path: ファイルパスがありません。
+  missing_directory_path: フォルダパスがありません。
+  icloud_picker_busy: iCloud Driveのファイル選択画面はすでに開いています。
+  icloud_picker_unavailable: iCloud Driveのファイル選択画面を開けませんでした。
+  invalid_backup_zip: .zip形式のYoursバックアップを選択してください。

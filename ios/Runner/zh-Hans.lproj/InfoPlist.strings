@@ -1,0 +1,5 @@
+"CFBundleDisplayName" = "有思";
+"CFBundleName" = "有思";
+"NSUbiquitousContainerName" = "有思";
+"NSCameraUsageDescription" = "用于拍摄训练记录照片";
+"NSPhotoLibraryUsageDescription" = "用于选择训练数据备份文件以恢复数据";

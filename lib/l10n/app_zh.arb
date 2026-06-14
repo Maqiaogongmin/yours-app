@@ -1,0 +1,845 @@
+{
+  "@@locale": "zh",
+  "appName": "有思",
+  "tabHome": "首页",
+  "tabPlan": "训练计划",
+  "tabExercises": "动作库",
+  "tabProfile": "用户",
+  "commonCancel": "取消",
+  "commonDelete": "删除",
+  "commonEdit": "编辑",
+  "commonSave": "保存",
+  "commonAdd": "添加",
+  "commonClose": "关闭",
+  "commonRestore": "恢复",
+  "commonSettings": "设置",
+  "commonTest": "测试",
+  "commonSyncNow": "立即同步",
+  "commonPendingSync": "待同步",
+  "commonSynced": "已同步",
+  "commonUnknownError": "未知错误",
+  "language": "语言",
+  "languageSystem": "跟随系统",
+  "languageChinese": "简体中文",
+  "languageEnglish": "English",
+  "aboutYours": "关于有思（Yours）",
+  "officialWebsite": "官网",
+  "githubRepository": "GitHub 仓库",
+  "planTitle": "训练计划",
+  "planCreate": "新建",
+  "planNewName": "新训练计划",
+  "planActive": "使用中",
+  "planArchived": "已归档",
+  "planArchive": "归档",
+  "planRestoreActive": "恢复使用",
+  "planNoActive": "还没有训练计划。",
+  "planNoArchived": "还没有已归档的训练计划。",
+  "planNone": "暂无训练计划",
+  "planCount": "共 {count} 个计划 · 本地优先",
+  "@planCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "planSwipeHint": "左滑计划可以进行编辑或删除",
+  "planScheduleReady": "已完成编排",
+  "planScheduleIncomplete": "编排未完成",
+  "planDeleteTitle": "删除训练计划",
+  "planDeleteMessage": "确定要删除「{name}」吗？此操作会先在本地生效，并进入待同步队列。",
+  "@planDeleteMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "planLocalSaveFailed": "本地训练计划保存失败：{error}",
+  "@planLocalSaveFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "planDaySelection": "训练日选择",
+  "planSummary": "{weeks} 周 · 每周 {days} 天",
+  "@planSummary": {
+    "placeholders": {
+      "weeks": {
+        "type": "int"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "planScheduledDays": "{summary} · 已编排 {count} 个训练日",
+  "@planScheduledDays": {
+    "placeholders": {
+      "summary": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "planWeek": "第 {week} 周",
+  "@planWeek": {
+    "placeholders": {
+      "week": {
+        "type": "int"
+      }
+    }
+  },
+  "planMarkWeekComplete": "标记为已完成",
+  "planUnmarkWeekComplete": "取消完成标记",
+  "planNoActions": "当天未安排动作，点击添加",
+  "planRestoreArchivedTitle": "恢复使用这份计划？",
+  "planRestoreArchivedMessage": "已归档计划需要先恢复为使用中，才能开始训练。",
+  "planDatabaseInitFailed": "本地训练数据库初始化失败：{error}",
+  "@planDatabaseInitFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "planEditTitle": "编辑训练计划",
+  "planName": "计划名称",
+  "planCycle": "训练周期",
+  "planWeeksSuffix": " 周  (1–12)",
+  "planDaysPerWeek": "每周训练日",
+  "planDaysSuffix": " 天  (1–7)",
+  "planArrangement": "动作安排",
+  "planDayTitle": "第 {week} 周 · D{day}",
+  "@planDayTitle": {
+    "placeholders": {
+      "week": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "planDayName": "训练日名称",
+  "planAddExercise": "添加动作",
+  "planActionList": "动作列表 ({count})",
+  "@planActionList": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "planNoExerciseHint": "还没有动作。点击「添加动作」从动作库选择。",
+  "planRemove": "移除",
+  "planSetSuffix": "组",
+  "planRepSuffix": "次",
+  "planRest": "休息",
+  "planWeight": "重量",
+  "planNoteHint": "备注：例如 RIR 2；次数范围 6-8；动作节奏慢下放",
+  "planAddFromLibrary": "从动作库添加",
+  "planSelectedCount": "已选 {count}",
+  "@planSelectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "planSearchLibrary": "搜索本地动作库",
+  "planNoMatchingExercise": "没有找到匹配动作。可以先到动作库页面添加。",
+  "planAdded": "已添加",
+  "workoutEndTitle": "结束训练？",
+  "workoutEndIncomplete": "当前训练计划还没有完成。已记录的训练数据会保留，并自动备注“未完成训练计划”。",
+  "workoutEndEmpty": "当前训练还没有保存任何组记录。确认后会直接关闭训练模式。",
+  "workoutPostNote": "练后备注",
+  "workoutPostNoteHint": "例如：肩部不适，放弃侧平举",
+  "workoutEnd": "结束训练",
+  "workoutTimer": "训练计时",
+  "workoutSummary": "训练总结",
+  "workoutDefaultDay": "默认训练日",
+  "workoutElapsed": "用时",
+  "workoutExercise": "动作",
+  "workoutCurrentExercise": "当前动作",
+  "workoutRestSeconds": "休息时间 s",
+  "workoutSaveSet": "保存本组并继续",
+  "workoutUndoSet": "撤销当前组记录",
+  "workoutRestBetween": "组间休息",
+  "workoutNextSet": "进入下一组",
+  "workoutSkipRest": "跳过休息，进入下一组",
+  "workoutComplete": "训练完成",
+  "workoutFinishSave": "结束并保存训练",
+  "workoutOptional": "可空",
+  "workoutNote": "备注",
+  "workoutTrainingNote": "训练备注",
+  "workoutSavedBackup": "训练已保存，并已自动备份：{name}",
+  "@workoutSavedBackup": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "workoutSavedBackupFailed": "训练已保存，但自动备份失败：{error}",
+  "@workoutSavedBackupFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "workoutSetUndone": "已撤销当前组记录",
+  "workoutFirstSet": "已经是第一组了",
+  "workoutLastSet": "已经是最后一组了",
+  "workoutTimerStartFailed": "训练计时启动失败：{error}",
+  "@workoutTimerStartFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "workoutNoActions": "这个训练计划还没有可执行动作。请先编辑计划并补充动作。",
+  "workoutNextSummary": "下一步：训练总结",
+  "workoutNextSetLabel": "下一组：{exercise} · 第 {set} 组",
+  "@workoutNextSetLabel": {
+    "placeholders": {
+      "exercise": {
+        "type": "String"
+      },
+      "set": {
+        "type": "int"
+      }
+    }
+  },
+  "workoutUndoReturnLog": "撤销当前组，返回记录页",
+  "workoutRestHint": "倒计时结束后会停在这里；滑动只浏览，不会写入或撤销记录。",
+  "workoutCompletedSummary": "完成 {exercises} 个动作 · {sets} 组",
+  "@workoutCompletedSummary": {
+    "placeholders": {
+      "exercises": {
+        "type": "int"
+      },
+      "sets": {
+        "type": "int"
+      }
+    }
+  },
+  "workoutUndoLastReturnLog": "撤销最后一组，返回记录页",
+  "workoutNoteHint": "例如：RIR 2；休息 120s；次数范围 6-8",
+  "homeTodayStatus": "今日状态",
+  "homeMonthTitle": "{year}年{month}月",
+  "@homeMonthTitle": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      },
+      "month": {
+        "type": "int"
+      }
+    }
+  },
+  "homeWeekdays": "一,二,三,四,五,六,日",
+  "homeDateTitle": "{month}月{day}日 · {name}",
+  "@homeDateTitle": {
+    "placeholders": {
+      "month": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeNoWorkout": "暂无训练",
+  "homeNoWorkoutRecord": "当天还没有训练记录",
+  "homeRecorded": "已记录",
+  "homeIncomplete": "未完成",
+  "homeTotalVolume": "总训练量 kg",
+  "homeEffectiveSets": "有效组",
+  "homeMinutes": "分钟",
+  "homeEmptyRecordMessage": "当天还没有记录。完成训练后，这里会自动显示训练量、组数、时长和备注。",
+  "homeDefaultRecordName": "训练记录",
+  "homeDefaultIncompleteRecordName": "未完成训练",
+  "homeDefaultSavedNote": "当天训练已保存到本地数据库。",
+  "homeIncompleteWorkoutMarker": "未完成训练计划",
+  "homeRecordUpdated": "训练记录已更新",
+  "homeSaveFailed": "保存失败：{error}",
+  "@homeSaveFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "homeDeleteSessionTitle": "删除本次训练记录？",
+  "homeDeleteSessionMessage": "将删除 {time} 的训练记录及其 {count} 组数据。这个操作会进入服务器同步队列。",
+  "@homeDeleteSessionMessage": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeSessionDeleted": "本次训练记录已删除",
+  "homeDeleteFailed": "删除失败：{error}",
+  "@homeDeleteFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "homeWorkoutRecordTitle": "{month}月{day}日训练记录",
+  "@homeWorkoutRecordTitle": {
+    "placeholders": {
+      "month": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "homeSaving": "保存中...",
+  "homeNoSetRecords": "当天还没有可查看的训练组记录。",
+  "homeSetCount": "{count} 组",
+  "@homeSetCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeRecordCount": "{count} 组记录",
+  "@homeRecordCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeStartedAt": "{time} 开始",
+  "@homeStartedAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "homeSets": "组数",
+  "homeReps": "次数",
+  "homeWeightKg": "重量 kg",
+  "homeSetNote": "{exercise} · 第 {setIndex} 组\n{note}",
+  "@homeSetNote": {
+    "placeholders": {
+      "exercise": {
+        "type": "String"
+      },
+      "setIndex": {
+        "type": "int"
+      },
+      "note": {
+        "type": "String"
+      }
+    }
+  },
+  "homeDashboardSettings": "仪表盘设置",
+  "homeCalendar": "日历",
+  "commonDone": "完成",
+  "exerciseLibrary": "动作库",
+  "profileTitle": "用户",
+  "dataManagement": "数据管理",
+  "profileProcessingData": "正在处理数据...",
+  "profileAboutLinks": "官网、GitHub 仓库",
+  "profileAboutLinksUpdate": "官网、GitHub 仓库、检查更新",
+  "profileNewVersion": "发现新版本 {version}",
+  "@profileNewVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "profileVaultPathPending": "路径准备中",
+  "profileExportVault": "导出 Vault",
+  "profileImportInbox": "导入 inbox",
+  "profileBackupDescription": "创建后可保存到 iCloud Drive、文件 App 或其他位置",
+  "profileLatestBackup": "最新备份：{name}",
+  "@profileLatestBackup": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileProcessing": "处理中...",
+  "profileCreateExport": "创建并导出",
+  "profileRestoreFromFile": "从文件恢复",
+  "profileExportBackup": "导出备份",
+  "profileRestoreFromICloud": "从 iCloud 恢复",
+  "profileCopyDiagnostics": "复制诊断",
+  "profileLocalDataSafety": "本地数据安全",
+  "profileProcessingDataShort": "正在处理数据",
+  "profileNotCreated": "未创建",
+  "profileAvailable": "已有",
+  "profileManualExport": "手动导出",
+  "profileFile": "文件",
+  "profileReading": "读取中",
+  "profilePendingCount": "{count} 条",
+  "@profilePendingCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "profileConfigured": "已配置",
+  "profileNotConfigured": "未配置",
+  "profileServerNotConfigured": "未配置服务器同步地址",
+  "profileServerConfiguredHint": "已配置服务器地址，建议先测试连接",
+  "profileServerConnectionFailed": "连接失败：{error}",
+  "@profileServerConnectionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileNoServerSnapshot": "暂无服务器快照",
+  "profileRecentSnapshot": "最近快照：{date}",
+  "@profileRecentSnapshot": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "profileServerDetail": "{backup}，事件 {events} 条，游标 {cursor}",
+  "@profileServerDetail": {
+    "placeholders": {
+      "backup": {
+        "type": "String"
+      },
+      "events": {
+        "type": "int"
+      },
+      "cursor": {
+        "type": "int"
+      }
+    }
+  },
+  "profileCheckingICloud": "正在检查 iCloud Drive 状态",
+  "profileICloudAvailable": "iCloud Drive 可用。",
+  "profileICloudSignedOut": "当前设备未登录 iCloud，或 iCloud Drive 未启用。",
+  "profileICloudContainerUnavailable": "当前设备没有可用的 iCloud 数据目录。请检查 iCloud Drive 与 App ID 配置。",
+  "profileICloudUnsupported": "当前平台不支持 iCloud Drive。",
+  "profileICloudUnknown": "iCloud Drive 状态未知。",
+  "profileLocalFirstRecord": "本地优先训练记录",
+  "profileToggleDark": "切换到夜间模式",
+  "profileToggleLight": "切换到白天模式",
+  "profileServer": "服务器",
+  "profileCheckUpdates": "检查更新",
+  "profileCheckingUpdates": "正在检查...",
+  "profileUpToDate": "当前已是最新版本",
+  "profileUpdateFailed": "暂时无法检查更新",
+  "profileAndroidUpdate": "检查 Android APK 新版本",
+  "profileNewVersionDownload": "发现新版本 {version}，去官网下载",
+  "@profileNewVersionDownload": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "profileServerSettings": "服务器备份设置",
+  "profileServerAddress": "Yours 备份服务器地址",
+  "profileApiKeyOptional": "API 密钥（可选）",
+  "profileApiKeyHint": "留空则不发送 Authorization",
+  "profileClear": "清空",
+  "serverSync": "服务器同步",
+  "icloudDrive": "iCloud Drive",
+  "backupPackage": "备份包",
+  "notCategorized": "未分类",
+  "noDescription": "暂无介绍",
+  "all": "全部",
+  "exerciseAdd": "添加动作",
+  "exerciseEdit": "编辑动作",
+  "exerciseSearchHint": "搜索动作，例如 卧推 / 深蹲 / 划船",
+  "exerciseEmpty": "本地动作库还没有动作。点击右上角「添加」先建立你的精选动作。",
+  "exerciseNoMatch": "没有找到匹配动作。可以尝试切换分类或清空搜索。",
+  "exerciseLocalSubtitle": "本地精选动作 · 离线可用",
+  "exerciseName": "名称",
+  "exerciseCategoryOne": "分类 1",
+  "exerciseCategoryTwo": "分类 2",
+  "exerciseDescription": "介绍",
+  "exerciseSaveLocal": "保存到本地动作库",
+  "exerciseNotFilled": "未填写",
+  "profileOpenLinkFailed": "无法打开链接。",
+  "profileRecentVaultExport": "最近已导出 Vault：{name}",
+  "@profileRecentVaultExport": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileVaultExportSummary": "Yours Vault 已导出：{plans} 个计划、{workouts} 份记录、{exercises} 个动作。",
+  "@profileVaultExportSummary": {
+    "placeholders": {
+      "plans": {
+        "type": "int"
+      },
+      "workouts": {
+        "type": "int"
+      },
+      "exercises": {
+        "type": "int"
+      }
+    }
+  },
+  "profileRecentVaultExportFailed": "最近导出 Vault 失败：{error}",
+  "@profileRecentVaultExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileVaultExportFailed": "Yours Vault 导出失败：{error}",
+  "@profileVaultExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileVaultImportSummary": "已从 inbox 导入 {plans} 个计划、{exercises} 个动作{skipped}。",
+  "@profileVaultImportSummary": {
+    "placeholders": {
+      "plans": {
+        "type": "int"
+      },
+      "exercises": {
+        "type": "int"
+      },
+      "skipped": {
+        "type": "String"
+      }
+    }
+  },
+  "profileSkippedFiles": "，跳过 {count} 个文件",
+  "@profileSkippedFiles": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "profileVaultImportFailed": "Yours Vault 导入失败：{error}",
+  "@profileVaultImportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileBackupCreated": "备份包已创建：{name}",
+  "@profileBackupCreated": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileBackupFailed": "备份失败：{error}",
+  "@profileBackupFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileRecentBackupExport": "最近已导出备份：{name}",
+  "@profileRecentBackupExport": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileBackupExportedICloud": "备份包已导出到 iCloud Drive：{name}",
+  "@profileBackupExportedICloud": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileRecentExportFailed": "最近导出失败：{error}",
+  "@profileRecentExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileICloudExportFailed": "iCloud Drive 导出失败：{error}",
+  "@profileICloudExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profilePickBackupFailed": "选择备份包失败：{error}",
+  "@profilePickBackupFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profilePickBackupCancelled": "已取消选择备份包。",
+  "profileRestoreBackupTitle": "从备份包恢复？",
+  "profileRestoreBackupMessage": "将从 {name} 恢复训练计划、训练记录和动作库。恢复前会自动创建安全快照。",
+  "@profileRestoreBackupMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileRecentRestoreFailed": "最近恢复失败：{error}",
+  "@profileRecentRestoreFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profilePickICloudBackupFailed": "选择 iCloud Drive 备份包失败：{error}",
+  "@profilePickICloudBackupFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profilePickICloudBackupCancelled": "已取消选择 iCloud Drive 备份包。",
+  "profileRestoreICloudTitle": "从 iCloud Drive 恢复？",
+  "profileRestoringICloud": "正在从 iCloud Drive 恢复备份...",
+  "profileICloudRestoreComplete": "iCloud Drive 恢复完成",
+  "profileRecentICloudRestore": "最近已从 iCloud Drive 恢复：{name}",
+  "@profileRecentICloudRestore": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileServerAddressSaved": "服务器备份地址已保存。",
+  "profileServerAddressCleared": "已清空服务器备份地址。",
+  "profileConfigureServerFirst": "请先配置服务器备份地址。",
+  "profileConfigureServerSyncFirst": "请先配置服务器同步地址。",
+  "profileServerSyncFailed": "服务器同步失败：{error}",
+  "@profileServerSyncFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileServerSyncComplete": "服务器同步完成。",
+  "profileServerAlreadyLatest": "已是最新，并刷新服务器快照。",
+  "profileServerSyncSummary": "已上传 {uploaded} 条变化，拉取 {downloaded} 条服务器事件，应用 {applied} 条。",
+  "@profileServerSyncSummary": {
+    "placeholders": {
+      "uploaded": {
+        "type": "int"
+      },
+      "downloaded": {
+        "type": "int"
+      },
+      "applied": {
+        "type": "int"
+      }
+    }
+  },
+  "profileServerBackupFound": "发现服务器备份",
+  "profileServerBackupFoundMessage": "这台设备还没有本地训练数据。服务器上已有备份，是否恢复到本机？恢复前会自动创建本地安全快照。",
+  "profileRestoreToDevice": "恢复到本机",
+  "profileNormalSyncFailed": "普通同步失败",
+  "profileNormalSyncFailedMessage": "普通同步失败：{error}\n\n可以尝试从服务器备份恢复本机。恢复前会自动创建本地安全快照。",
+  "@profileNormalSyncFailedMessage": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileRestoreFromBackup": "从备份恢复",
+  "profileServerAvailable": "服务器同步可用：协议 v{version}，事件 {events} 条。",
+  "@profileServerAvailable": {
+    "placeholders": {
+      "version": {
+        "type": "int"
+      },
+      "events": {
+        "type": "int"
+      }
+    }
+  },
+  "profileServerTestFailed": "服务器连接测试失败：{error}",
+  "@profileServerTestFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileDiagnosticsCopied": "服务器同步诊断信息已复制。",
+  "profileDiagnosticsFallbackCopied": "诊断生成不完整，已复制基础错误信息。",
+  "profileRestoreComplete": "恢复完成",
+  "profileRestoreSummary": "已恢复 {count} 个文件。\n安全快照：{snapshot}\n\n页面数据已重新加载。",
+  "@profileRestoreSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "snapshot": {
+        "type": "String"
+      }
+    }
+  },
+  "profileAcknowledged": "知道了",
+  "profileRestoreFailed": "恢复失败：{error}",
+  "@profileRestoreFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileServerRestoreComplete": "服务器恢复完成",
+  "profileServerSnapshotRestoreFailed": "服务器快照恢复失败：{error}",
+  "@profileServerSnapshotRestoreFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileDatabasePreparing": "数据库刚刚完成恢复，连接正在重新准备。请稍后重试。",
+  "profileServerReturnedHtml": "服务器返回了网页页面，请检查地址是否为 Yours 备份服务器。",
+  "profileTargetServer": "目标服务器",
+  "planRecordModeStandard": "标准记录",
+  "planRecordModeFree": "自由记录",
+  "workoutRecordMode": "记录方式",
+  "workoutCompleteFreeRecord": "完成本项",
+  "workoutUndoFreeRecord": "撤销本项记录",
+  "workoutActivityElapsed": "本项用时",
+  "workoutCompletedMixedSummary": "完成 {exercises} 个动作 · {sets} 组 · {freeRecords} 个自由项目",
+  "@workoutCompletedMixedSummary": {
+    "placeholders": {
+      "exercises": {
+        "type": "int"
+      },
+      "sets": {
+        "type": "int"
+      },
+      "freeRecords": {
+        "type": "int"
+      }
+    }
+  },
+  "homeFreeRecords": "自由项目",
+  "homeSessionRecordCount": "{sets} 组 · {freeRecords} 个自由项目",
+  "@homeSessionRecordCount": {
+    "placeholders": {
+      "sets": {
+        "type": "int"
+      },
+      "freeRecords": {
+        "type": "int"
+      }
+    }
+  },
+  "homeActivityRecordCount": "{count} 个活动记录",
+  "@homeActivityRecordCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTitle": "设置",
+  "settingsDescription": "外观、语言与关于有思",
+  "appearanceTitle": "外观",
+  "appearanceDescription": "主题与显示方式",
+  "themeTitle": "主题",
+  "themeSystem": "跟随系统",
+  "themeLight": "浅色",
+  "themeDark": "深色",
+  "languageDescription": "选择有思使用的语言",
+  "aboutDescription": "官网、版本与更新",
+  "settingsCurrentValue": "当前：{value}",
+  "@settingsCurrentValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "errorBackupMissing": "备份包不存在。",
+  "errorBackupEmpty": "服务器返回的备份包为空。",
+  "errorInvalidBackup": "所选文件不是有效的有思备份包。",
+  "errorBackupManifestMissing": "备份包缺少 manifest.json，无法确认格式。",
+  "errorBackupDatabaseMissing": "备份包缺少必要数据库文件。",
+  "errorInvalidServerAddress": "服务器地址格式不正确，请使用 https://example.com 这样的格式。",
+  "errorServerTimeout": "网络超时。请检查服务器地址、HTTPS 和当前网络。",
+  "errorServerTls": "HTTPS 握手失败。请检查服务器域名、证书和当前网络。",
+  "errorServerUnreachable": "无法连接服务器。请检查地址、端口、HTTPS 和反向代理配置。",
+  "errorServerInterrupted": "网络请求被中断。请检查服务器地址和当前网络。",
+  "errorInvalidServerResponse": "服务器返回格式不正确。请确认地址指向有思自托管同步服务。",
+  "errorInvalidServerEvents": "服务器事件接口返回格式不正确。",
+  "errorInvalidServerStatus": "服务器状态接口返回格式不正确。",
+  "errorNoServerBackup": "没有找到可恢复的备份包。",
+  "errorServerOutdated": "自托管同步服务版本过旧。当前协议 v{current}，需要 v{required}。",
+  "@errorServerOutdated": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "required": {
+        "type": "int"
+      }
+    }
+  },
+  "errorUnappliedServerChanges": "有 {count} 条服务器变化暂时无法应用，建议从服务器备份恢复本机。",
+  "@errorUnappliedServerChanges": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "backupShareTitle": "导出有思备份包",
+  "backupShareSubject": "有思备份包",
+  "backupShareText": "这是有思备份包。你可以将它保存到 iCloud Drive、文件 App 或其他位置，需要时再从文件恢复。",
+  "exerciseExampleName": "例如：杠铃卧推",
+  "exerciseExampleCategory": "例如：胸部",
+  "exerciseExampleEquipment": "例如：杠铃",
+  "yoursVaultName": "Yours Vault"
+}

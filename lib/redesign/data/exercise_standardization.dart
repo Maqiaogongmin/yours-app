@@ -1,0 +1,61 @@
+import 'package:yours/redesign/data/custom_exercise_models.dart';
+import 'package:yours/redesign/data/exercise_identity.dart';
+
+String normalizeExerciseKey(String value) {
+  return normalizeExerciseIdentity(value);
+}
+
+String standardExerciseNameFor(String value) {
+  return canonicalExerciseReference(value);
+}
+
+List<CustomExerciseModel> get standardExerciseCatalog =>
+    _standardExerciseCatalog.map((exercise) => exercise.copyWith()).toList();
+
+final _standardExerciseCatalog = <CustomExerciseModel>[
+  CustomExerciseModel(
+    remoteId: 73,
+    chineseName: '杠铃卧推',
+    englishName: 'Bench Press',
+    bodyPart: '胸',
+    equipment: '卧推凳、杠铃',
+    primaryMuscles: '胸大肌 · 三头 · 前束',
+    description: '仰卧在卧推凳上，肩胛下沉稳定，控制杠铃降至胸前，用胸部和三头协同推起。握距可调节侧重不同胸区。',
+  ),
+  CustomExerciseModel(
+    remoteId: 184,
+    chineseName: '传统硬拉',
+    englishName: 'Deadlifts',
+    bodyPart: '背',
+    equipment: '杠铃',
+    primaryMuscles: '臀腿后侧 · 背部 · 核心',
+    description: '双脚与肩同宽站于杠铃后方，保持背部挺直，双手握杠，髋膝协同发力将杠铃拉起至站直，控制下放归位。',
+  ),
+  CustomExerciseModel(
+    remoteId: 348,
+    chineseName: '哑铃侧平举',
+    englishName: 'Lateral Raises',
+    bodyPart: '肩',
+    equipment: '哑铃',
+    primaryMuscles: '三角肌中束',
+    description: '双手持哑铃置于身体两侧，手肘微屈，向两侧抬起至肩部高度，顶峰稍停后控制下放，全程避免耸肩借力。',
+  ),
+  CustomExerciseModel(
+    remoteId: 615,
+    chineseName: '杠铃深蹲',
+    englishName: 'Squats',
+    bodyPart: '腿',
+    equipment: '杠铃',
+    primaryMuscles: '股四头 · 臀部 · 核心',
+    description: '杠铃置于斜方肌上方，双脚与肩同宽，膝盖顺着脚尖方向缓慢下蹲至大腿与地面平行，保持核心收紧后站起。',
+  ),
+  CustomExerciseModel(
+    remoteId: 458,
+    chineseName: '平板支撑',
+    englishName: 'Plank',
+    bodyPart: '核心',
+    equipment: '自重',
+    primaryMuscles: '腹直肌 · 腹斜肌 · 核心稳定',
+    description: '前臂撑地，身体保持一条直线，收紧腹部和臀部，避免塌腰或抬臀，保持自然呼吸尽量坚持。',
+  ),
+];

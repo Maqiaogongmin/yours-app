@@ -1,0 +1,845 @@
+{
+  "@@locale": "ja",
+  "appName": "Yours",
+  "tabHome": "ホーム",
+  "tabPlan": "プラン",
+  "tabExercises": "種目",
+  "tabProfile": "ユーザー",
+  "commonCancel": "キャンセル",
+  "commonDelete": "削除",
+  "commonEdit": "編集",
+  "commonSave": "保存",
+  "commonAdd": "追加",
+  "commonClose": "閉じる",
+  "commonRestore": "復元",
+  "commonSettings": "設定",
+  "commonTest": "テスト",
+  "commonSyncNow": "今すぐ同期",
+  "commonPendingSync": "保留中",
+  "commonSynced": "同期済み",
+  "commonUnknownError": "不明なエラー",
+  "language": "言語",
+  "languageSystem": "システム",
+  "languageChinese": "简体中文",
+  "languageEnglish": "英語",
+  "aboutYours": "Yoursについて",
+  "officialWebsite": "Webサイト",
+  "githubRepository": "GitHub リポジトリ",
+  "planTitle": "トレーニングプラン",
+  "planCreate": "新規",
+  "planNewName": "新しいトレーニングプラン",
+  "planActive": "アクティブ",
+  "planArchived": "アーカイブ済み",
+  "planArchive": "アーカイブ",
+  "planRestoreActive": "復元",
+  "planNoActive": "トレーニングプランはまだありません。",
+  "planNoArchived": "アーカイブ済みのトレーニングプランはありません。",
+  "planNone": "トレーニングプランなし",
+  "planCount": "{count} プラン · ローカルファースト",
+  "@planCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "planSwipeHint": "左にスワイプしてプランを編集または削除します",
+  "planScheduleReady": "スケジュール設定済み",
+  "planScheduleIncomplete": "スケジュール未完了",
+  "planDeleteTitle": "トレーニングプランを削除",
+  "planDeleteMessage": "「{name}」を削除しますか?この変更は最初にローカルで有効になり、同期キューに追加されます。",
+  "@planDeleteMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "planLocalSaveFailed": "ローカル トレーニング プランを保存できませんでした: {error}",
+  "@planLocalSaveFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "planDaySelection": "トレーニング日を選択してください",
+  "planSummary": "{weeks} 週 · {days} 日/週",
+  "@planSummary": {
+    "placeholders": {
+      "weeks": {
+        "type": "int"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "planScheduledDays": "{summary}・{count}予定日",
+  "@planScheduledDays": {
+    "placeholders": {
+      "summary": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "planWeek": "週 {week}",
+  "@planWeek": {
+    "placeholders": {
+      "week": {
+        "type": "int"
+      }
+    }
+  },
+  "planMarkWeekComplete": "完了としてマークする",
+  "planUnmarkWeekComplete": "完了マークを削除する",
+  "planNoActions": "エクササイズはまだありません。タップして追加してください。",
+  "planRestoreArchivedTitle": "この計画を復元しますか?",
+  "planRestoreArchivedMessage": "ワークアウトを開始する前に、アーカイブされたプランを復元する必要があります。",
+  "planDatabaseInitFailed": "ローカル トレーニング データベースを初期化できませんでした: {error}",
+  "@planDatabaseInitFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "planEditTitle": "トレーニングプランを編集",
+  "planName": "プラン名",
+  "planCycle": "トレーニングサイクル",
+  "planWeeksSuffix": "週 (1 ～ 12)",
+  "planDaysPerWeek": "週あたりの日数",
+  "planDaysSuffix": "日 (1 ～ 7)",
+  "planArrangement": "運動スケジュール",
+  "planDayTitle": "週 {week} · D{day}",
+  "@planDayTitle": {
+    "placeholders": {
+      "week": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "planDayName": "トレーニング日の名前",
+  "planAddExercise": "エクササイズを追加",
+  "planActionList": "エクササイズ（{count}）",
+  "@planActionList": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "planNoExerciseHint": "エクササイズはまだありません。「エクササイズを追加」をタップしてライブラリから選択してください。",
+  "planRemove": "削除",
+  "planSetSuffix": "セット",
+  "planRepSuffix": "回",
+  "planRest": "休憩",
+  "planWeight": "重量",
+  "planNoteHint": "RIR 2、6 ～ 8 レップ、またはスローエキセントリックなどの注意事項",
+  "planAddFromLibrary": "エクササイズライブラリから追加",
+  "planSelectedCount": "{count} が選択されました",
+  "@planSelectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "planSearchLibrary": "ローカルのエクササイズライブラリを検索",
+  "planNoMatchingExercise": "一致するエクササイズがありません。先にライブラリへ追加してください。",
+  "planAdded": "追加済み",
+  "workoutEndTitle": "トレーニングを終了しますか?",
+  "workoutEndIncomplete": "このトレーニングプランは完了していません。保存済みのデータは保持され、未完了のトレーニングとして記録されます。",
+  "workoutEndEmpty": "セットは保存されていません。ワークアウトモードを閉じることを確認します。",
+  "workoutPostNote": "トレーニング後のメモ",
+  "workoutPostNoteHint": "例: 肩の不快感、横上げのスキップ",
+  "workoutEnd": "ワークアウトを終了する",
+  "workoutTimer": "ワークアウトタイマー",
+  "workoutSummary": "ワークアウトの概要",
+  "workoutDefaultDay": "デフォルトのトレーニング日",
+  "workoutElapsed": "時間",
+  "workoutExercise": "エクササイズ",
+  "workoutCurrentExercise": "現在のエクササイズ",
+  "workoutRestSeconds": "休息",
+  "workoutSaveSet": "セットを保存して続行",
+  "workoutUndoSet": "現在のセットを元に戻す",
+  "workoutRestBetween": "セット間の休憩",
+  "workoutNextSet": "次のセット",
+  "workoutSkipRest": "休憩をスキップして続行",
+  "workoutComplete": "ワークアウト完了",
+  "workoutFinishSave": "ワークアウトを終了して保存する",
+  "workoutOptional": "任意",
+  "workoutNote": "メモ",
+  "workoutTrainingNote": "トレーニングノート",
+  "workoutSavedBackup": "ワークアウトが自動的に保存およびバックアップされました: {name}",
+  "@workoutSavedBackup": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "workoutSavedBackupFailed": "ワークアウトは保存されましたが、自動バックアップに失敗しました: {error}",
+  "@workoutSavedBackupFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "workoutSetUndone": "現在のセット記録を取り消しました",
+  "workoutFirstSet": "これはすでに最初のセットです",
+  "workoutLastSet": "もうこれが最終セットです",
+  "workoutTimerStartFailed": "ワークアウトタイマーを開始できませんでした: {error}",
+  "@workoutTimerStartFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "workoutNoActions": "このトレーニングプランにはエクササイズがありません。先にプランを編集して追加してください。",
+  "workoutNextSummary": "次へ: ワークアウトの概要",
+  "workoutNextSetLabel": "次のセット：{exercise} · セット {set}",
+  "@workoutNextSetLabel": {
+    "placeholders": {
+      "exercise": {
+        "type": "String"
+      },
+      "set": {
+        "type": "int"
+      }
+    }
+  },
+  "workoutUndoReturnLog": "現在の設定を元に戻してログ記録に戻ります",
+  "workoutRestHint": "タイマーが終了するとここで一時停止します。スワイプするとセットのプレビューのみが表示されます。レコードの書き込みや取り消しは行いません。",
+  "workoutCompletedSummary": "{exercises} 種目完了 · {sets} セット",
+  "@workoutCompletedSummary": {
+    "placeholders": {
+      "exercises": {
+        "type": "int"
+      },
+      "sets": {
+        "type": "int"
+      }
+    }
+  },
+  "workoutUndoLastReturnLog": "最後の設定を元に戻してログ記録に戻ります",
+  "workoutNoteHint": "例：RIR 2、休憩120秒、回数範囲6～8",
+  "homeTodayStatus": "今日",
+  "homeMonthTitle": "{month}/{year}",
+  "@homeMonthTitle": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      },
+      "month": {
+        "type": "int"
+      }
+    }
+  },
+  "homeWeekdays": "月、火、水、木、金、土、日",
+  "homeDateTitle": "{month}/{day}・{name}",
+  "@homeDateTitle": {
+    "placeholders": {
+      "month": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeNoWorkout": "トレーニングなし",
+  "homeNoWorkoutRecord": "この日のトレーニング記録はありません",
+  "homeRecorded": "記録済み",
+  "homeIncomplete": "未完了",
+  "homeTotalVolume": "総ボリューム kg",
+  "homeEffectiveSets": "ワーキングセット",
+  "homeMinutes": "分",
+  "homeEmptyRecordMessage": "この日の記録はありません。ワークアウトを完了すると、ここでボリューム、セット、期間、メモが表示されます。",
+  "homeDefaultRecordName": "トレーニング記録",
+  "homeDefaultIncompleteRecordName": "未完了のトレーニング",
+  "homeDefaultSavedNote": "このワークアウトはローカル データベースに保存されています。",
+  "homeIncompleteWorkoutMarker": "未完了のトレーニングプラン",
+  "homeRecordUpdated": "トレーニング記録を更新しました",
+  "homeSaveFailed": "保存できませんでした: {error}",
+  "@homeSaveFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "homeDeleteSessionTitle": "このワークアウト記録を削除しますか?",
+  "homeDeleteSessionMessage": "{time} のワークアウト レコードとその {count} セットを削除しますか?この変更はサーバー同期キューに追加されます。",
+  "@homeDeleteSessionMessage": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeSessionDeleted": "トレーニング記録が削除されました",
+  "homeDeleteFailed": "削除できませんでした: {error}",
+  "@homeDeleteFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "homeWorkoutRecordTitle": "ワークアウト記録 · {month}/{day}",
+  "@homeWorkoutRecordTitle": {
+    "placeholders": {
+      "month": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "homeSaving": "保存中...",
+  "homeNoSetRecords": "この日のセット記録はありません。",
+  "homeSetCount": "{count} セット",
+  "@homeSetCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeRecordCount": "{count} 件のセット記録",
+  "@homeRecordCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeStartedAt": "{time} から開始",
+  "@homeStartedAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "homeSets": "セット",
+  "homeReps": "回数",
+  "homeWeightKg": "重量kg",
+  "homeSetNote": "{exercise} · {setIndex} を設定する\n{note}",
+  "@homeSetNote": {
+    "placeholders": {
+      "exercise": {
+        "type": "String"
+      },
+      "setIndex": {
+        "type": "int"
+      },
+      "note": {
+        "type": "String"
+      }
+    }
+  },
+  "homeDashboardSettings": "ダッシュボードの設定",
+  "homeCalendar": "カレンダー",
+  "commonDone": "完了",
+  "exerciseLibrary": "エクササイズ",
+  "profileTitle": "プロフィール",
+  "dataManagement": "データ管理",
+  "profileProcessingData": "データを処理中...",
+  "profileAboutLinks": "Web サイトと GitHub リポジトリ",
+  "profileAboutLinksUpdate": "Web サイト、GitHub リポジトリ、およびアップデート",
+  "profileNewVersion": "新バージョン {version}",
+  "@profileNewVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "profileVaultPathPending": "パスの準備中",
+  "profileExportVault": "Vaultをエクスポート",
+  "profileImportInbox": "inboxをインポート",
+  "profileBackupDescription": "バックアップを作成し、iCloud Drive、ファイル、または別の場所に保存します。",
+  "profileLatestBackup": "最新のバックアップ: {name}",
+  "@profileLatestBackup": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileProcessing": "処理...",
+  "profileCreateExport": "作成してエクスポート",
+  "profileRestoreFromFile": "ファイルから復元",
+  "profileExportBackup": "バックアップのエクスポート",
+  "profileRestoreFromICloud": "iCloudから復元",
+  "profileCopyDiagnostics": "診断情報をコピー",
+  "profileLocalDataSafety": "ローカルデータの安全性",
+  "profileProcessingDataShort": "データの処理",
+  "profileNotCreated": "作成されていません",
+  "profileAvailable": "利用可能",
+  "profileManualExport": "手動エクスポート",
+  "profileFile": "ファイル",
+  "profileReading": "読み込み中",
+  "profilePendingCount": "{count}",
+  "@profilePendingCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "profileConfigured": "設定済み",
+  "profileNotConfigured": "未設定",
+  "profileServerNotConfigured": "サーバー同期が構成されていません",
+  "profileServerConfiguredHint": "サーバーアドレスが設定されています。まず接続をテストします。",
+  "profileServerConnectionFailed": "接続に失敗しました: {error}",
+  "@profileServerConnectionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileNoServerSnapshot": "サーバーのスナップショットがありません",
+  "profileRecentSnapshot": "最新のスナップショット: {date}",
+  "@profileRecentSnapshot": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "profileServerDetail": "{backup}、{events} イベント、カーソル {cursor}",
+  "@profileServerDetail": {
+    "placeholders": {
+      "backup": {
+        "type": "String"
+      },
+      "events": {
+        "type": "int"
+      },
+      "cursor": {
+        "type": "int"
+      }
+    }
+  },
+  "profileCheckingICloud": "iCloud Driveの状態を確認中",
+  "profileICloudAvailable": "iCloudドライブが利用可能です。",
+  "profileICloudSignedOut": "このデバイスは iCloud にサインインしていないか、iCloud Drive が無効になっています。",
+  "profileICloudContainerUnavailable": "使用可能な iCloud データ ディレクトリがありません。 iCloud DriveとApp IDの設定を確認してください。",
+  "profileICloudUnsupported": "iCloud Drive はこのプラットフォームではサポートされていません。",
+  "profileICloudUnknown": "iCloudドライブのステータスが不明です。",
+  "profileLocalFirstRecord": "ローカルファーストのトレーニング記録",
+  "profileToggleDark": "ダークモードに切り替える",
+  "profileToggleLight": "ライトモードに切り替える",
+  "profileServer": "サーバ",
+  "profileCheckUpdates": "アップデートをチェックする",
+  "profileCheckingUpdates": "チェック中...",
+  "profileUpToDate": "最新バージョンです",
+  "profileUpdateFailed": "アップデートを確認できませんでした",
+  "profileAndroidUpdate": "新しい Android APK を確認する",
+  "profileNewVersionDownload": "バージョン {version} が利用可能です。ウェブサイトからダウンロードしてください。",
+  "@profileNewVersionDownload": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "profileServerSettings": "サーバーバックアップ設定",
+  "profileServerAddress": "Yoursバックアップサーバーのアドレス",
+  "profileApiKeyOptional": "APIキー(オプション)",
+  "profileApiKeyHint": "認証を省略するには空白のままにします",
+  "profileClear": "クリア",
+  "serverSync": "サーバー同期",
+  "icloudDrive": "iCloudドライブ",
+  "backupPackage": "バックアップパッケージ",
+  "notCategorized": "未分類",
+  "noDescription": "説明なし",
+  "all": "全て",
+  "exerciseAdd": "エクササイズを追加",
+  "exerciseEdit": "エクササイズを編集",
+  "exerciseSearchHint": "ベンチプレスやスクワットなどのエクササイズを検索する",
+  "exerciseEmpty": "ローカルのエクササイズ ライブラリが空です。 「追加」をタップしてエクササイズを作成します。",
+  "exerciseNoMatch": "一致するエクササイズがありません。カテゴリを変更するか検索をクリアしてください。",
+  "exerciseLocalSubtitle": "ローカルで厳選・オフラインで利用可能",
+  "exerciseName": "名前",
+  "exerciseCategoryOne": "カテゴリー1",
+  "exerciseCategoryTwo": "カテゴリー2",
+  "exerciseDescription": "説明",
+  "exerciseSaveLocal": "ローカルエクササイズライブラリに保存",
+  "exerciseNotFilled": "未入力",
+  "profileOpenLinkFailed": "リンクを開けませんでした。",
+  "profileRecentVaultExport": "最近エクスポートしたVault：{name}",
+  "@profileRecentVaultExport": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileVaultExportSummary": "エクスポートされた Vault: {plans} プラン、{workouts} ワークアウト記録、{exercises} エクササイズ。",
+  "@profileVaultExportSummary": {
+    "placeholders": {
+      "plans": {
+        "type": "int"
+      },
+      "workouts": {
+        "type": "int"
+      },
+      "exercises": {
+        "type": "int"
+      }
+    }
+  },
+  "profileRecentVaultExportFailed": "最近の Vault エクスポートに失敗しました: {error}",
+  "@profileRecentVaultExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileVaultExportFailed": "Vault のエクスポートに失敗しました: {error}",
+  "@profileVaultExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileVaultImportSummary": "inboxからプラン{plans}件、エクササイズ{exercises}件をインポートしました{skipped}。",
+  "@profileVaultImportSummary": {
+    "placeholders": {
+      "plans": {
+        "type": "int"
+      },
+      "exercises": {
+        "type": "int"
+      },
+      "skipped": {
+        "type": "String"
+      }
+    }
+  },
+  "profileSkippedFiles": "、{count} ファイルをスキップしました",
+  "@profileSkippedFiles": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "profileVaultImportFailed": "Vault のインポートに失敗しました: {error}",
+  "@profileVaultImportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileBackupCreated": "作成されたバックアップ パッケージ: {name}",
+  "@profileBackupCreated": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileBackupFailed": "バックアップに失敗しました: {error}",
+  "@profileBackupFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileRecentBackupExport": "最近エクスポートされたバックアップ: {name}",
+  "@profileRecentBackupExport": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileBackupExportedICloud": "iCloud Drive にエクスポートされたバックアップ: {name}",
+  "@profileBackupExportedICloud": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileRecentExportFailed": "最近のエクスポートに失敗しました: {error}",
+  "@profileRecentExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileICloudExportFailed": "iCloud Drive のエクスポートに失敗しました: {error}",
+  "@profileICloudExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profilePickBackupFailed": "バックアップ パッケージを選択できませんでした: {error}",
+  "@profilePickBackupFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profilePickBackupCancelled": "バックアップの選択がキャンセルされました。",
+  "profileRestoreBackupTitle": "このバックアップから復元しますか?",
+  "profileRestoreBackupMessage": "{name} からトレーニング プラン、トレーニング記録、エクササイズ ライブラリを復元します。まず安全スナップショットを作成します。",
+  "@profileRestoreBackupMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileRecentRestoreFailed": "最近の復元に失敗しました: {error}",
+  "@profileRecentRestoreFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profilePickICloudBackupFailed": "iCloud Drive バックアップを選択できませんでした: {error}",
+  "@profilePickICloudBackupFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profilePickICloudBackupCancelled": "iCloud Drive バックアップの選択がキャンセルされました。",
+  "profileRestoreICloudTitle": "iCloud Driveから復元しますか？",
+  "profileRestoringICloud": "iCloud Drive からバックアップを復元しています...",
+  "profileICloudRestoreComplete": "iCloudドライブの復元が完了しました",
+  "profileRecentICloudRestore": "最近 iCloud Drive から復元されました: {name}",
+  "@profileRecentICloudRestore": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileServerAddressSaved": "サーバーのバックアップアドレスが保存されました。",
+  "profileServerAddressCleared": "サーバーのバックアップアドレスがクリアされました。",
+  "profileConfigureServerFirst": "最初にサーバーのバックアップ アドレスを構成します。",
+  "profileConfigureServerSyncFirst": "最初にサーバー同期アドレスを構成します。",
+  "profileServerSyncFailed": "サーバー同期に失敗しました: {error}",
+  "@profileServerSyncFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileServerSyncComplete": "サーバーの同期が完了しました。",
+  "profileServerAlreadyLatest": "すでに最新です。サーバーのスナップショットが更新されました。",
+  "profileServerSyncSummary": "{uploaded} の変更をアップロードし、{downloaded} サーバー イベントをプルし、{applied} イベントを適用しました。",
+  "@profileServerSyncSummary": {
+    "placeholders": {
+      "uploaded": {
+        "type": "int"
+      },
+      "downloaded": {
+        "type": "int"
+      },
+      "applied": {
+        "type": "int"
+      }
+    }
+  },
+  "profileServerBackupFound": "サーバーのバックアップが見つかりました",
+  "profileServerBackupFoundMessage": "このデバイスにはまだローカル トレーニング データがありません。サーバーのバックアップが利用可能です。このデバイスに復元しますか?まずローカルの安全スナップショットを作成します。",
+  "profileRestoreToDevice": "このデバイスに復元",
+  "profileNormalSyncFailed": "通常の同期に失敗しました",
+  "profileNormalSyncFailedMessage": "通常の同期に失敗しました: {error}\n\nサーバーのバックアップからこのデバイスを復元してみてください。まずローカルの安全スナップショットを作成します。",
+  "@profileNormalSyncFailedMessage": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileRestoreFromBackup": "バックアップから復元する",
+  "profileServerAvailable": "サーバー同期が利用可能です: プロトコル v{version}、{events} イベント。",
+  "@profileServerAvailable": {
+    "placeholders": {
+      "version": {
+        "type": "int"
+      },
+      "events": {
+        "type": "int"
+      }
+    }
+  },
+  "profileServerTestFailed": "サーバー接続テストが失敗しました: {error}",
+  "@profileServerTestFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileDiagnosticsCopied": "サーバー同期診断がコピーされました。",
+  "profileDiagnosticsFallbackCopied": "診断情報を完全に取得できなかったため、基本的なエラー情報をコピーしました。",
+  "profileRestoreComplete": "復元が完了しました",
+  "profileRestoreSummary": "{count} ファイルを復元しました。\n安全スナップショット: {snapshot}\n\nページデータがリロードされました。",
+  "@profileRestoreSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "snapshot": {
+        "type": "String"
+      }
+    }
+  },
+  "profileAcknowledged": "わかりました",
+  "profileRestoreFailed": "復元に失敗しました: {error}",
+  "@profileRestoreFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileServerRestoreComplete": "サーバーの復元が完了しました",
+  "profileServerSnapshotRestoreFailed": "サーバースナップショットの復元に失敗しました: {error}",
+  "@profileServerSnapshotRestoreFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileDatabasePreparing": "データベースは復元されたばかりで、接続の準備中です。しばらくしてからもう一度お試しください。",
+  "profileServerReturnedHtml": "サーバーからWebページが返されました。アドレスがYoursバックアップサーバーを指しているか確認してください。",
+  "profileTargetServer": "ターゲットサーバー",
+  "planRecordModeStandard": "標準",
+  "planRecordModeFree": "フリー記録",
+  "workoutRecordMode": "記録モード",
+  "workoutCompleteFreeRecord": "この項目を完了",
+  "workoutUndoFreeRecord": "項目の記録を取り消す",
+  "workoutActivityElapsed": "項目の所要時間",
+  "workoutCompletedMixedSummary": "{exercises}種目 · {sets}セット · フリー項目{freeRecords}件を完了",
+  "@workoutCompletedMixedSummary": {
+    "placeholders": {
+      "exercises": {
+        "type": "int"
+      },
+      "sets": {
+        "type": "int"
+      },
+      "freeRecords": {
+        "type": "int"
+      }
+    }
+  },
+  "homeFreeRecords": "フリー項目",
+  "homeSessionRecordCount": "{sets}セット · フリー項目{freeRecords}件",
+  "@homeSessionRecordCount": {
+    "placeholders": {
+      "sets": {
+        "type": "int"
+      },
+      "freeRecords": {
+        "type": "int"
+      }
+    }
+  },
+  "homeActivityRecordCount": "アクティビティ記録{count}件",
+  "@homeActivityRecordCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTitle": "設定",
+  "settingsDescription": "外観、言語、Yoursについて",
+  "appearanceTitle": "外観",
+  "appearanceDescription": "テーマとディスプレイ",
+  "themeTitle": "テーマ",
+  "themeSystem": "システム",
+  "themeLight": "ライト",
+  "themeDark": "ダーク",
+  "languageDescription": "Yoursで使用する言語を選択",
+  "aboutDescription": "Web サイト、バージョン、アップデート",
+  "settingsCurrentValue": "現在: {value}",
+  "@settingsCurrentValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "errorBackupMissing": "バックアップパッケージが存在しません。",
+  "errorBackupEmpty": "サーバーは空のバックアップ パッケージを返しました。",
+  "errorInvalidBackup": "選択したファイルは有効なバックアップ パッケージではありません。",
+  "errorBackupManifestMissing": "バックアップ パッケージには、manifest.json がないため、その形式を検証できません。",
+  "errorBackupDatabaseMissing": "バックアップ パッケージに必要なデータベース ファイルがありません。",
+  "errorInvalidServerAddress": "サーバーアドレスが無効です。 https://example.com などの形式を使用します。",
+  "errorServerTimeout": "ネットワーク要求がタイムアウトしました。サーバーアドレス、HTTPS、および現在のネットワークを確認してください。",
+  "errorServerTls": "HTTPS ハンドシェイクが失敗しました。ドメイン、証明書、現在のネットワークを確認してください。",
+  "errorServerUnreachable": "サーバーに接続できませんでした。アドレス、ポート、HTTPS、リバースプロキシを確認してください。",
+  "errorServerInterrupted": "ネットワーク要求が中断されました。サーバーアドレスと現在のネットワークを確認してください。",
+  "errorInvalidServerResponse": "サーバーの応答が無効です。アドレスが Yours セルフホステッド同期サービスを指していることを確認します。",
+  "errorInvalidServerEvents": "サーバー イベントの応答が無効です。",
+  "errorInvalidServerStatus": "サーバーステータス応答が無効です。",
+  "errorNoServerBackup": "復元可能なバックアップ パッケージが見つかりませんでした。",
+  "errorServerOutdated": "セルフホスト型同期サービスは時代遅れです。現在のプロトコル v{current}。 v{required} が必要です。",
+  "@errorServerOutdated": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "required": {
+        "type": "int"
+      }
+    }
+  },
+  "errorUnappliedServerChanges": "{count} サーバーの変更を適用できませんでした。このデバイスをサーバーのバックアップから復元します。",
+  "@errorUnappliedServerChanges": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "backupShareTitle": "Yoursバックアップをエクスポート",
+  "backupShareSubject": "Yoursバックアップ",
+  "backupShareText": "これはYoursのバックアップパッケージです。iCloud Drive、ファイル、または別の場所に保存し、必要なときにファイルから復元できます。",
+  "exerciseExampleName": "例: ベンチプレス",
+  "exerciseExampleCategory": "例: 胸部",
+  "exerciseExampleEquipment": "例: バーベル",
+  "yoursVaultName": "Yours Vault"
+}

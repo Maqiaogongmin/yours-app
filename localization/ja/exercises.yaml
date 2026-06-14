@@ -1,0 +1,30 @@
+bench_press:
+  name: ベンチプレス
+  body_part: 胸
+  equipment: ベンチ · バーベル
+  primary_muscles: 大胸筋 · 上腕三頭筋 · 三角筋前部
+  description: 肩甲骨を安定させてベンチに仰向けになり、バーベルを胸元までコントロールして下ろした後、胸と上腕三頭筋を使って押し上げます。
+deadlift:
+  name: デッドリフト
+  body_part: 背中
+  equipment: バーベル
+  primary_muscles: ポステリアチェーン · 背中 · 体幹
+  description: バーベルの近くに立ち、背中をまっすぐに保ちながら股関節と膝を同時に伸ばし、コントロールして下ろします。
+lateral_raise:
+  name: ダンベルサイドレイズ
+  body_part: 肩
+  equipment: ダンベル
+  primary_muscles: 三角筋中部
+  description: 肘を軽く曲げ、ダンベルを肩の高さ付近まで横に上げてから、コントロールして下ろします。
+barbell_squat:
+  name: バーベルスクワット
+  body_part: 脚
+  equipment: バーベル
+  primary_muscles: 大腿四頭筋 · 臀筋 · 体幹
+  description: 体幹を安定させ、膝をつま先の方向に合わせてしゃがみ、コントロールして立ち上がります。
+plank:
+  name: プランク
+  body_part: 体幹
+  equipment: 自重
+  primary_muscles: 腹筋 · 腹斜筋 · 体幹安定
+  description: 前腕で体を支えて一直線を保ち、腰が落ちないように体幹を引き締めます。

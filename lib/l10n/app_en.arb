@@ -1,0 +1,845 @@
+{
+  "@@locale": "en",
+  "appName": "Yours",
+  "tabHome": "Home",
+  "tabPlan": "Plans",
+  "tabExercises": "Exercises",
+  "tabProfile": "Profile",
+  "commonCancel": "Cancel",
+  "commonDelete": "Delete",
+  "commonEdit": "Edit",
+  "commonSave": "Save",
+  "commonAdd": "Add",
+  "commonClose": "Close",
+  "commonRestore": "Restore",
+  "commonSettings": "Settings",
+  "commonTest": "Test",
+  "commonSyncNow": "Sync Now",
+  "commonPendingSync": "Pending",
+  "commonSynced": "Synced",
+  "commonUnknownError": "Unknown error",
+  "language": "Language",
+  "languageSystem": "System",
+  "languageChinese": "简体中文",
+  "languageEnglish": "English",
+  "aboutYours": "About Yours",
+  "officialWebsite": "Website",
+  "githubRepository": "GitHub Repository",
+  "planTitle": "Training Plans",
+  "planCreate": "New",
+  "planNewName": "New Training Plan",
+  "planActive": "Active",
+  "planArchived": "Archived",
+  "planArchive": "Archive",
+  "planRestoreActive": "Restore",
+  "planNoActive": "No training plans yet.",
+  "planNoArchived": "No archived training plans.",
+  "planNone": "No training plans",
+  "planCount": "{count} plans · Local first",
+  "@planCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "planSwipeHint": "Swipe left to edit or delete a plan",
+  "planScheduleReady": "Schedule complete",
+  "planScheduleIncomplete": "Schedule incomplete",
+  "planDeleteTitle": "Delete Training Plan",
+  "planDeleteMessage": "Delete “{name}”? This change takes effect locally first and will be added to the sync queue.",
+  "@planDeleteMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "planLocalSaveFailed": "Could not save the local training plan: {error}",
+  "@planLocalSaveFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "planDaySelection": "Choose Training Day",
+  "planSummary": "{weeks} weeks · {days} days per week",
+  "@planSummary": {
+    "placeholders": {
+      "weeks": {
+        "type": "int"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "planScheduledDays": "{summary} · {count} scheduled days",
+  "@planScheduledDays": {
+    "placeholders": {
+      "summary": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "planWeek": "Week {week}",
+  "@planWeek": {
+    "placeholders": {
+      "week": {
+        "type": "int"
+      }
+    }
+  },
+  "planMarkWeekComplete": "Mark as complete",
+  "planUnmarkWeekComplete": "Remove completion mark",
+  "planNoActions": "No exercises scheduled. Tap to add.",
+  "planRestoreArchivedTitle": "Restore this plan?",
+  "planRestoreArchivedMessage": "An archived plan must be restored before you can start a workout.",
+  "planDatabaseInitFailed": "Could not initialize the local training database: {error}",
+  "@planDatabaseInitFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "planEditTitle": "Edit Training Plan",
+  "planName": "Plan Name",
+  "planCycle": "Training Cycle",
+  "planWeeksSuffix": " weeks  (1–12)",
+  "planDaysPerWeek": "Days per Week",
+  "planDaysSuffix": " days  (1–7)",
+  "planArrangement": "Exercise Schedule",
+  "planDayTitle": "Week {week} · D{day}",
+  "@planDayTitle": {
+    "placeholders": {
+      "week": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "planDayName": "Training Day Name",
+  "planAddExercise": "Add Exercise",
+  "planActionList": "Exercises ({count})",
+  "@planActionList": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "planNoExerciseHint": "No exercises yet. Tap Add Exercise to choose from the library.",
+  "planRemove": "Remove",
+  "planSetSuffix": "sets",
+  "planRepSuffix": "reps",
+  "planRest": "Rest",
+  "planWeight": "Weight",
+  "planNoteHint": "Note, such as RIR 2, 6–8 reps, or slow eccentric",
+  "planAddFromLibrary": "Add from Exercise Library",
+  "planSelectedCount": "{count} selected",
+  "@planSelectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "planSearchLibrary": "Search local exercise library",
+  "planNoMatchingExercise": "No matching exercises. Add one in the Exercise Library first.",
+  "planAdded": "Added",
+  "workoutEndTitle": "End workout?",
+  "workoutEndIncomplete": "This training plan is not complete. Saved workout data will be kept and marked as an incomplete workout.",
+  "workoutEndEmpty": "No sets have been saved. Confirm to close workout mode.",
+  "workoutPostNote": "Post-workout note",
+  "workoutPostNoteHint": "For example: shoulder discomfort, skipped lateral raises",
+  "workoutEnd": "End Workout",
+  "workoutTimer": "Workout Timer",
+  "workoutSummary": "Workout Summary",
+  "workoutDefaultDay": "Default Training Day",
+  "workoutElapsed": "Time",
+  "workoutExercise": "Exercise",
+  "workoutCurrentExercise": "Current Exercise",
+  "workoutRestSeconds": "Rest s",
+  "workoutSaveSet": "Save Set and Continue",
+  "workoutUndoSet": "Undo Current Set",
+  "workoutRestBetween": "Rest Between Sets",
+  "workoutNextSet": "Next Set",
+  "workoutSkipRest": "Skip Rest and Continue",
+  "workoutComplete": "Workout Complete",
+  "workoutFinishSave": "End and Save Workout",
+  "workoutOptional": "Optional",
+  "workoutNote": "Note",
+  "workoutTrainingNote": "Workout Note",
+  "workoutSavedBackup": "Workout saved and backed up automatically: {name}",
+  "@workoutSavedBackup": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "workoutSavedBackupFailed": "Workout saved, but automatic backup failed: {error}",
+  "@workoutSavedBackupFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "workoutSetUndone": "Current set record undone",
+  "workoutFirstSet": "This is already the first set",
+  "workoutLastSet": "This is already the last set",
+  "workoutTimerStartFailed": "Workout timer failed to start: {error}",
+  "@workoutTimerStartFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "workoutNoActions": "This training plan has no exercises yet. Edit the plan and add exercises first.",
+  "workoutNextSummary": "Next: Workout Summary",
+  "workoutNextSetLabel": "Next set: {exercise} · Set {set}",
+  "@workoutNextSetLabel": {
+    "placeholders": {
+      "exercise": {
+        "type": "String"
+      },
+      "set": {
+        "type": "int"
+      }
+    }
+  },
+  "workoutUndoReturnLog": "Undo current set and return to logging",
+  "workoutRestHint": "The timer will pause here when it ends. Swiping only previews sets; it will not write or undo records.",
+  "workoutCompletedSummary": "Completed {exercises} exercises · {sets} sets",
+  "@workoutCompletedSummary": {
+    "placeholders": {
+      "exercises": {
+        "type": "int"
+      },
+      "sets": {
+        "type": "int"
+      }
+    }
+  },
+  "workoutUndoLastReturnLog": "Undo last set and return to logging",
+  "workoutNoteHint": "For example: RIR 2; rest 120s; rep range 6-8",
+  "homeTodayStatus": "Today",
+  "homeMonthTitle": "{month}/{year}",
+  "@homeMonthTitle": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      },
+      "month": {
+        "type": "int"
+      }
+    }
+  },
+  "homeWeekdays": "Mon,Tue,Wed,Thu,Fri,Sat,Sun",
+  "homeDateTitle": "{month}/{day} · {name}",
+  "@homeDateTitle": {
+    "placeholders": {
+      "month": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeNoWorkout": "No workout",
+  "homeNoWorkoutRecord": "No workout record for this day",
+  "homeRecorded": "Recorded",
+  "homeIncomplete": "Incomplete",
+  "homeTotalVolume": "Total volume kg",
+  "homeEffectiveSets": "Working sets",
+  "homeMinutes": "Minutes",
+  "homeEmptyRecordMessage": "No record for this day. Complete a workout to see volume, sets, duration, and notes here.",
+  "homeDefaultRecordName": "Workout Record",
+  "homeDefaultIncompleteRecordName": "Incomplete Workout",
+  "homeDefaultSavedNote": "This workout has been saved to the local database.",
+  "homeIncompleteWorkoutMarker": "Incomplete workout plan",
+  "homeRecordUpdated": "Workout record updated",
+  "homeSaveFailed": "Could not save: {error}",
+  "@homeSaveFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "homeDeleteSessionTitle": "Delete this workout record?",
+  "homeDeleteSessionMessage": "Delete the workout record at {time} and its {count} sets? This change will be added to the server sync queue.",
+  "@homeDeleteSessionMessage": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeSessionDeleted": "Workout record deleted",
+  "homeDeleteFailed": "Could not delete: {error}",
+  "@homeDeleteFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "homeWorkoutRecordTitle": "Workout Records · {month}/{day}",
+  "@homeWorkoutRecordTitle": {
+    "placeholders": {
+      "month": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "homeSaving": "Saving...",
+  "homeNoSetRecords": "No workout sets are available for this day.",
+  "homeSetCount": "{count} sets",
+  "@homeSetCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeRecordCount": "{count} set records",
+  "@homeRecordCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeStartedAt": "Started at {time}",
+  "@homeStartedAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "homeSets": "Sets",
+  "homeReps": "Reps",
+  "homeWeightKg": "Weight kg",
+  "homeSetNote": "{exercise} · Set {setIndex}\n{note}",
+  "@homeSetNote": {
+    "placeholders": {
+      "exercise": {
+        "type": "String"
+      },
+      "setIndex": {
+        "type": "int"
+      },
+      "note": {
+        "type": "String"
+      }
+    }
+  },
+  "homeDashboardSettings": "Dashboard Settings",
+  "homeCalendar": "Calendar",
+  "commonDone": "Done",
+  "exerciseLibrary": "Exercise Library",
+  "profileTitle": "Profile",
+  "dataManagement": "Data Management",
+  "profileProcessingData": "Processing data...",
+  "profileAboutLinks": "Website and GitHub Repository",
+  "profileAboutLinksUpdate": "Website, GitHub Repository, and Updates",
+  "profileNewVersion": "New version {version}",
+  "@profileNewVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "profileVaultPathPending": "Preparing path",
+  "profileExportVault": "Export Vault",
+  "profileImportInbox": "Import inbox",
+  "profileBackupDescription": "Create a backup, then save it to iCloud Drive, Files, or another location",
+  "profileLatestBackup": "Latest backup: {name}",
+  "@profileLatestBackup": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileProcessing": "Processing...",
+  "profileCreateExport": "Create and Export",
+  "profileRestoreFromFile": "Restore from File",
+  "profileExportBackup": "Export Backup",
+  "profileRestoreFromICloud": "Restore from iCloud",
+  "profileCopyDiagnostics": "Copy Diagnostics",
+  "profileLocalDataSafety": "Local Data Safety",
+  "profileProcessingDataShort": "Processing Data",
+  "profileNotCreated": "Not created",
+  "profileAvailable": "Available",
+  "profileManualExport": "Manual Export",
+  "profileFile": "File",
+  "profileReading": "Loading",
+  "profilePendingCount": "{count}",
+  "@profilePendingCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "profileConfigured": "Configured",
+  "profileNotConfigured": "Not configured",
+  "profileServerNotConfigured": "Server sync is not configured",
+  "profileServerConfiguredHint": "Server address is configured. Test the connection first.",
+  "profileServerConnectionFailed": "Connection failed: {error}",
+  "@profileServerConnectionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileNoServerSnapshot": "No server snapshot",
+  "profileRecentSnapshot": "Latest snapshot: {date}",
+  "@profileRecentSnapshot": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "profileServerDetail": "{backup}, {events} events, cursor {cursor}",
+  "@profileServerDetail": {
+    "placeholders": {
+      "backup": {
+        "type": "String"
+      },
+      "events": {
+        "type": "int"
+      },
+      "cursor": {
+        "type": "int"
+      }
+    }
+  },
+  "profileCheckingICloud": "Checking iCloud Drive status",
+  "profileICloudAvailable": "iCloud Drive is available.",
+  "profileICloudSignedOut": "This device is not signed in to iCloud, or iCloud Drive is disabled.",
+  "profileICloudContainerUnavailable": "No iCloud data directory is available. Check iCloud Drive and the App ID configuration.",
+  "profileICloudUnsupported": "iCloud Drive is not supported on this platform.",
+  "profileICloudUnknown": "iCloud Drive status is unknown.",
+  "profileLocalFirstRecord": "Local-first workout records",
+  "profileToggleDark": "Switch to dark mode",
+  "profileToggleLight": "Switch to light mode",
+  "profileServer": "Server",
+  "profileCheckUpdates": "Check for Updates",
+  "profileCheckingUpdates": "Checking...",
+  "profileUpToDate": "You are up to date",
+  "profileUpdateFailed": "Could not check for updates",
+  "profileAndroidUpdate": "Check for a new Android APK",
+  "profileNewVersionDownload": "Version {version} is available. Download it from the website.",
+  "@profileNewVersionDownload": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "profileServerSettings": "Server Backup Settings",
+  "profileServerAddress": "Yours backup server address",
+  "profileApiKeyOptional": "API key (optional)",
+  "profileApiKeyHint": "Leave blank to omit Authorization",
+  "profileClear": "Clear",
+  "serverSync": "Server Sync",
+  "icloudDrive": "iCloud Drive",
+  "backupPackage": "Backup Package",
+  "notCategorized": "Uncategorized",
+  "noDescription": "No description",
+  "all": "All",
+  "exerciseAdd": "Add Exercise",
+  "exerciseEdit": "Edit Exercise",
+  "exerciseSearchHint": "Search exercises, such as bench press or squat",
+  "exerciseEmpty": "Your local exercise library is empty. Tap Add to create an exercise.",
+  "exerciseNoMatch": "No matching exercises. Try another category or clear the search.",
+  "exerciseLocalSubtitle": "Curated locally · Available offline",
+  "exerciseName": "Name",
+  "exerciseCategoryOne": "Category 1",
+  "exerciseCategoryTwo": "Category 2",
+  "exerciseDescription": "Description",
+  "exerciseSaveLocal": "Save to Local Exercise Library",
+  "exerciseNotFilled": "Not provided",
+  "profileOpenLinkFailed": "Could not open the link.",
+  "profileRecentVaultExport": "Recently exported Vault: {name}",
+  "@profileRecentVaultExport": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileVaultExportSummary": "Yours Vault exported: {plans} plans, {workouts} workout records, {exercises} exercises.",
+  "@profileVaultExportSummary": {
+    "placeholders": {
+      "plans": {
+        "type": "int"
+      },
+      "workouts": {
+        "type": "int"
+      },
+      "exercises": {
+        "type": "int"
+      }
+    }
+  },
+  "profileRecentVaultExportFailed": "Recent Vault export failed: {error}",
+  "@profileRecentVaultExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileVaultExportFailed": "Yours Vault export failed: {error}",
+  "@profileVaultExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileVaultImportSummary": "Imported {plans} plans and {exercises} exercises from inbox{skipped}.",
+  "@profileVaultImportSummary": {
+    "placeholders": {
+      "plans": {
+        "type": "int"
+      },
+      "exercises": {
+        "type": "int"
+      },
+      "skipped": {
+        "type": "String"
+      }
+    }
+  },
+  "profileSkippedFiles": ", skipped {count} files",
+  "@profileSkippedFiles": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "profileVaultImportFailed": "Yours Vault import failed: {error}",
+  "@profileVaultImportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileBackupCreated": "Backup package created: {name}",
+  "@profileBackupCreated": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileBackupFailed": "Backup failed: {error}",
+  "@profileBackupFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileRecentBackupExport": "Recently exported backup: {name}",
+  "@profileRecentBackupExport": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileBackupExportedICloud": "Backup exported to iCloud Drive: {name}",
+  "@profileBackupExportedICloud": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileRecentExportFailed": "Recent export failed: {error}",
+  "@profileRecentExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileICloudExportFailed": "iCloud Drive export failed: {error}",
+  "@profileICloudExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profilePickBackupFailed": "Could not choose backup package: {error}",
+  "@profilePickBackupFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profilePickBackupCancelled": "Backup selection canceled.",
+  "profileRestoreBackupTitle": "Restore from this backup?",
+  "profileRestoreBackupMessage": "Restore training plans, workout records, and the exercise library from {name}. Yours will create a safety snapshot first.",
+  "@profileRestoreBackupMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileRecentRestoreFailed": "Recent restore failed: {error}",
+  "@profileRecentRestoreFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profilePickICloudBackupFailed": "Could not choose an iCloud Drive backup: {error}",
+  "@profilePickICloudBackupFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profilePickICloudBackupCancelled": "iCloud Drive backup selection canceled.",
+  "profileRestoreICloudTitle": "Restore from iCloud Drive?",
+  "profileRestoringICloud": "Restoring backup from iCloud Drive...",
+  "profileICloudRestoreComplete": "iCloud Drive restore complete",
+  "profileRecentICloudRestore": "Recently restored from iCloud Drive: {name}",
+  "@profileRecentICloudRestore": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileServerAddressSaved": "Server backup address saved.",
+  "profileServerAddressCleared": "Server backup address cleared.",
+  "profileConfigureServerFirst": "Configure the server backup address first.",
+  "profileConfigureServerSyncFirst": "Configure the server sync address first.",
+  "profileServerSyncFailed": "Server sync failed: {error}",
+  "@profileServerSyncFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileServerSyncComplete": "Server sync complete.",
+  "profileServerAlreadyLatest": "Already up to date. Server snapshot refreshed.",
+  "profileServerSyncSummary": "Uploaded {uploaded} changes, pulled {downloaded} server events, and applied {applied} events.",
+  "@profileServerSyncSummary": {
+    "placeholders": {
+      "uploaded": {
+        "type": "int"
+      },
+      "downloaded": {
+        "type": "int"
+      },
+      "applied": {
+        "type": "int"
+      }
+    }
+  },
+  "profileServerBackupFound": "Server backup found",
+  "profileServerBackupFoundMessage": "This device has no local training data yet. A server backup is available. Restore it to this device? Yours will create a local safety snapshot first.",
+  "profileRestoreToDevice": "Restore to this device",
+  "profileNormalSyncFailed": "Normal sync failed",
+  "profileNormalSyncFailedMessage": "Normal sync failed: {error}\n\nYou can try restoring this device from the server backup. Yours will create a local safety snapshot first.",
+  "@profileNormalSyncFailedMessage": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileRestoreFromBackup": "Restore from backup",
+  "profileServerAvailable": "Server sync is available: protocol v{version}, {events} events.",
+  "@profileServerAvailable": {
+    "placeholders": {
+      "version": {
+        "type": "int"
+      },
+      "events": {
+        "type": "int"
+      }
+    }
+  },
+  "profileServerTestFailed": "Server connection test failed: {error}",
+  "@profileServerTestFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileDiagnosticsCopied": "Server sync diagnostics copied.",
+  "profileDiagnosticsFallbackCopied": "Diagnostics were incomplete. Basic error info was copied.",
+  "profileRestoreComplete": "Restore complete",
+  "profileRestoreSummary": "Restored {count} files.\nSafety snapshot: {snapshot}\n\nPage data has been reloaded.",
+  "@profileRestoreSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "snapshot": {
+        "type": "String"
+      }
+    }
+  },
+  "profileAcknowledged": "OK",
+  "profileRestoreFailed": "Restore failed: {error}",
+  "@profileRestoreFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileServerRestoreComplete": "Server restore complete",
+  "profileServerSnapshotRestoreFailed": "Server snapshot restore failed: {error}",
+  "@profileServerSnapshotRestoreFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "profileDatabasePreparing": "The database was just restored and is preparing its connection. Try again shortly.",
+  "profileServerReturnedHtml": "The server returned a web page. Check that the address points to the Yours backup server.",
+  "profileTargetServer": "target server",
+  "planRecordModeStandard": "Standard",
+  "planRecordModeFree": "Free",
+  "workoutRecordMode": "Record Mode",
+  "workoutCompleteFreeRecord": "Complete Item",
+  "workoutUndoFreeRecord": "Undo Item Record",
+  "workoutActivityElapsed": "Item Time",
+  "workoutCompletedMixedSummary": "Completed {exercises} exercises · {sets} sets · {freeRecords} free items",
+  "@workoutCompletedMixedSummary": {
+    "placeholders": {
+      "exercises": {
+        "type": "int"
+      },
+      "sets": {
+        "type": "int"
+      },
+      "freeRecords": {
+        "type": "int"
+      }
+    }
+  },
+  "homeFreeRecords": "Free Items",
+  "homeSessionRecordCount": "{sets} sets · {freeRecords} free items",
+  "@homeSessionRecordCount": {
+    "placeholders": {
+      "sets": {
+        "type": "int"
+      },
+      "freeRecords": {
+        "type": "int"
+      }
+    }
+  },
+  "homeActivityRecordCount": "{count} activity records",
+  "@homeActivityRecordCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTitle": "Settings",
+  "settingsDescription": "Appearance, language, and About Yours",
+  "appearanceTitle": "Appearance",
+  "appearanceDescription": "Theme and display",
+  "themeTitle": "Theme",
+  "themeSystem": "System",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "languageDescription": "Choose the language used by Yours",
+  "aboutDescription": "Website, version, and updates",
+  "settingsCurrentValue": "Current: {value}",
+  "@settingsCurrentValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "errorBackupMissing": "The backup package does not exist.",
+  "errorBackupEmpty": "The server returned an empty backup package.",
+  "errorInvalidBackup": "The selected file is not a valid Yours backup package.",
+  "errorBackupManifestMissing": "The backup package is missing manifest.json, so its format cannot be verified.",
+  "errorBackupDatabaseMissing": "The backup package is missing required database files.",
+  "errorInvalidServerAddress": "The server address is invalid. Use a format such as https://example.com.",
+  "errorServerTimeout": "The network request timed out. Check the server address, HTTPS, and current network.",
+  "errorServerTls": "The HTTPS handshake failed. Check the domain, certificate, and current network.",
+  "errorServerUnreachable": "Could not connect to the server. Check the address, port, HTTPS, and reverse proxy.",
+  "errorServerInterrupted": "The network request was interrupted. Check the server address and current network.",
+  "errorInvalidServerResponse": "The server response is invalid. Confirm the address points to the Yours self-hosted sync service.",
+  "errorInvalidServerEvents": "The server events response is invalid.",
+  "errorInvalidServerStatus": "The server status response is invalid.",
+  "errorNoServerBackup": "No restorable backup package was found.",
+  "errorServerOutdated": "The self-hosted sync service is outdated. Current protocol v{current}; required v{required}.",
+  "@errorServerOutdated": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "required": {
+        "type": "int"
+      }
+    }
+  },
+  "errorUnappliedServerChanges": "{count} server changes could not be applied. Restore this device from the server backup.",
+  "@errorUnappliedServerChanges": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "backupShareTitle": "Export Yours Backup",
+  "backupShareSubject": "Yours Backup",
+  "backupShareText": "This is a Yours backup package. Save it to iCloud Drive, Files, or another location, then restore it from a file when needed.",
+  "exerciseExampleName": "Example: Bench Press",
+  "exerciseExampleCategory": "Example: Chest",
+  "exerciseExampleEquipment": "Example: Barbell",
+  "yoursVaultName": "Yours Vault"
+}
