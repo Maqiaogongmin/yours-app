@@ -11,6 +11,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:yours/redesign/data/app_update_service.dart';
 import 'package:yours/redesign/data/backup_service.dart';
 import 'package:yours/redesign/data/redesign_data_refresh.dart';
+import 'package:yours/redesign/design_system/yours_design_system.dart';
 import 'package:yours/redesign/localization/localization.dart';
 import 'package:yours/redesign/navigation/tab_item.dart';
 import 'package:yours/redesign/pages/exercises/exercise_library_page.dart';
@@ -227,18 +228,10 @@ class _SideNavRail extends StatelessWidget {
               height: 52,
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: const Color(0xFF111111),
+                color: palette.fg,
                 borderRadius: BorderRadius.circular(18),
                 border: Border.all(color: palette.accent.withValues(alpha: 0.24)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(
-                      alpha: palette.brightness == Brightness.light ? 0.08 : 0.28,
-                    ),
-                    offset: const Offset(0, 8),
-                    blurRadius: 18,
-                  ),
-                ],
+                boxShadow: context.yoursCardShadow,
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(13),
@@ -317,12 +310,14 @@ class _SideNavItem extends StatelessWidget {
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: selected ? fg : muted,
-                  fontSize: 12,
-                  height: 1.15,
-                  fontWeight: selected ? FontWeight.w800 : FontWeight.w500,
-                ),
+                style: context
+                    .yoursText(YoursTextRole.body)
+                    .copyWith(
+                      color: selected ? fg : muted,
+                      fontSize: 12,
+                      height: 1.15,
+                      fontWeight: selected ? FontWeight.w800 : FontWeight.w500,
+                    ),
               ),
             ],
           ),
@@ -358,13 +353,7 @@ class _ActiveWorkoutBubble extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: palette.accent,
                   borderRadius: BorderRadius.circular(999),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.18),
-                      offset: const Offset(0, 8),
-                      blurRadius: 18,
-                    ),
-                  ],
+                  boxShadow: context.yoursCardShadow,
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -373,11 +362,13 @@ class _ActiveWorkoutBubble extends StatelessWidget {
                     const SizedBox(width: 7),
                     Text(
                       _elapsedText(session.elapsed),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 14,
-                      ),
+                      style: context
+                          .yoursText(YoursTextRole.body)
+                          .copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 14,
+                          ),
                     ),
                   ],
                 ),
@@ -429,37 +420,46 @@ class _BottomNavBar extends StatelessWidget {
           final isSelected = i == selectedIndex;
 
           return Expanded(
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () => onTap(i),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 160),
-                    width: 48,
-                    height: 30,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: isSelected ? palette.accentSoft : Colors.transparent,
-                      borderRadius: BorderRadius.circular(999),
+            child: Semantics(
+              button: true,
+              selected: isSelected,
+              label: item.label(context.l10n),
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => onTap(i),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 160),
+                      width: 48,
+                      height: 30,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: isSelected ? palette.accentSoft : Colors.transparent,
+                        borderRadius: BorderRadius.circular(999),
+                      ),
+                      child: YoursTabIcon(
+                        asset: item.iconAsset,
+                        color: isSelected ? palette.accent : muted,
+                        size: 23,
+                      ),
                     ),
-                    child: YoursTabIcon(
-                      asset: item.iconAsset,
-                      color: isSelected ? palette.accent : muted,
-                      size: 23,
+                    const SizedBox(height: 2),
+                    ExcludeSemantics(
+                      child: Text(
+                        item.label(context.l10n),
+                        style: context
+                            .yoursText(YoursTextRole.body)
+                            .copyWith(
+                              fontSize: 11,
+                              fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                              color: isSelected ? palette.accent : muted,
+                            ),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    item.label(context.l10n),
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                      color: isSelected ? palette.accent : muted,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );

@@ -18,6 +18,7 @@ class LocalTrainingActionModel {
   int targetReps;
   double? targetWeight;
   int? targetRestSeconds;
+  int? targetDurationSeconds;
   String recordMode;
   String note;
 
@@ -28,6 +29,7 @@ class LocalTrainingActionModel {
     this.targetReps = 8,
     this.targetWeight,
     this.targetRestSeconds,
+    this.targetDurationSeconds,
     this.recordMode = localRecordModeStandard,
     this.note = '',
   });
@@ -41,6 +43,8 @@ class LocalTrainingActionModel {
     bool clearTargetWeight = false,
     int? targetRestSeconds,
     bool clearTargetRestSeconds = false,
+    int? targetDurationSeconds,
+    bool clearTargetDurationSeconds = false,
     String? recordMode,
     String? note,
   }) {
@@ -53,6 +57,9 @@ class LocalTrainingActionModel {
       targetRestSeconds: clearTargetRestSeconds
           ? null
           : targetRestSeconds ?? this.targetRestSeconds,
+      targetDurationSeconds: clearTargetDurationSeconds
+          ? null
+          : targetDurationSeconds ?? this.targetDurationSeconds,
       recordMode: normalizeLocalRecordMode(recordMode ?? this.recordMode),
       note: note ?? this.note,
     );
@@ -65,6 +72,7 @@ class LocalTrainingActionModel {
     'targetReps': targetReps,
     if (targetWeight != null) 'targetWeight': targetWeight,
     if (targetRestSeconds != null) 'targetRestSeconds': targetRestSeconds,
+    if (targetDurationSeconds != null) 'targetDurationSeconds': targetDurationSeconds,
     if (recordMode != localRecordModeStandard) 'recordMode': recordMode,
     if (note.trim().isNotEmpty) 'note': note.trim(),
   };
@@ -84,6 +92,7 @@ class LocalTrainingActionModel {
         targetReps: (json['targetReps'] as num?)?.toInt() ?? 8,
         targetWeight: (json['targetWeight'] as num?)?.toDouble(),
         targetRestSeconds: (json['targetRestSeconds'] as num?)?.toInt(),
+        targetDurationSeconds: (json['targetDurationSeconds'] as num?)?.toInt(),
         recordMode: normalizeLocalRecordMode(json['recordMode']),
         note: json['note'] as String? ?? '',
       );
@@ -270,6 +279,8 @@ class LocalWorkoutSessionEditModel {
   final int id;
   final DateTime startedAt;
   final DateTime? endedAt;
+  final int? dayId;
+  final String dayName;
   final String note;
   final List<LocalWorkoutLogEditModel> logs;
 
@@ -277,6 +288,8 @@ class LocalWorkoutSessionEditModel {
     required this.id,
     required this.startedAt,
     required this.endedAt,
+    this.dayId,
+    this.dayName = '',
     required this.note,
     required this.logs,
   });

@@ -502,6 +502,12 @@ abstract class AppLocalizations {
   /// **'休息'**
   String get planRest;
 
+  /// No description provided for @planDuration.
+  ///
+  /// In zh, this message translates to:
+  /// **'持续时间'**
+  String get planDuration;
+
   /// No description provided for @planWeight.
   ///
   /// In zh, this message translates to:
@@ -976,6 +982,150 @@ abstract class AppLocalizations {
   /// **'完成'**
   String get commonDone;
 
+  /// No description provided for @sharePosterCreate.
+  ///
+  /// In zh, this message translates to:
+  /// **'生成海报'**
+  String get sharePosterCreate;
+
+  /// No description provided for @sharePosterTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'生成海报'**
+  String get sharePosterTitle;
+
+  /// No description provided for @sharePosterSaveToPhotos.
+  ///
+  /// In zh, this message translates to:
+  /// **'保存到照片'**
+  String get sharePosterSaveToPhotos;
+
+  /// No description provided for @sharePosterSaving.
+  ///
+  /// In zh, this message translates to:
+  /// **'正在保存'**
+  String get sharePosterSaving;
+
+  /// No description provided for @sharePosterSavedToPhotos.
+  ///
+  /// In zh, this message translates to:
+  /// **'已保存到照片'**
+  String get sharePosterSavedToPhotos;
+
+  /// No description provided for @sharePosterSaveFailed.
+  ///
+  /// In zh, this message translates to:
+  /// **'保存失败：{error}'**
+  String sharePosterSaveFailed(String error);
+
+  /// No description provided for @sharePosterRenderFailed.
+  ///
+  /// In zh, this message translates to:
+  /// **'无法生成训练海报图片。'**
+  String get sharePosterRenderFailed;
+
+  /// No description provided for @sharePosterPhotoFailed.
+  ///
+  /// In zh, this message translates to:
+  /// **'选择照片失败：{error}'**
+  String sharePosterPhotoFailed(String error);
+
+  /// No description provided for @sharePosterBackground.
+  ///
+  /// In zh, this message translates to:
+  /// **'背景'**
+  String get sharePosterBackground;
+
+  /// No description provided for @sharePosterComponents.
+  ///
+  /// In zh, this message translates to:
+  /// **'组件'**
+  String get sharePosterComponents;
+
+  /// No description provided for @sharePosterUsePhoto.
+  ///
+  /// In zh, this message translates to:
+  /// **'使用照片'**
+  String get sharePosterUsePhoto;
+
+  /// No description provided for @sharePosterPhotoSelected.
+  ///
+  /// In zh, this message translates to:
+  /// **'照片背景'**
+  String get sharePosterPhotoSelected;
+
+  /// No description provided for @sharePosterPresetDeepPurple.
+  ///
+  /// In zh, this message translates to:
+  /// **'深紫黑'**
+  String get sharePosterPresetDeepPurple;
+
+  /// No description provided for @sharePosterPresetWarmPaper.
+  ///
+  /// In zh, this message translates to:
+  /// **'暖米'**
+  String get sharePosterPresetWarmPaper;
+
+  /// No description provided for @sharePosterPresetEmber.
+  ///
+  /// In zh, this message translates to:
+  /// **'Ember'**
+  String get sharePosterPresetEmber;
+
+  /// No description provided for @sharePosterPresetForest.
+  ///
+  /// In zh, this message translates to:
+  /// **'Forest'**
+  String get sharePosterPresetForest;
+
+  /// No description provided for @sharePosterWorkoutName.
+  ///
+  /// In zh, this message translates to:
+  /// **'训练名称'**
+  String get sharePosterWorkoutName;
+
+  /// No description provided for @sharePosterDate.
+  ///
+  /// In zh, this message translates to:
+  /// **'日期'**
+  String get sharePosterDate;
+
+  /// No description provided for @sharePosterDuration.
+  ///
+  /// In zh, this message translates to:
+  /// **'总用时'**
+  String get sharePosterDuration;
+
+  /// No description provided for @sharePosterExerciseCount.
+  ///
+  /// In zh, this message translates to:
+  /// **'动作数'**
+  String get sharePosterExerciseCount;
+
+  /// No description provided for @sharePosterSetCount.
+  ///
+  /// In zh, this message translates to:
+  /// **'总组数'**
+  String get sharePosterSetCount;
+
+  /// No description provided for @sharePosterTotalVolume.
+  ///
+  /// In zh, this message translates to:
+  /// **'总容量'**
+  String get sharePosterTotalVolume;
+
+  /// No description provided for @sharePosterNote.
+  ///
+  /// In zh, this message translates to:
+  /// **'训练备注'**
+  String get sharePosterNote;
+
+  /// No description provided for @sharePosterBrand.
+  ///
+  /// In zh, this message translates to:
+  /// **'Yours 标识'**
+  String get sharePosterBrand;
+
   /// No description provided for @exerciseLibrary.
   ///
   /// In zh, this message translates to:
@@ -1024,6 +1174,18 @@ abstract class AppLocalizations {
   /// **'路径准备中'**
   String get profileVaultPathPending;
 
+  /// No description provided for @profileVaultNotExported.
+  ///
+  /// In zh, this message translates to:
+  /// **'尚未导出'**
+  String get profileVaultNotExported;
+
+  /// No description provided for @profileLastVaultExport.
+  ///
+  /// In zh, this message translates to:
+  /// **'上次导出：{date}'**
+  String profileLastVaultExport(String date);
+
   /// No description provided for @profileExportVault.
   ///
   /// In zh, this message translates to:
@@ -1039,8 +1201,32 @@ abstract class AppLocalizations {
   /// No description provided for @profileBackupDescription.
   ///
   /// In zh, this message translates to:
-  /// **'创建后可保存到 iCloud Drive、文件 App 或其他位置'**
+  /// **'创建后可保存到文件 App 或其他位置'**
   String get profileBackupDescription;
+
+  /// No description provided for @profileBackupPlaintextWarning.
+  ///
+  /// In zh, this message translates to:
+  /// **'备份文件包含训练数据，请妥善保存，不要公开分享。'**
+  String get profileBackupPlaintextWarning;
+
+  /// No description provided for @profileBackupAndroidLocation.
+  ///
+  /// In zh, this message translates to:
+  /// **'备份文件包含训练数据，请妥善保存。Android 可在 Documents/有思/backups 中查看。'**
+  String get profileBackupAndroidLocation;
+
+  /// No description provided for @profileBackupNotCreated.
+  ///
+  /// In zh, this message translates to:
+  /// **'尚未创建'**
+  String get profileBackupNotCreated;
+
+  /// No description provided for @profileLastBackup.
+  ///
+  /// In zh, this message translates to:
+  /// **'上次备份：{date}'**
+  String profileLastBackup(String date);
 
   /// No description provided for @profileLatestBackup.
   ///
@@ -1095,6 +1281,12 @@ abstract class AppLocalizations {
   /// In zh, this message translates to:
   /// **'正在处理数据'**
   String get profileProcessingDataShort;
+
+  /// No description provided for @profileExportingVault.
+  ///
+  /// In zh, this message translates to:
+  /// **'正在导出 Vault'**
+  String get profileExportingVault;
 
   /// No description provided for @profileNotCreated.
   ///
@@ -1191,6 +1383,12 @@ abstract class AppLocalizations {
   /// In zh, this message translates to:
   /// **'iCloud Drive 可用。'**
   String get profileICloudAvailable;
+
+  /// No description provided for @profileICloudManualHint.
+  ///
+  /// In zh, this message translates to:
+  /// **'用于手动导出和恢复'**
+  String get profileICloudManualHint;
 
   /// No description provided for @profileICloudSignedOut.
   ///
@@ -1431,6 +1629,12 @@ abstract class AppLocalizations {
   /// In zh, this message translates to:
   /// **'Yours Vault 已导出：{plans} 个计划、{workouts} 份记录、{exercises} 个动作。'**
   String profileVaultExportSummary(int plans, int workouts, int exercises);
+
+  /// No description provided for @profileVaultExportAndroidSummary.
+  ///
+  /// In zh, this message translates to:
+  /// **'Yours Vault 已导出：{plans} 个计划、{workouts} 份记录、{exercises} 个动作。公共 Documents 会在后台同步。'**
+  String profileVaultExportAndroidSummary(int plans, int workouts, int exercises);
 
   /// No description provided for @profileRecentVaultExportFailed.
   ///
@@ -1744,6 +1948,24 @@ abstract class AppLocalizations {
   /// **'记录方式'**
   String get workoutRecordMode;
 
+  /// No description provided for @workoutReplaceExercise.
+  ///
+  /// In zh, this message translates to:
+  /// **'替换本次动作'**
+  String get workoutReplaceExercise;
+
+  /// No description provided for @workoutChooseExercise.
+  ///
+  /// In zh, this message translates to:
+  /// **'选择'**
+  String get workoutChooseExercise;
+
+  /// No description provided for @workoutExerciseReplaced.
+  ///
+  /// In zh, this message translates to:
+  /// **'已将「{from}」替换为「{to}」'**
+  String workoutExerciseReplaced(String from, String to);
+
   /// No description provided for @workoutCompleteFreeRecord.
   ///
   /// In zh, this message translates to:
@@ -1761,6 +1983,18 @@ abstract class AppLocalizations {
   /// In zh, this message translates to:
   /// **'本项用时'**
   String get workoutActivityElapsed;
+
+  /// No description provided for @workoutDurationSeconds.
+  ///
+  /// In zh, this message translates to:
+  /// **'持续时间 s'**
+  String get workoutDurationSeconds;
+
+  /// No description provided for @workoutSavedLocal.
+  ///
+  /// In zh, this message translates to:
+  /// **'训练已保存到本地。'**
+  String get workoutSavedLocal;
 
   /// No description provided for @workoutCompletedMixedSummary.
   ///

@@ -2,4 +2,5 @@
 "CFBundleName" = "Yours";
 "NSUbiquitousContainerName" = "Yours";
 "NSCameraUsageDescription" = "トレーニング記録用の写真を撮影するためにカメラを使用します。";
-"NSPhotoLibraryUsageDescription" = "トレーニングデータのバックアップファイルを選択して復元します。";
+"NSPhotoLibraryUsageDescription" = "トレーニングポスターの背景に使う写真を選択します。";
+"NSPhotoLibraryAddUsageDescription" = "トレーニング記録ポスターを写真に保存します。";

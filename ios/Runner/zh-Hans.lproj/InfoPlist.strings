@@ -2,4 +2,5 @@
 "CFBundleName" = "有思";
 "NSUbiquitousContainerName" = "有思";
 "NSCameraUsageDescription" = "用于拍摄训练记录照片";
-"NSPhotoLibraryUsageDescription" = "用于选择训练数据备份文件以恢复数据";
+"NSPhotoLibraryUsageDescription" = "用于选择照片作为训练海报背景";
+"NSPhotoLibraryAddUsageDescription" = "用于将训练记录海报保存到照片应用";

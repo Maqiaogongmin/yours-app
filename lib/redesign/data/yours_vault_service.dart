@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -96,7 +97,11 @@ class YoursVaultService {
 
   Future<YoursVaultExportResult> exportDefaultVault() async {
     final result = await exportVault(await defaultVaultDirectory());
-    await _syncVaultToVisibleDocuments(result.directory);
+    if (Platform.isAndroid) {
+      unawaited(_syncVaultToVisibleDocuments(result.directory));
+    } else {
+      await _syncVaultToVisibleDocuments(result.directory);
+    }
     return result;
   }
 
@@ -459,6 +464,7 @@ class YoursVaultService {
                               'reps': action.targetReps,
                               'weight': action.targetWeight,
                               'restSeconds': action.targetRestSeconds,
+                              'durationSeconds': action.targetDurationSeconds,
                               if (action.recordMode != localRecordModeStandard)
                                 'recordMode': action.recordMode,
                               'note': action.note,
@@ -536,6 +542,7 @@ class YoursVaultService {
               targetReps: _parseTargetReps(action['reps']),
               targetWeight: (action['weight'] as num?)?.toDouble(),
               targetRestSeconds: (action['restSeconds'] as num?)?.toInt(),
+              targetDurationSeconds: (action['durationSeconds'] as num?)?.toInt(),
               recordMode: normalizeLocalRecordMode(action['recordMode']),
               note: action['note'] as String? ?? '',
             ),

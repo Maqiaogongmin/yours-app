@@ -1,11 +1,13 @@
 import Flutter
+import PhotosUI
 import UIKit
 import UniformTypeIdentifiers
 
 @main
-@objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate, UIDocumentPickerDelegate {
+@objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate, UIDocumentPickerDelegate, PHPickerViewControllerDelegate {
   private let iCloudContainerIdentifier = "iCloud.com.ly.yours"
   private var pendingICloudBackupPickResult: FlutterResult?
+  private var pendingPosterBackgroundPickResult: FlutterResult?
 
   private func text(_ key: String) -> String {
     NSLocalizedString(key, comment: "")
@@ -19,6 +21,13 @@ import UniformTypeIdentifiers
     )
     channel.setMethodCallHandler { [weak self] call, result in
       self?.handleFilesCall(call, result: result)
+    }
+    let photosChannel = FlutterMethodChannel(
+      name: "yours/photos",
+      binaryMessenger: engineBridge.pluginRegistry.registrar(forPlugin: "YoursPhotos")!.messenger()
+    )
+    photosChannel.setMethodCallHandler { [weak self] call, result in
+      self?.handlePhotosCall(call, result: result)
     }
   }
 
@@ -36,6 +45,72 @@ import UniformTypeIdentifiers
       result(nil)
     default:
       result(FlutterMethodNotImplemented)
+    }
+  }
+
+  private func handlePhotosCall(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+    switch call.method {
+    case "pickPosterBackground":
+      pickPosterBackground(result: result)
+    case "saveImageToPhotos":
+      saveImageToPhotos(call, result: result)
+    default:
+      result(FlutterMethodNotImplemented)
+    }
+  }
+
+  private func presenter() -> UIViewController? {
+    UIApplication.shared.connectedScenes
+      .compactMap({ $0 as? UIWindowScene })
+      .flatMap({ $0.windows })
+      .first(where: { $0.isKeyWindow })?
+      .rootViewController
+  }
+
+  private func pickPosterBackground(result: @escaping FlutterResult) {
+    if pendingPosterBackgroundPickResult != nil {
+      result(FlutterError(code: "photo_picker_busy", message: text("photo_picker_busy"), details: nil))
+      return
+    }
+    guard let presenter = presenter() else {
+      result(FlutterError(code: "photo_picker_unavailable", message: text("photo_picker_unavailable"), details: nil))
+      return
+    }
+    pendingPosterBackgroundPickResult = result
+    var configuration = PHPickerConfiguration(photoLibrary: .shared())
+    configuration.filter = .images
+    configuration.selectionLimit = 1
+    let picker = PHPickerViewController(configuration: configuration)
+    picker.delegate = self
+    presenter.present(picker, animated: true)
+  }
+
+  private func saveImageToPhotos(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+    guard let arguments = call.arguments as? [String: Any],
+          let bytes = arguments["bytes"] as? FlutterStandardTypedData,
+          let image = UIImage(data: bytes.data) else {
+      result(FlutterError(code: "bad_args", message: text("photo_save_bad_args"), details: nil))
+      return
+    }
+
+    PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
+      guard status == .authorized || status == .limited else {
+        DispatchQueue.main.async {
+          result(FlutterError(code: "photo_permission_denied", message: self.text("photo_permission_denied"), details: nil))
+        }
+        return
+      }
+      PHPhotoLibrary.shared().performChanges({
+        PHAssetChangeRequest.creationRequestForAsset(from: image)
+      }) { success, error in
+        DispatchQueue.main.async {
+          if success {
+            result(true)
+          } else {
+            result(FlutterError(code: "photo_save_failed", message: error?.localizedDescription ?? self.text("photo_save_failed"), details: nil))
+          }
+        }
+      }
     }
   }
 
@@ -243,5 +318,48 @@ import UniformTypeIdentifiers
     }
     try FileManager.default.copyItem(at: source, to: destination)
     return destination
+  }
+
+  func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+    picker.dismiss(animated: true)
+    guard let result = pendingPosterBackgroundPickResult else {
+      return
+    }
+    pendingPosterBackgroundPickResult = nil
+    guard let provider = results.first?.itemProvider else {
+      result(nil)
+      return
+    }
+    guard provider.canLoadObject(ofClass: UIImage.self) else {
+      result(FlutterError(code: "photo_picker_unsupported", message: text("photo_picker_unsupported"), details: nil))
+      return
+    }
+    provider.loadObject(ofClass: UIImage.self) { object, error in
+      if let error = error {
+        DispatchQueue.main.async {
+          result(FlutterError(code: "photo_picker_failed", message: error.localizedDescription, details: nil))
+        }
+        return
+      }
+      guard let image = object as? UIImage, let data = image.jpegData(compressionQuality: 0.92) else {
+        DispatchQueue.main.async {
+          result(FlutterError(code: "photo_picker_failed", message: self.text("photo_picker_failed"), details: nil))
+        }
+        return
+      }
+      do {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent("YoursPoster", isDirectory: true)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        let file = directory.appendingPathComponent("poster-background-\(UUID().uuidString).jpg")
+        try data.write(to: file, options: .atomic)
+        DispatchQueue.main.async {
+          result(file.path)
+        }
+      } catch {
+        DispatchQueue.main.async {
+          result(FlutterError(code: "photo_picker_failed", message: error.localizedDescription, details: nil))
+        }
+      }
+    }
   }
 }

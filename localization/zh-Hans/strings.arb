@@ -373,9 +373,29 @@
     }
   },
   "profileVaultPathPending": "路径准备中",
+  "profileVaultNotExported": "尚未导出",
+  "profileLastVaultExport": "上次导出：{date}",
+  "@profileLastVaultExport": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "profileExportVault": "导出 Vault",
   "profileImportInbox": "导入 inbox",
-  "profileBackupDescription": "创建后可保存到 iCloud Drive、文件 App 或其他位置",
+  "profileBackupDescription": "创建后可保存到文件 App 或其他位置",
+  "profileBackupPlaintextWarning": "备份文件包含训练数据，请妥善保存，不要公开分享。",
+  "profileBackupAndroidLocation": "备份文件包含训练数据，请妥善保存。Android 可在 Documents/有思/backups 中查看。",
+  "profileBackupNotCreated": "尚未创建",
+  "profileLastBackup": "上次备份：{date}",
+  "@profileLastBackup": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "profileLatestBackup": "最新备份：{name}",
   "@profileLatestBackup": {
     "placeholders": {
@@ -392,6 +412,7 @@
   "profileCopyDiagnostics": "复制诊断",
   "profileLocalDataSafety": "本地数据安全",
   "profileProcessingDataShort": "正在处理数据",
+  "profileExportingVault": "正在导出 Vault",
   "profileNotCreated": "未创建",
   "profileAvailable": "已有",
   "profileManualExport": "手动导出",
@@ -442,6 +463,7 @@
   },
   "profileCheckingICloud": "正在检查 iCloud Drive 状态",
   "profileICloudAvailable": "iCloud Drive 可用。",
+  "profileICloudManualHint": "用于手动导出和恢复",
   "profileICloudSignedOut": "当前设备未登录 iCloud，或 iCloud Drive 未启用。",
   "profileICloudContainerUnavailable": "当前设备没有可用的 iCloud 数据目录。请检查 iCloud Drive 与 App ID 配置。",
   "profileICloudUnsupported": "当前平台不支持 iCloud Drive。",
@@ -497,6 +519,20 @@
   },
   "profileVaultExportSummary": "Yours Vault 已导出：{plans} 个计划、{workouts} 份记录、{exercises} 个动作。",
   "@profileVaultExportSummary": {
+    "placeholders": {
+      "plans": {
+        "type": "int"
+      },
+      "workouts": {
+        "type": "int"
+      },
+      "exercises": {
+        "type": "int"
+      }
+    }
+  },
+  "profileVaultExportAndroidSummary": "Yours Vault 已导出：{plans} 个计划、{workouts} 份记录、{exercises} 个动作。公共 Documents 会在后台同步。",
+  "@profileVaultExportAndroidSummary": {
     "placeholders": {
       "plans": {
         "type": "int"

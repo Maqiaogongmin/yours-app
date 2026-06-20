@@ -6,3 +6,10 @@
 "icloud_picker_busy" = "已有一个 iCloud Drive 文件选择器正在打开。";
 "icloud_picker_unavailable" = "无法打开 iCloud Drive 文件选择器。";
 "invalid_backup_zip" = "请选择 .zip 格式的有思备份包。";
+"photo_picker_busy" = "已有一个照片选择器正在打开。";
+"photo_picker_unavailable" = "无法打开照片选择器。";
+"photo_picker_unsupported" = "请选择一张图片作为海报背景。";
+"photo_picker_failed" = "无法读取所选照片。";
+"photo_save_bad_args" = "缺少训练海报图片数据。";
+"photo_permission_denied" = "没有保存到照片的权限。";
+"photo_save_failed" = "无法保存训练海报。";

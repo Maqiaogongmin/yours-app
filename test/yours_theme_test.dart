@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:yours/redesign/design_system/yours_design_system.dart';
 import 'package:yours/redesign/theme/redesign_theme.dart';
 import 'package:yours/redesign/theme/theme_mode_controller.dart';
 import 'package:yours/redesign/localization/locale_controller.dart';
@@ -31,6 +32,27 @@ void main() {
     expect(dark.bg, kBg);
     expect(dark.surface, kSurface);
     expect(dark.accent, kAccent);
+  });
+
+  testWidgets('Yours semantic design tokens resolve from theme context', (tester) async {
+    late BuildContext capturedContext;
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: yoursLightTheme,
+        home: Builder(
+          builder: (context) {
+            capturedContext = context;
+            return const SizedBox.shrink();
+          },
+        ),
+      ),
+    );
+
+    expect(capturedContext.yoursSurface(YoursSurfaceRole.page), const Color(0xFFF8F3EA));
+    expect(capturedContext.yoursTone(YoursTone.accent), const Color(0xFFD86F32));
+    expect(capturedContext.yoursRadius(YoursRadiusRole.card), kCardRadius);
+    expect(capturedContext.yoursText(YoursTextRole.pageTitle).fontSize, 28);
+    expect(capturedContext.yoursText(YoursTextRole.metric).fontFamily, 'RobotoCondensed');
   });
 
   test('Yours theme mode controller defaults to system and persists manual choice', () async {

@@ -140,6 +140,7 @@
   "planSetSuffix": "セット",
   "planRepSuffix": "回",
   "planRest": "休憩",
+  "planDuration": "継続時間",
   "planWeight": "重量",
   "planNoteHint": "RIR 2、6 ～ 8 レップ、またはスローエキセントリックなどの注意事項",
   "planAddFromLibrary": "エクササイズライブラリから追加",
@@ -358,6 +359,44 @@
   "homeDashboardSettings": "ダッシュボードの設定",
   "homeCalendar": "カレンダー",
   "commonDone": "完了",
+  "sharePosterCreate": "ポスターを作成",
+  "sharePosterTitle": "ポスターを作成",
+  "sharePosterSaveToPhotos": "写真に保存",
+  "sharePosterSaving": "保存中",
+  "sharePosterSavedToPhotos": "写真に保存しました",
+  "sharePosterSaveFailed": "保存に失敗しました: {error}",
+  "@sharePosterSaveFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "sharePosterRenderFailed": "トレーニングポスターを生成できませんでした。",
+  "sharePosterPhotoFailed": "写真を選択できませんでした: {error}",
+  "@sharePosterPhotoFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "sharePosterBackground": "背景",
+  "sharePosterComponents": "コンポーネント",
+  "sharePosterUsePhoto": "写真を使う",
+  "sharePosterPhotoSelected": "写真背景",
+  "sharePosterPresetDeepPurple": "ディープパープル",
+  "sharePosterPresetWarmPaper": "ウォームペーパー",
+  "sharePosterPresetEmber": "Ember",
+  "sharePosterPresetForest": "Forest",
+  "sharePosterWorkoutName": "トレーニング名",
+  "sharePosterDate": "日付",
+  "sharePosterDuration": "合計時間",
+  "sharePosterExerciseCount": "種目数",
+  "sharePosterSetCount": "セット数",
+  "sharePosterTotalVolume": "総ボリューム",
+  "sharePosterNote": "トレーニングメモ",
+  "sharePosterBrand": "Yours 表示",
   "exerciseLibrary": "エクササイズ",
   "profileTitle": "プロフィール",
   "dataManagement": "データ管理",
@@ -373,9 +412,29 @@
     }
   },
   "profileVaultPathPending": "パスの準備中",
+  "profileVaultNotExported": "まだエクスポートされていません",
+  "profileLastVaultExport": "前回のエクスポート: {date}",
+  "@profileLastVaultExport": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "profileExportVault": "Vaultをエクスポート",
   "profileImportInbox": "inboxをインポート",
-  "profileBackupDescription": "バックアップを作成し、iCloud Drive、ファイル、または別の場所に保存します。",
+  "profileBackupDescription": "バックアップを作成し、ファイルまたは別の場所に保存します。",
+  "profileBackupPlaintextWarning": "バックアップファイルにはトレーニングデータが含まれます。大切に保管し、公開共有しないでください。",
+  "profileBackupAndroidLocation": "バックアップファイルにはトレーニングデータが含まれます。Androidでは Documents/有思/backups で確認できます。",
+  "profileBackupNotCreated": "まだ作成されていません",
+  "profileLastBackup": "前回のバックアップ: {date}",
+  "@profileLastBackup": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "profileLatestBackup": "最新のバックアップ: {name}",
   "@profileLatestBackup": {
     "placeholders": {
@@ -392,6 +451,7 @@
   "profileCopyDiagnostics": "診断情報をコピー",
   "profileLocalDataSafety": "ローカルデータの安全性",
   "profileProcessingDataShort": "データの処理",
+  "profileExportingVault": "Vault をエクスポート中",
   "profileNotCreated": "作成されていません",
   "profileAvailable": "利用可能",
   "profileManualExport": "手動エクスポート",
@@ -442,6 +502,7 @@
   },
   "profileCheckingICloud": "iCloud Driveの状態を確認中",
   "profileICloudAvailable": "iCloudドライブが利用可能です。",
+  "profileICloudManualHint": "手動エクスポートと復元に使用します",
   "profileICloudSignedOut": "このデバイスは iCloud にサインインしていないか、iCloud Drive が無効になっています。",
   "profileICloudContainerUnavailable": "使用可能な iCloud データ ディレクトリがありません。 iCloud DriveとApp IDの設定を確認してください。",
   "profileICloudUnsupported": "iCloud Drive はこのプラットフォームではサポートされていません。",
@@ -497,6 +558,20 @@
   },
   "profileVaultExportSummary": "エクスポートされた Vault: {plans} プラン、{workouts} ワークアウト記録、{exercises} エクササイズ。",
   "@profileVaultExportSummary": {
+    "placeholders": {
+      "plans": {
+        "type": "int"
+      },
+      "workouts": {
+        "type": "int"
+      },
+      "exercises": {
+        "type": "int"
+      }
+    }
+  },
+  "profileVaultExportAndroidSummary": "エクスポートされた Vault: {plans} プラン、{workouts} ワークアウト記録、{exercises} エクササイズ。公開 Documents はバックグラウンドで同期されます。",
+  "@profileVaultExportAndroidSummary": {
     "placeholders": {
       "plans": {
         "type": "int"
@@ -747,9 +822,24 @@
   "planRecordModeStandard": "標準",
   "planRecordModeFree": "フリー記録",
   "workoutRecordMode": "記録モード",
+  "workoutReplaceExercise": "この種目を置き換える",
+  "workoutChooseExercise": "選択",
+  "workoutExerciseReplaced": "「{from}」を「{to}」に置き換えました",
+  "@workoutExerciseReplaced": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
   "workoutCompleteFreeRecord": "この項目を完了",
   "workoutUndoFreeRecord": "項目の記録を取り消す",
   "workoutActivityElapsed": "項目の所要時間",
+  "workoutDurationSeconds": "継続時間 s",
+  "workoutSavedLocal": "ワークアウトをローカルに保存しました。",
   "workoutCompletedMixedSummary": "{exercises}種目 · {sets}セット · フリー項目{freeRecords}件を完了",
   "@workoutCompletedMixedSummary": {
     "placeholders": {

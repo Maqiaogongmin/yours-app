@@ -140,6 +140,7 @@
   "planSetSuffix": "组",
   "planRepSuffix": "次",
   "planRest": "休息",
+  "planDuration": "持续时间",
   "planWeight": "重量",
   "planNoteHint": "备注：例如 RIR 2；次数范围 6-8；动作节奏慢下放",
   "planAddFromLibrary": "从动作库添加",
@@ -358,6 +359,44 @@
   "homeDashboardSettings": "仪表盘设置",
   "homeCalendar": "日历",
   "commonDone": "完成",
+  "sharePosterCreate": "生成海报",
+  "sharePosterTitle": "生成海报",
+  "sharePosterSaveToPhotos": "保存到照片",
+  "sharePosterSaving": "正在保存",
+  "sharePosterSavedToPhotos": "已保存到照片",
+  "sharePosterSaveFailed": "保存失败：{error}",
+  "@sharePosterSaveFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "sharePosterRenderFailed": "无法生成训练海报图片。",
+  "sharePosterPhotoFailed": "选择照片失败：{error}",
+  "@sharePosterPhotoFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "sharePosterBackground": "背景",
+  "sharePosterComponents": "组件",
+  "sharePosterUsePhoto": "使用照片",
+  "sharePosterPhotoSelected": "照片背景",
+  "sharePosterPresetDeepPurple": "深紫黑",
+  "sharePosterPresetWarmPaper": "暖米",
+  "sharePosterPresetEmber": "Ember",
+  "sharePosterPresetForest": "Forest",
+  "sharePosterWorkoutName": "训练名称",
+  "sharePosterDate": "日期",
+  "sharePosterDuration": "总用时",
+  "sharePosterExerciseCount": "动作数",
+  "sharePosterSetCount": "总组数",
+  "sharePosterTotalVolume": "总容量",
+  "sharePosterNote": "训练备注",
+  "sharePosterBrand": "Yours 标识",
   "exerciseLibrary": "动作库",
   "profileTitle": "用户",
   "dataManagement": "数据管理",
@@ -373,9 +412,29 @@
     }
   },
   "profileVaultPathPending": "路径准备中",
+  "profileVaultNotExported": "尚未导出",
+  "profileLastVaultExport": "上次导出：{date}",
+  "@profileLastVaultExport": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "profileExportVault": "导出 Vault",
   "profileImportInbox": "导入 inbox",
-  "profileBackupDescription": "创建后可保存到 iCloud Drive、文件 App 或其他位置",
+  "profileBackupDescription": "创建后可保存到文件 App 或其他位置",
+  "profileBackupPlaintextWarning": "备份文件包含训练数据，请妥善保存，不要公开分享。",
+  "profileBackupAndroidLocation": "备份文件包含训练数据，请妥善保存。Android 可在 Documents/有思/backups 中查看。",
+  "profileBackupNotCreated": "尚未创建",
+  "profileLastBackup": "上次备份：{date}",
+  "@profileLastBackup": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "profileLatestBackup": "最新备份：{name}",
   "@profileLatestBackup": {
     "placeholders": {
@@ -392,6 +451,7 @@
   "profileCopyDiagnostics": "复制诊断",
   "profileLocalDataSafety": "本地数据安全",
   "profileProcessingDataShort": "正在处理数据",
+  "profileExportingVault": "正在导出 Vault",
   "profileNotCreated": "未创建",
   "profileAvailable": "已有",
   "profileManualExport": "手动导出",
@@ -442,6 +502,7 @@
   },
   "profileCheckingICloud": "正在检查 iCloud Drive 状态",
   "profileICloudAvailable": "iCloud Drive 可用。",
+  "profileICloudManualHint": "用于手动导出和恢复",
   "profileICloudSignedOut": "当前设备未登录 iCloud，或 iCloud Drive 未启用。",
   "profileICloudContainerUnavailable": "当前设备没有可用的 iCloud 数据目录。请检查 iCloud Drive 与 App ID 配置。",
   "profileICloudUnsupported": "当前平台不支持 iCloud Drive。",
@@ -497,6 +558,20 @@
   },
   "profileVaultExportSummary": "Yours Vault 已导出：{plans} 个计划、{workouts} 份记录、{exercises} 个动作。",
   "@profileVaultExportSummary": {
+    "placeholders": {
+      "plans": {
+        "type": "int"
+      },
+      "workouts": {
+        "type": "int"
+      },
+      "exercises": {
+        "type": "int"
+      }
+    }
+  },
+  "profileVaultExportAndroidSummary": "Yours Vault 已导出：{plans} 个计划、{workouts} 份记录、{exercises} 个动作。公共 Documents 会在后台同步。",
+  "@profileVaultExportAndroidSummary": {
     "placeholders": {
       "plans": {
         "type": "int"
@@ -747,9 +822,24 @@
   "planRecordModeStandard": "标准记录",
   "planRecordModeFree": "自由记录",
   "workoutRecordMode": "记录方式",
+  "workoutReplaceExercise": "替换本次动作",
+  "workoutChooseExercise": "选择",
+  "workoutExerciseReplaced": "已将「{from}」替换为「{to}」",
+  "@workoutExerciseReplaced": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
   "workoutCompleteFreeRecord": "完成本项",
   "workoutUndoFreeRecord": "撤销本项记录",
   "workoutActivityElapsed": "本项用时",
+  "workoutDurationSeconds": "持续时间 s",
+  "workoutSavedLocal": "训练已保存到本地。",
   "workoutCompletedMixedSummary": "完成 {exercises} 个动作 · {sets} 组 · {freeRecords} 个自由项目",
   "@workoutCompletedMixedSummary": {
     "placeholders": {

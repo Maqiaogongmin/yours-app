@@ -2,4 +2,5 @@
 "CFBundleName" = "Yours";
 "NSUbiquitousContainerName" = "Yours";
 "NSCameraUsageDescription" = "Use the camera to capture photos for workout records.";
-"NSPhotoLibraryUsageDescription" = "Choose a workout data backup file to restore.";
+"NSPhotoLibraryUsageDescription" = "Choose a photo for the workout poster background.";
+"NSPhotoLibraryAddUsageDescription" = "Save workout record posters to Photos.";

@@ -231,6 +231,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get planRest => '休憩';
 
   @override
+  String get planDuration => '継続時間';
+
+  @override
   String get planWeight => '重量';
 
   @override
@@ -501,6 +504,82 @@ class AppLocalizationsJa extends AppLocalizations {
   String get commonDone => '完了';
 
   @override
+  String get sharePosterCreate => 'ポスターを作成';
+
+  @override
+  String get sharePosterTitle => 'ポスターを作成';
+
+  @override
+  String get sharePosterSaveToPhotos => '写真に保存';
+
+  @override
+  String get sharePosterSaving => '保存中';
+
+  @override
+  String get sharePosterSavedToPhotos => '写真に保存しました';
+
+  @override
+  String sharePosterSaveFailed(String error) {
+    return '保存に失敗しました: $error';
+  }
+
+  @override
+  String get sharePosterRenderFailed => 'トレーニングポスターを生成できませんでした。';
+
+  @override
+  String sharePosterPhotoFailed(String error) {
+    return '写真を選択できませんでした: $error';
+  }
+
+  @override
+  String get sharePosterBackground => '背景';
+
+  @override
+  String get sharePosterComponents => 'コンポーネント';
+
+  @override
+  String get sharePosterUsePhoto => '写真を使う';
+
+  @override
+  String get sharePosterPhotoSelected => '写真背景';
+
+  @override
+  String get sharePosterPresetDeepPurple => 'ディープパープル';
+
+  @override
+  String get sharePosterPresetWarmPaper => 'ウォームペーパー';
+
+  @override
+  String get sharePosterPresetEmber => 'Ember';
+
+  @override
+  String get sharePosterPresetForest => 'Forest';
+
+  @override
+  String get sharePosterWorkoutName => 'トレーニング名';
+
+  @override
+  String get sharePosterDate => '日付';
+
+  @override
+  String get sharePosterDuration => '合計時間';
+
+  @override
+  String get sharePosterExerciseCount => '種目数';
+
+  @override
+  String get sharePosterSetCount => 'セット数';
+
+  @override
+  String get sharePosterTotalVolume => '総ボリューム';
+
+  @override
+  String get sharePosterNote => 'トレーニングメモ';
+
+  @override
+  String get sharePosterBrand => 'Yours 表示';
+
+  @override
   String get exerciseLibrary => 'エクササイズ';
 
   @override
@@ -527,13 +606,36 @@ class AppLocalizationsJa extends AppLocalizations {
   String get profileVaultPathPending => 'パスの準備中';
 
   @override
+  String get profileVaultNotExported => 'まだエクスポートされていません';
+
+  @override
+  String profileLastVaultExport(String date) {
+    return '前回のエクスポート: $date';
+  }
+
+  @override
   String get profileExportVault => 'Vaultをエクスポート';
 
   @override
   String get profileImportInbox => 'inboxをインポート';
 
   @override
-  String get profileBackupDescription => 'バックアップを作成し、iCloud Drive、ファイル、または別の場所に保存します。';
+  String get profileBackupDescription => 'バックアップを作成し、ファイルまたは別の場所に保存します。';
+
+  @override
+  String get profileBackupPlaintextWarning => 'バックアップファイルにはトレーニングデータが含まれます。大切に保管し、公開共有しないでください。';
+
+  @override
+  String get profileBackupAndroidLocation =>
+      'バックアップファイルにはトレーニングデータが含まれます。Androidでは Documents/有思/backups で確認できます。';
+
+  @override
+  String get profileBackupNotCreated => 'まだ作成されていません';
+
+  @override
+  String profileLastBackup(String date) {
+    return '前回のバックアップ: $date';
+  }
 
   @override
   String profileLatestBackup(String name) {
@@ -563,6 +665,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get profileProcessingDataShort => 'データの処理';
+
+  @override
+  String get profileExportingVault => 'Vault をエクスポート中';
 
   @override
   String get profileNotCreated => '作成されていません';
@@ -619,6 +724,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get profileICloudAvailable => 'iCloudドライブが利用可能です。';
+
+  @override
+  String get profileICloudManualHint => '手動エクスポートと復元に使用します';
 
   @override
   String get profileICloudSignedOut => 'このデバイスは iCloud にサインインしていないか、iCloud Drive が無効になっています。';
@@ -745,6 +853,11 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String profileVaultExportSummary(int plans, int workouts, int exercises) {
     return 'エクスポートされた Vault: $plans プラン、$workouts ワークアウト記録、$exercises エクササイズ。';
+  }
+
+  @override
+  String profileVaultExportAndroidSummary(int plans, int workouts, int exercises) {
+    return 'エクスポートされた Vault: $plans プラン、$workouts ワークアウト記録、$exercises エクササイズ。公開 Documents はバックグラウンドで同期されます。';
   }
 
   @override
@@ -954,6 +1067,17 @@ class AppLocalizationsJa extends AppLocalizations {
   String get workoutRecordMode => '記録モード';
 
   @override
+  String get workoutReplaceExercise => 'この種目を置き換える';
+
+  @override
+  String get workoutChooseExercise => '選択';
+
+  @override
+  String workoutExerciseReplaced(String from, String to) {
+    return '「$from」を「$to」に置き換えました';
+  }
+
+  @override
   String get workoutCompleteFreeRecord => 'この項目を完了';
 
   @override
@@ -961,6 +1085,12 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get workoutActivityElapsed => '項目の所要時間';
+
+  @override
+  String get workoutDurationSeconds => '継続時間 s';
+
+  @override
+  String get workoutSavedLocal => 'ワークアウトをローカルに保存しました。';
 
   @override
   String workoutCompletedMixedSummary(int exercises, int sets, int freeRecords) {

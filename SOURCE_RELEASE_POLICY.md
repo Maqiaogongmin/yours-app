@@ -17,6 +17,8 @@
 - Android APK SHA-256；
 - App Store 或 GitHub Release 链接。
 
+执行发布前必须先使用 [Release Checklist](docs/release-checklist.md)，并按 [Release Record Template](docs/release-record-template.md) 留存证据。`tool/check_release_ready.dart` 只做只读预检；它不构建、不提交、不打 tag、不上传，也不能替代 App Store Connect 或 GitHub Release 的真实状态核验。
+
 无法证明准确对应关系的历史二进制不会被标记为已验证源码版本。
 
 ## Release order
@@ -32,8 +34,9 @@
 ## Current snapshot
 
 首次公开快照基于内部 commit `9c040543acd78ee8f75f00dffe69e073547c999f`，项目版本为 `1.11.2+11136`。
+当前公开快照同步自内部 commit `a652f5e`，项目版本为 `1.11.3+11147`。
 
-App Store Connect 已核验：
+App Store Connect 已核验的上一份公开基线：
 
 - App ID: `6772104994`
 - App Store version: `1.11.2`
@@ -46,10 +49,14 @@ App Store Connect 已核验：
 本机构建记录可以确认内部 commit `9c040543acd78ee8f75f00dffe69e073547c999f`
 紧接着生成了 iOS `1.11.2 (11136)` 构建和 Android 1.11.2 APK。
 
-当前公开仓库 tag `v1.11.2-public-source.1` 指向的提交是
+当前公开仓库 commit `75259ad1bd636d245e9e9f40d2baff0908726e9c` 是
 基于该内部源码整理后的公开源码快照，包含开源文档、CI 固定、源码链接
 和无用平台工程删除等发布整理改动。它可以作为 1.11.2 代码状态的公开、
 可审计源码快照，但不声明为 App Store 当前二进制的逐字节可复现构建源。
+
+当前 `1.11.3+11147` 公开源码快照用于同步 GitHub 源码仓库和官网展示。
+除非另有 release record 记录，它不声明为 App Store 当前二进制的逐字节
+可复现构建源。
 
 下一个 iOS 或 Android 二进制发布应从公开仓库的已冻结 commit 构建，并在
 发布前创建精确对应的版本 tag。

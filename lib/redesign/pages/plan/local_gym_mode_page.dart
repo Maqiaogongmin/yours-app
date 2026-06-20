@@ -1,10 +1,23 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:yours/redesign/data/custom_exercise_models.dart';
+import 'package:yours/redesign/data/app_database.dart';
+import 'package:yours/redesign/data/local_training_database.dart';
 import 'package:yours/redesign/data/local_training_models.dart';
+import 'package:yours/redesign/data/local_training_repository.dart';
 import 'package:yours/redesign/localization/built_in_exercise_localizations.dart';
 import 'package:yours/redesign/localization/localization.dart';
 import 'package:yours/redesign/localization/localized_error.dart';
+import 'package:yours/redesign/design_system/yours_design_system.dart';
+import 'package:yours/redesign/pages/plan/exercise_picker_page.dart';
 import 'package:yours/redesign/pages/plan/local_gym_session_controller.dart';
+import 'package:yours/redesign/shareability/yours_workout_share_poster_page.dart';
 import 'package:yours/redesign/theme/redesign_theme.dart';
+
+part 'local_gym_mode_page/replacement_action_sheet.dart';
+part 'local_gym_mode_page/session_cards.dart';
+part 'local_gym_mode_page/session_fields.dart';
 
 class LocalGymModePage extends StatefulWidget {
   final LocalTrainingPlanModel plan;
@@ -22,6 +35,9 @@ class _LocalGymModePageState extends State<LocalGymModePage> {
   final _weightCtrl = TextEditingController(text: '0');
   final _repsCtrl = TextEditingController(text: '10');
   final _restCtrl = TextEditingController(text: '90');
+  final _freeWeightCtrl = TextEditingController(text: '0');
+  final _freeDurationCtrl = TextEditingController(text: '0');
+  final _freeRestCtrl = TextEditingController(text: '0');
   final _actionNoteCtrl = TextEditingController();
   final _sessionNoteCtrl = TextEditingController();
   int? _lastExerciseIndex;
@@ -77,6 +93,11 @@ class _LocalGymModePageState extends State<LocalGymModePage> {
       );
       _repsCtrl.text = saved.reps.toString();
       _restCtrl.text = saved.restSeconds.toString();
+      _freeWeightCtrl.text = saved.weight.toStringAsFixed(
+        saved.weight.truncateToDouble() == saved.weight ? 0 : 1,
+      );
+      _freeDurationCtrl.text = saved.durationSeconds.toString();
+      _freeRestCtrl.text = saved.restSeconds.toString();
     } else {
       _repsCtrl.text = _session.currentTargetReps.toString();
       final targetWeight = _session.currentTargetWeight;
@@ -86,6 +107,14 @@ class _LocalGymModePageState extends State<LocalGymModePage> {
       final restSeconds =
           _session.currentTargetRestSeconds ?? _restSecondsFromNote(_session.currentNote);
       _restCtrl.text = (restSeconds ?? 90).toString();
+      _freeWeightCtrl.text = targetWeight == null
+          ? '0'
+          : targetWeight.toStringAsFixed(targetWeight.truncateToDouble() == targetWeight ? 0 : 1);
+      _freeDurationCtrl.text = _session.currentActionElapsed.inSeconds.toString();
+      _freeRestCtrl.text = (restSeconds ?? 0).toString();
+    }
+    if (saved == null && _session.currentAction.targetDurationSeconds != null) {
+      _freeDurationCtrl.text = _session.currentAction.targetDurationSeconds.toString();
     }
     _actionNoteCtrl.text = _session.currentSetNote;
   }
@@ -101,12 +130,80 @@ class _LocalGymModePageState extends State<LocalGymModePage> {
     );
   }
 
-  Future<void> _finishSession() async {
-    final result = await _session.finishSession(note: _sessionNoteCtrl.text.trim());
+  Future<void> _saveFreeRecord() async {
+    final weight = double.tryParse(_freeWeightCtrl.text.trim()) ?? 0;
+    final durationSeconds =
+        int.tryParse(_freeDurationCtrl.text.trim()) ?? _session.currentActionElapsed.inSeconds;
+    final restSeconds = int.tryParse(_freeRestCtrl.text.trim()) ?? 0;
+    await _session.completeFreeRecord(
+      weight: weight,
+      durationSeconds: durationSeconds,
+      restSeconds: restSeconds,
+    );
+  }
+
+  Future<void> _replaceCurrentExercise() async {
+    if (!_session.hasActions || _session.isSaving || _session.isFinished) {
+      return;
+    }
+    final selected = await Navigator.of(context).push<CustomExerciseModel>(
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (_) => ExercisePickerPage.single(title: context.l10n.workoutReplaceExercise),
+      ),
+    );
+    if (!mounted || selected == null) {
+      return;
+    }
+    final previous = _session.currentExercise;
+    final replacement = await showModalBottomSheet<LocalTrainingActionModel>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => _ReplacementActionSheet(
+        title: context.l10n.workoutReplaceExercise,
+        initialAction: _session.currentAction.copyWith(name: selected.exerciseReference),
+      ),
+    );
+    if (!mounted || replacement == null) {
+      return;
+    }
+    _session.replaceCurrentAction(replacement);
+    _syncTargetRepsIfPositionChanged();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          context.l10n.workoutExerciseReplaced(
+            localizedExerciseName(context, previous),
+            localizedExerciseName(context, selected.exerciseReference),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _finishSession({bool openPoster = false}) async {
+    final shareDate = DateTime.now();
+    final messenger = ScaffoldMessenger.of(context);
+    await _session.finishSessionLocal(note: _sessionNoteCtrl.text.trim());
     if (!mounted) {
       return;
     }
-    _showFinishBackupMessage(result);
+    messenger.showSnackBar(
+      SnackBar(content: Text(context.l10n.workoutSavedLocal), behavior: SnackBarBehavior.floating),
+    );
+    unawaited(_showFinishBackupMessageWhenReady(messenger));
+    if (openPoster) {
+      final repository = LocalTrainingRepository(locator<LocalTrainingDatabase>());
+      await openWorkoutSharePoster(
+        context: context,
+        repository: repository,
+        date: shareDate,
+      );
+      if (!mounted) {
+        return;
+      }
+    }
     if (mounted) {
       Navigator.pop(context);
     }
@@ -150,7 +247,9 @@ class _LocalGymModePageState extends State<LocalGymModePage> {
             onPressed: () => Navigator.pop(ctx, true),
             child: Text(
               context.l10n.workoutEnd,
-              style: const TextStyle(color: kRed, fontWeight: FontWeight.w800),
+              style: context
+                  .yoursText(YoursTextRole.body)
+                  .copyWith(color: kRed, fontWeight: FontWeight.w800),
             ),
           ),
         ],
@@ -159,24 +258,30 @@ class _LocalGymModePageState extends State<LocalGymModePage> {
     if (confirmed != true || !mounted) {
       return;
     }
-    final result = await _session.finishSession(
+    final messenger = ScaffoldMessenger.of(context);
+    await _session.finishSessionLocal(
       note: _sessionNoteCtrl.text.trim(),
       markIncomplete: true,
     );
     if (!mounted) {
       return;
     }
-    _showFinishBackupMessage(result);
+    messenger.showSnackBar(
+      SnackBar(content: Text(context.l10n.workoutSavedLocal), behavior: SnackBarBehavior.floating),
+    );
+    unawaited(_showFinishBackupMessageWhenReady(messenger));
     Navigator.pop(context);
   }
 
-  void _showFinishBackupMessage(LocalGymFinishResult result) {
+  Future<void> _showFinishBackupMessageWhenReady(ScaffoldMessengerState messenger) async {
+    final l10n = context.l10n;
+    final result = await _session.createFinishBackup();
     final message = result.backupCreated
-        ? context.l10n.workoutSavedBackup(result.backupFileName ?? '')
-        : context.l10n.workoutSavedBackupFailed(
-            result.backupError == null ? context.l10n.commonUnknownError : '${result.backupError}',
+        ? l10n.workoutSavedBackup(result.backupFileName ?? '')
+        : l10n.workoutSavedBackupFailed(
+            result.backupError == null ? l10n.commonUnknownError : '${result.backupError}',
           );
-    ScaffoldMessenger.of(context).showSnackBar(
+    messenger.showSnackBar(
       SnackBar(content: Text(message), behavior: SnackBarBehavior.floating),
     );
   }
@@ -224,6 +329,11 @@ class _LocalGymModePageState extends State<LocalGymModePage> {
     );
     _repsCtrl.text = undo.reps.toString();
     _restCtrl.text = undo.restSeconds.toString();
+    _freeWeightCtrl.text = undo.weight.toStringAsFixed(
+      undo.weight.truncateToDouble() == undo.weight ? 0 : 1,
+    );
+    _freeDurationCtrl.text = undo.durationSeconds.toString();
+    _freeRestCtrl.text = undo.restSeconds.toString();
   }
 
   @override
@@ -232,6 +342,9 @@ class _LocalGymModePageState extends State<LocalGymModePage> {
     _weightCtrl.dispose();
     _repsCtrl.dispose();
     _restCtrl.dispose();
+    _freeWeightCtrl.dispose();
+    _freeDurationCtrl.dispose();
+    _freeRestCtrl.dispose();
     _actionNoteCtrl.dispose();
     _sessionNoteCtrl.dispose();
     super.dispose();
@@ -253,8 +366,10 @@ class _LocalGymModePageState extends State<LocalGymModePage> {
       return Scaffold(
         backgroundColor: palette.bg,
         appBar: _appBar(context.l10n.workoutTimer),
-        body: _emptyState(
-          context.l10n.workoutTimerStartFailed(_startError ?? context.l10n.commonUnknownError),
+        body: _LocalGymEmptyState(
+          message: context.l10n.workoutTimerStartFailed(
+            _startError ?? context.l10n.commonUnknownError,
+          ),
         ),
       );
     }
@@ -264,7 +379,7 @@ class _LocalGymModePageState extends State<LocalGymModePage> {
         appBar: _appBar(context.l10n.workoutTimer),
         body: Padding(
           padding: const EdgeInsets.all(kGutter),
-          child: _emptyState(),
+          child: _LocalGymEmptyState(message: context.l10n.workoutNoActions),
         ),
       );
     }
@@ -287,14 +402,36 @@ class _LocalGymModePageState extends State<LocalGymModePage> {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(kGutter, 16, kGutter, 28),
           children: [
-            _headerCard(),
+            _LocalGymHeaderCard(
+              session: _session,
+              fallbackPlanName: widget.plan.name,
+              elapsedText: _elapsedText,
+            ),
             const SizedBox(height: 14),
             if (_session.isFinished)
-              _summaryCard()
+              _LocalGymSummaryCard(
+                session: _session,
+                sessionNoteCtrl: _sessionNoteCtrl,
+                onUndoCurrentSet: _undoCurrentSet,
+                onFinishSession: _finishSession,
+              )
             else if (_session.isResting)
-              _restCard()
+              _LocalGymRestCard(session: _session, onUndoCurrentSet: _undoCurrentSet)
             else
-              _logCard(),
+              _LocalGymLogCard(
+                session: _session,
+                weightCtrl: _weightCtrl,
+                repsCtrl: _repsCtrl,
+                restCtrl: _restCtrl,
+                freeWeightCtrl: _freeWeightCtrl,
+                freeDurationCtrl: _freeDurationCtrl,
+                freeRestCtrl: _freeRestCtrl,
+                actionNoteCtrl: _actionNoteCtrl,
+                onReplaceCurrentExercise: _replaceCurrentExercise,
+                onSaveSet: _saveSet,
+                onSaveFreeRecord: _saveFreeRecord,
+                onUndoCurrentSet: _undoCurrentSet,
+              ),
           ],
         ),
       ),
@@ -316,7 +453,9 @@ class _LocalGymModePageState extends State<LocalGymModePage> {
       ),
       title: Text(
         title,
-        style: TextStyle(color: palette.fg, fontWeight: FontWeight.w700),
+        style: context
+            .yoursText(YoursTextRole.body)
+            .copyWith(color: palette.fg, fontWeight: FontWeight.w700),
       ),
       actions: [
         if (_session.hasActions && !_session.isFinished)
@@ -326,471 +465,6 @@ class _LocalGymModePageState extends State<LocalGymModePage> {
             onPressed: _session.isSaving ? null : _confirmEarlyFinishSession,
           ),
       ],
-    );
-  }
-
-  Widget _emptyState([
-    String? message,
-  ]) {
-    final palette = context.yoursPalette;
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: palette.surface,
-        border: Border.all(color: palette.border),
-        borderRadius: BorderRadius.circular(kCardRadius),
-      ),
-      child: Text(
-        message ?? context.l10n.workoutNoActions,
-        textAlign: TextAlign.center,
-        style: TextStyle(color: palette.muted, fontSize: 14),
-      ),
-    );
-  }
-
-  Widget _headerCard() {
-    final palette = context.yoursPalette;
-    final day = _session.day;
-    final dayName = day == null
-        ? context.l10n.workoutDefaultDay
-        : '${context.l10n.planDayTitle(day.week, day.day)} · ${day.name}';
-    return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: palette.surface,
-        border: Border.all(color: palette.border),
-        borderRadius: BorderRadius.circular(kCardRadius),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            _session.plan?.name ?? widget.plan.name,
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: palette.fg),
-          ),
-          const SizedBox(height: 4),
-          Text(dayName, style: TextStyle(fontSize: 14, color: palette.muted)),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              _metric(context.l10n.workoutElapsed, _elapsedText),
-              const SizedBox(width: 8),
-              _metric(
-                context.l10n.workoutExercise,
-                '${_session.exerciseIndex + 1}/${_session.actions.length}',
-              ),
-              const SizedBox(width: 8),
-              _metric(
-                _session.isCurrentFreeRecord
-                    ? context.l10n.workoutRecordMode
-                    : context.l10n.homeSets,
-                _session.isCurrentFreeRecord
-                    ? context.l10n.planRecordModeFree
-                    : '${_session.setIndex}/${_session.currentTargetSets}',
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _logCard() {
-    final palette = context.yoursPalette;
-    final exercise = _session.currentExercise;
-    return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: palette.surface,
-        border: Border.all(color: palette.border),
-        borderRadius: BorderRadius.circular(kCardRadius),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            context.l10n.workoutCurrentExercise,
-            style: TextStyle(fontSize: 13, color: palette.muted, fontWeight: FontWeight.w700),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            localizedExerciseName(context, exercise),
-            style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800, color: palette.fg),
-          ),
-          const SizedBox(height: 18),
-          if (_session.isCurrentFreeRecord) ...[
-            _actionNoteField(),
-            const SizedBox(height: 18),
-            SizedBox(
-              width: double.infinity,
-              child: TextButton(
-                onPressed: _session.isSaving ? null : _session.completeFreeRecord,
-                style: TextButton.styleFrom(
-                  backgroundColor: palette.accent,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                ),
-                child: Text(
-                  _session.isSaving
-                      ? context.l10n.homeSaving
-                      : context.l10n.workoutCompleteFreeRecord,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
-                ),
-              ),
-            ),
-          ] else ...[
-            Row(
-              children: [
-                Expanded(child: _input(context.l10n.homeWeightKg, _weightCtrl, decimal: true)),
-                const SizedBox(width: 10),
-                Expanded(child: _input(context.l10n.homeReps, _repsCtrl)),
-                const SizedBox(width: 10),
-                Expanded(child: _input(context.l10n.workoutRestSeconds, _restCtrl)),
-              ],
-            ),
-            const SizedBox(height: 12),
-            _actionNoteField(),
-            const SizedBox(height: 18),
-            SizedBox(
-              width: double.infinity,
-              child: TextButton(
-                onPressed: _session.isSaving ? null : _saveSet,
-                style: TextButton.styleFrom(
-                  backgroundColor: palette.accent,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                ),
-                child: Text(
-                  _session.isSaving ? context.l10n.homeSaving : context.l10n.workoutSaveSet,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
-                ),
-              ),
-            ),
-          ],
-          if (_session.canUndoCurrentSet) ...[
-            const SizedBox(height: 10),
-            SizedBox(
-              width: double.infinity,
-              child: TextButton(
-                onPressed: _undoCurrentSet,
-                style: TextButton.styleFrom(
-                  foregroundColor: kRed,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
-                    side: BorderSide(color: palette.border),
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                ),
-                child: Text(
-                  _session.isCurrentFreeRecord
-                      ? context.l10n.workoutUndoFreeRecord
-                      : context.l10n.workoutUndoSet,
-                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
-                ),
-              ),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-
-  Widget _restCard() {
-    final palette = context.yoursPalette;
-    final seconds = _session.restRemainingSeconds;
-    final restComplete = _session.isRestComplete;
-    final isLastSet = _session.setIndex >= _session.currentTargetSets;
-    final hasNextExercise = _session.exerciseIndex < _session.actions.length - 1;
-    final nextSet = isLastSet && hasNextExercise ? 1 : _session.setIndex + 1;
-    final nextExercise = isLastSet && hasNextExercise
-        ? _session.actions[_session.exerciseIndex + 1]
-        : _session.currentExercise;
-    final nextLabel = isLastSet && !hasNextExercise
-        ? context.l10n.workoutNextSummary
-        : context.l10n.workoutNextSetLabel(
-            localizedExerciseName(context, '$nextExercise'),
-            nextSet,
-          );
-
-    return Container(
-      padding: const EdgeInsets.all(22),
-      decoration: BoxDecoration(
-        color: palette.surface,
-        border: Border.all(color: palette.border),
-        borderRadius: BorderRadius.circular(kCardRadius),
-      ),
-      child: Column(
-        children: [
-          Text(
-            context.l10n.workoutRestBetween,
-            style: TextStyle(fontSize: 16, color: palette.muted, fontWeight: FontWeight.w800),
-          ),
-          const SizedBox(height: 14),
-          Container(
-            width: 156,
-            height: 156,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: palette.accentSoft,
-              shape: BoxShape.circle,
-              border: Border.all(color: palette.accent.withValues(alpha: 0.18), width: 8),
-            ),
-            child: Text(
-              restComplete ? context.l10n.commonDone : '${seconds}s',
-              style: TextStyle(fontSize: 38, fontWeight: FontWeight.w900, color: palette.accent),
-            ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            nextLabel,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 15, color: palette.fg, fontWeight: FontWeight.w700),
-          ),
-          const SizedBox(height: 14),
-          SizedBox(
-            width: double.infinity,
-            child: TextButton(
-              onPressed: _session.advanceAfterRest,
-              style: TextButton.styleFrom(
-                backgroundColor: palette.accent,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-                padding: const EdgeInsets.symmetric(vertical: 15),
-              ),
-              child: Text(
-                restComplete ? context.l10n.workoutNextSet : context.l10n.workoutSkipRest,
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
-              ),
-            ),
-          ),
-          const SizedBox(height: 10),
-          SizedBox(
-            width: double.infinity,
-            child: TextButton(
-              onPressed: _undoCurrentSet,
-              style: TextButton.styleFrom(
-                foregroundColor: kRed,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
-                  side: BorderSide(color: palette.border),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-              ),
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  context.l10n.workoutUndoReturnLog,
-                  maxLines: 1,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            context.l10n.workoutRestHint,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 12, color: palette.muted, height: 1.35),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _summaryCard() {
-    final palette = context.yoursPalette;
-    final totalSets = _session.completedStandardSetCount;
-    final freeRecords = _session.completedFreeRecordCount;
-    return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: palette.surface,
-        border: Border.all(color: palette.border),
-        borderRadius: BorderRadius.circular(kCardRadius),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            context.l10n.workoutComplete,
-            style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800, color: palette.fg),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            context.l10n.workoutCompletedMixedSummary(
-              _session.actions.length,
-              totalSets,
-              freeRecords,
-            ),
-            style: TextStyle(fontSize: 14, color: palette.muted),
-          ),
-          const SizedBox(height: 16),
-          _sessionNoteField(),
-          const SizedBox(height: 18),
-          if (_session.canUndoCurrentSet) ...[
-            SizedBox(
-              width: double.infinity,
-              child: TextButton(
-                onPressed: _undoCurrentSet,
-                style: TextButton.styleFrom(
-                  foregroundColor: kRed,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
-                    side: BorderSide(color: palette.border),
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                ),
-                child: Text(
-                  context.l10n.workoutUndoLastReturnLog,
-                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-          ],
-          SizedBox(
-            width: double.infinity,
-            child: TextButton(
-              onPressed: _finishSession,
-              style: TextButton.styleFrom(
-                backgroundColor: palette.accent,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-                padding: const EdgeInsets.symmetric(vertical: 15),
-              ),
-              child: Text(
-                context.l10n.workoutFinishSave,
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _metric(String label, String value) {
-    final palette = context.yoursPalette;
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-        decoration: BoxDecoration(
-          color: palette.panel,
-          border: Border.all(color: palette.border),
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              value,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: palette.fg),
-            ),
-            const SizedBox(height: 2),
-            Text(label, style: TextStyle(fontSize: 12, color: palette.muted)),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _input(
-    String label,
-    TextEditingController controller, {
-    bool decimal = false,
-    bool optional = false,
-  }) {
-    final palette = context.yoursPalette;
-    return TextField(
-      controller: controller,
-      keyboardType: TextInputType.numberWithOptions(decimal: decimal),
-      cursorColor: palette.accent,
-      style: TextStyle(color: palette.fg),
-      decoration: InputDecoration(
-        labelText: label,
-        hintText: optional ? context.l10n.workoutOptional : null,
-        labelStyle: TextStyle(color: palette.muted),
-        hintStyle: TextStyle(color: palette.subtle),
-        filled: true,
-        fillColor: palette.panel,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: palette.border),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: palette.border),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: palette.accent),
-        ),
-      ),
-    );
-  }
-
-  Widget _actionNoteField() {
-    final palette = context.yoursPalette;
-    return TextField(
-      controller: _actionNoteCtrl,
-      minLines: 2,
-      maxLines: 4,
-      onChanged: _session.updateCurrentSetNote,
-      cursorColor: palette.accent,
-      style: TextStyle(color: palette.fg),
-      decoration: InputDecoration(
-        labelText: context.l10n.workoutNote,
-        hintText: context.l10n.workoutNoteHint,
-        labelStyle: TextStyle(color: palette.muted),
-        hintStyle: TextStyle(color: palette.subtle),
-        filled: true,
-        fillColor: palette.panel,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: palette.border),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: palette.border),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: palette.accent),
-        ),
-      ),
-    );
-  }
-
-  Widget _sessionNoteField() {
-    final palette = context.yoursPalette;
-    return TextField(
-      controller: _sessionNoteCtrl,
-      minLines: 3,
-      maxLines: 5,
-      cursorColor: palette.accent,
-      style: TextStyle(color: palette.fg),
-      decoration: InputDecoration(
-        labelText: context.l10n.workoutTrainingNote,
-        labelStyle: TextStyle(color: palette.muted),
-        filled: true,
-        fillColor: palette.panel,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: palette.border),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: palette.border),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: palette.accent),
-        ),
-      ),
     );
   }
 

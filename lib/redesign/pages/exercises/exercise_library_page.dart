@@ -10,6 +10,7 @@ import 'package:yours/redesign/data/custom_exercise_models.dart';
 import 'package:yours/redesign/data/custom_exercise_repository.dart';
 import 'package:yours/redesign/localization/built_in_exercise_localizations.dart';
 import 'package:yours/redesign/localization/localization.dart';
+import 'package:yours/redesign/design_system/yours_design_system.dart';
 import 'package:yours/redesign/theme/redesign_theme.dart';
 
 List<String> _exerciseCategories(CustomExerciseModel exercise) {
@@ -47,7 +48,9 @@ String _exerciseSummaryText(BuildContext context, CustomExerciseModel exercise) 
 }
 
 class ExerciseLibraryPage extends StatefulWidget {
-  const ExerciseLibraryPage({super.key});
+  const ExerciseLibraryPage({super.key, this.repository});
+
+  final CustomExerciseRepository? repository;
 
   @override
   State<ExerciseLibraryPage> createState() => _ExerciseLibraryPageState();
@@ -92,7 +95,7 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
   @override
   void initState() {
     super.initState();
-    _repository = CustomExerciseRepository(locator<CustomExerciseDatabase>());
+    _repository = widget.repository ?? CustomExerciseRepository(locator<CustomExerciseDatabase>());
     _initFuture = _loadExercises();
   }
 
@@ -164,32 +167,48 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
         final filteredExercises = _filteredExercises(context);
 
         return SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(kGutter, kGutter, kGutter, 28),
+          padding: const EdgeInsets.fromLTRB(kGutter, 12, kGutter, 28),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _SectionHeader(
+              YoursPageHeader(
                 title: context.l10n.exerciseLibrary,
                 subtitle: context.l10n.exerciseLocalSubtitle,
-                onAdd: () => _showEditor(),
+                trailing: TextButton(
+                  key: const ValueKey('exercise-add'),
+                  onPressed: () => _showEditor(),
+                  child: Text(
+                    context.l10n.commonAdd,
+                    style: context.yoursText(YoursTextRole.button, tone: YoursTone.accent),
+                  ),
+                ),
               ),
               const SizedBox(height: 4),
-              _SearchBar(
+              YoursSearchField(
+                key: const ValueKey('exercise-search'),
                 controller: _searchController,
+                hintText: context.l10n.exerciseSearchHint,
                 onChanged: () => setState(() {}),
               ),
               const SizedBox(height: 14),
-              _FilterChips(
-                chips: _chips,
-                activeFilter: _activeFilter,
+              YoursFilterChipBar<String>(
+                key: const ValueKey('exercise-filter'),
+                items: _chips,
+                selected: _activeFilter,
+                labelBuilder: (chip) =>
+                    chip == '全部' ? context.l10n.all : localizedExerciseCategory(context, chip),
                 onChanged: (chip) => setState(() => _activeFilter = chip),
               ),
               const SizedBox(height: 14),
               if (filteredExercises.isEmpty)
-                _EmptyState(
+                YoursEmptyState(
+                  key: const ValueKey('exercise-empty-state'),
                   message: _exercises.isEmpty
                       ? context.l10n.exerciseEmpty
                       : context.l10n.exerciseNoMatch,
+                  icon: Icons.format_list_bulleted_outlined,
+                  actionLabel: _exercises.isEmpty ? context.l10n.commonAdd : null,
+                  onAction: _exercises.isEmpty ? () => _showEditor() : null,
                 )
               else
                 ...filteredExercises.map(
@@ -212,190 +231,6 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
   }
 }
 
-class _SectionHeader extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final VoidCallback onAdd;
-
-  const _SectionHeader({
-    required this.title,
-    required this.subtitle,
-    required this.onAdd,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = context.yoursPalette;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 14),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w700,
-                  color: palette.fg,
-                  height: 1.08,
-                ),
-              ),
-              const SizedBox(height: 5),
-              Text(subtitle, style: TextStyle(fontSize: 14, color: palette.muted)),
-            ],
-          ),
-          GestureDetector(
-            onTap: onAdd,
-            child: Padding(
-              padding: const EdgeInsets.all(4),
-              child: Text(
-                context.l10n.commonAdd,
-                style: TextStyle(fontWeight: FontWeight.w700, color: palette.accent),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _SearchBar extends StatelessWidget {
-  final TextEditingController controller;
-  final VoidCallback onChanged;
-
-  const _SearchBar({required this.controller, required this.onChanged});
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = context.yoursPalette;
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: palette.surface,
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: palette.border),
-      ),
-      child: Row(
-        children: [
-          Icon(Icons.search_rounded, color: palette.muted, size: 22),
-          const SizedBox(width: 12),
-          Expanded(
-            child: TextField(
-              controller: controller,
-              onChanged: (_) => onChanged(),
-              cursorColor: palette.accent,
-              style: TextStyle(color: palette.fg, fontSize: 16),
-              decoration: InputDecoration(
-                hintText: context.l10n.exerciseSearchHint,
-                hintStyle: TextStyle(color: palette.muted.withValues(alpha: 0.72)),
-                border: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                filled: false,
-                isDense: true,
-                contentPadding: const EdgeInsets.symmetric(vertical: 14),
-              ),
-            ),
-          ),
-          if (controller.text.isNotEmpty)
-            GestureDetector(
-              onTap: () {
-                controller.clear();
-                onChanged();
-              },
-              child: Container(
-                width: 28,
-                height: 28,
-                decoration: BoxDecoration(color: palette.muted, shape: BoxShape.circle),
-                child: const Center(
-                  child: Text('×', style: TextStyle(color: Colors.white, fontSize: 16)),
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class _FilterChips extends StatelessWidget {
-  final List<String> chips;
-  final String activeFilter;
-  final ValueChanged<String> onChanged;
-
-  const _FilterChips({
-    required this.chips,
-    required this.activeFilter,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = context.yoursPalette;
-    return SizedBox(
-      height: 38,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: chips.length,
-        separatorBuilder: (_, _) => const SizedBox(width: 8),
-        itemBuilder: (context, index) {
-          final chip = chips[index];
-          final isActive = chip == activeFilter;
-          return GestureDetector(
-            onTap: () => onChanged(chip),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-              decoration: BoxDecoration(
-                color: isActive ? palette.accentSoft : palette.surface,
-                borderRadius: BorderRadius.circular(999),
-                border: Border.all(color: isActive ? palette.accent : palette.border),
-              ),
-              child: Text(
-                chip == '全部' ? context.l10n.all : localizedExerciseCategory(context, chip),
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: isActive ? palette.accent : palette.fg,
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
-
-class _EmptyState extends StatelessWidget {
-  final String message;
-
-  const _EmptyState({required this.message});
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = context.yoursPalette;
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        border: Border.all(color: palette.border),
-        borderRadius: BorderRadius.circular(20),
-        color: palette.panel,
-      ),
-      child: Text(
-        message,
-        textAlign: TextAlign.center,
-        style: TextStyle(color: palette.muted, fontSize: 14),
-      ),
-    );
-  }
-}
-
 class _ExerciseCard extends StatelessWidget {
   final CustomExerciseModel exercise;
   final VoidCallback onTap;
@@ -404,83 +239,24 @@ class _ExerciseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.yoursPalette;
     final categories = _exerciseCategories(exercise);
 
-    return GestureDetector(
+    return YoursListActionCard(
+      key: ValueKey('exercise-card-${exercise.id ?? exercise.syncId}'),
       onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: palette.surface,
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: palette.border),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      leading: _ExerciseThumb(exercise: exercise),
+      title: localizedBuiltInExercise(context, exercise)?.name ?? exercise.displayName,
+      subtitle: _exerciseSummaryText(context, exercise),
+      status: categories.isEmpty
+          ? YoursStatusPill(label: context.l10n.notCategorized)
+          : Wrap(
+              spacing: 8,
+              runSpacing: 8,
               children: [
-                _ExerciseThumb(exercise: exercise),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    localizedBuiltInExercise(context, exercise)?.name ?? exercise.displayName,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: palette.fg),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
+                for (final category in categories)
+                  YoursStatusPill(label: localizedExerciseCategory(context, category)),
               ],
             ),
-            const SizedBox(height: 10),
-            Text(
-              _exerciseSummaryText(context, exercise),
-              style: TextStyle(fontSize: 14, color: palette.muted, height: 1.35),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 12),
-            if (categories.isEmpty)
-              _ExerciseTag(label: context.l10n.notCategorized)
-            else
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: [
-                  for (final category in categories)
-                    _ExerciseTag(label: localizedExerciseCategory(context, category)),
-                ],
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ExerciseTag extends StatelessWidget {
-  final String label;
-
-  const _ExerciseTag({required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = context.yoursPalette;
-    return Container(
-      constraints: const BoxConstraints(maxWidth: 220),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: palette.accentSoft,
-        borderRadius: BorderRadius.circular(999),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: palette.accent),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
     );
   }
 }
@@ -506,7 +282,13 @@ class _ExerciseThumb extends StatelessWidget {
           ? Center(
               child: Text(
                 localizedExerciseAbbr(context, exercise),
-                style: TextStyle(color: palette.accent, fontWeight: FontWeight.w900, fontSize: 18),
+                style: context
+                    .yoursText(YoursTextRole.body)
+                    .copyWith(
+                      color: palette.accent,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 18,
+                    ),
               ),
             )
           : Image.file(
@@ -515,11 +297,13 @@ class _ExerciseThumb extends StatelessWidget {
               errorBuilder: (_, _, _) => Center(
                 child: Text(
                   localizedExerciseAbbr(context, exercise),
-                  style: TextStyle(
-                    color: palette.accent,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 18,
-                  ),
+                  style: context
+                      .yoursText(YoursTextRole.body)
+                      .copyWith(
+                        color: palette.accent,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 18,
+                      ),
                 ),
               ),
             ),
@@ -536,8 +320,9 @@ class _ExerciseDetailSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.yoursPalette;
-    return _SheetShell(
+    final title = localizedBuiltInExercise(context, exercise)?.name ?? exercise.displayName;
+    return YoursSheetShell(
+      title: title,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -551,16 +336,14 @@ class _ExerciseDetailSheet extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      localizedBuiltInExercise(context, exercise)?.name ?? exercise.displayName,
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w800,
-                        color: palette.fg,
-                      ),
+                      title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: context.yoursText(YoursTextRole.cardTitle),
                     ),
                     if (localizedBuiltInExercise(context, exercise) == null &&
                         exercise.englishName.isNotEmpty)
-                      Text(exercise.englishName, style: TextStyle(color: palette.muted)),
+                      Text(exercise.englishName, style: context.yoursText(YoursTextRole.bodyMuted)),
                   ],
                 ),
               ),
@@ -571,33 +354,18 @@ class _ExerciseDetailSheet extends StatelessWidget {
           const SizedBox(height: 18),
           Text(
             _exerciseSummaryText(context, exercise),
-            style: TextStyle(fontSize: 15, height: 1.55, color: palette.fg),
+            style: context.yoursText(YoursTextRole.body).copyWith(fontSize: 15),
           ),
           const SizedBox(height: 22),
-          Row(
+          YoursFieldGroup(
             children: [
-              Expanded(
-                child: TextButton(
-                  onPressed: () => Navigator.pop(context, _ExerciseAction.edit),
-                  style: TextButton.styleFrom(
-                    backgroundColor: palette.accent,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                  ),
-                  child: Text(
-                    context.l10n.commonEdit,
-                    style: const TextStyle(fontWeight: FontWeight.w800),
-                  ),
-                ),
+              YoursPrimaryAction(
+                label: context.l10n.commonEdit,
+                onPressed: () => Navigator.pop(context, _ExerciseAction.edit),
               ),
-              const SizedBox(width: 10),
-              TextButton(
+              YoursDangerAction(
+                label: context.l10n.commonDelete,
                 onPressed: () => Navigator.pop(context, _ExerciseAction.delete),
-                child: Text(
-                  context.l10n.commonDelete,
-                  style: TextStyle(color: palette.danger, fontWeight: FontWeight.w800),
-                ),
               ),
             ],
           ),
@@ -669,121 +437,39 @@ class _ExerciseEditorSheetState extends State<_ExerciseEditorSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.yoursPalette;
-    return _SheetShell(
+    return YoursSheetShell(
+      title: widget.exercise == null ? context.l10n.exerciseAdd : context.l10n.exerciseEdit,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            widget.exercise == null ? context.l10n.exerciseAdd : context.l10n.exerciseEdit,
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: palette.fg),
-          ),
-          const SizedBox(height: 14),
-          _EditorField(
+          YoursFormField(
             label: context.l10n.exerciseName,
             controller: _nameCtrl,
             hintText: context.l10n.exerciseExampleName,
           ),
-          Row(
+          YoursFieldGroup(
             children: [
-              Expanded(
-                child: _EditorField(
-                  label: context.l10n.exerciseCategoryOne,
-                  controller: _categoryOneCtrl,
-                  hintText: context.l10n.exerciseExampleCategory,
-                ),
+              YoursFormField(
+                label: context.l10n.exerciseCategoryOne,
+                controller: _categoryOneCtrl,
+                hintText: context.l10n.exerciseExampleCategory,
               ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: _EditorField(
-                  label: context.l10n.exerciseCategoryTwo,
-                  controller: _categoryTwoCtrl,
-                  hintText: context.l10n.exerciseExampleEquipment,
-                ),
+              YoursFormField(
+                label: context.l10n.exerciseCategoryTwo,
+                controller: _categoryTwoCtrl,
+                hintText: context.l10n.exerciseExampleEquipment,
               ),
             ],
           ),
-          _EditorField(
+          YoursFormField(
             label: context.l10n.exerciseDescription,
             controller: _descriptionCtrl,
             hintText: context.l10n.exerciseDescription,
             maxLines: 3,
           ),
           const SizedBox(height: 8),
-          SizedBox(
-            width: double.infinity,
-            child: TextButton(
-              onPressed: _save,
-              style: TextButton.styleFrom(
-                backgroundColor: palette.accent,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                padding: const EdgeInsets.symmetric(vertical: 14),
-              ),
-              child: Text(
-                context.l10n.exerciseSaveLocal,
-                style: const TextStyle(fontWeight: FontWeight.w800),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _EditorField extends StatelessWidget {
-  final String label;
-  final TextEditingController controller;
-  final String hintText;
-  final int maxLines;
-
-  const _EditorField({
-    required this.label,
-    required this.controller,
-    required this.hintText,
-    this.maxLines = 1,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = context.yoursPalette;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 6),
-            child: Text(
-              label,
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w700,
-                color: palette.muted,
-              ),
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              color: palette.panel,
-              border: Border.all(color: palette.border),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: TextField(
-              controller: controller,
-              maxLines: maxLines,
-              cursorColor: palette.accent,
-              style: TextStyle(color: palette.fg),
-              decoration: InputDecoration(
-                hintText: hintText,
-                hintStyle: TextStyle(color: palette.muted),
-                border: InputBorder.none,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 13, vertical: 12),
-              ),
-            ),
-          ),
+          YoursPrimaryAction(label: context.l10n.exerciseSaveLocal, onPressed: _save),
         ],
       ),
     );
@@ -806,34 +492,14 @@ class _InfoPill extends StatelessWidget {
       ),
       child: Text(
         text.isEmpty ? context.l10n.exerciseNotFilled : text,
-        style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: palette.accent),
+        style: context
+            .yoursText(YoursTextRole.body)
+            .copyWith(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: palette.accent,
+            ),
       ),
-    );
-  }
-}
-
-class _SheetShell extends StatelessWidget {
-  final Widget child;
-
-  const _SheetShell({required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = context.yoursPalette;
-    return Container(
-      margin: const EdgeInsets.all(12),
-      padding: EdgeInsets.only(
-        left: 18,
-        right: 18,
-        top: 18,
-        bottom: MediaQuery.of(context).viewInsets.bottom + 18,
-      ),
-      decoration: BoxDecoration(
-        color: palette.elevated,
-        borderRadius: BorderRadius.circular(28),
-        border: Border.all(color: palette.border),
-      ),
-      child: SafeArea(top: false, child: SingleChildScrollView(child: child)),
     );
   }
 }

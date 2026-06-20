@@ -60,6 +60,7 @@ void main() {
 
   testWidgets('Japanese operation results stay separate from error localization', (tester) async {
     late String backupCreated;
+    late String backupPlaintextWarning;
     late String restoreComplete;
     late String unknownError;
     await tester.pumpWidget(
@@ -70,6 +71,7 @@ void main() {
             backupCreated = AppLocalizations.of(context).profileBackupCreated(
               'yours-backup.zip',
             );
+            backupPlaintextWarning = AppLocalizations.of(context).profileBackupPlaintextWarning;
             restoreComplete = AppLocalizations.of(context).profileRestoreComplete;
             unknownError = localizedErrorDetail(
               context,
@@ -82,6 +84,7 @@ void main() {
     );
 
     expect(backupCreated, isNot('不明なエラー'));
+    expect(backupPlaintextWarning, contains('トレーニングデータ'));
     expect(restoreComplete, isNot('不明なエラー'));
     expect(unknownError, '不明なエラー');
   });

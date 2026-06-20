@@ -140,6 +140,7 @@
   "planSetSuffix": "sets",
   "planRepSuffix": "reps",
   "planRest": "Rest",
+  "planDuration": "Duration",
   "planWeight": "Weight",
   "planNoteHint": "Note, such as RIR 2, 6–8 reps, or slow eccentric",
   "planAddFromLibrary": "Add from Exercise Library",
@@ -358,6 +359,44 @@
   "homeDashboardSettings": "Dashboard Settings",
   "homeCalendar": "Calendar",
   "commonDone": "Done",
+  "sharePosterCreate": "Create Poster",
+  "sharePosterTitle": "Create Poster",
+  "sharePosterSaveToPhotos": "Save to Photos",
+  "sharePosterSaving": "Saving",
+  "sharePosterSavedToPhotos": "Saved to Photos",
+  "sharePosterSaveFailed": "Save failed: {error}",
+  "@sharePosterSaveFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "sharePosterRenderFailed": "Could not render the workout poster.",
+  "sharePosterPhotoFailed": "Could not choose photo: {error}",
+  "@sharePosterPhotoFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "sharePosterBackground": "Background",
+  "sharePosterComponents": "Components",
+  "sharePosterUsePhoto": "Use Photo",
+  "sharePosterPhotoSelected": "Photo Background",
+  "sharePosterPresetDeepPurple": "Deep Purple",
+  "sharePosterPresetWarmPaper": "Warm Paper",
+  "sharePosterPresetEmber": "Ember",
+  "sharePosterPresetForest": "Forest",
+  "sharePosterWorkoutName": "Workout Name",
+  "sharePosterDate": "Date",
+  "sharePosterDuration": "Duration",
+  "sharePosterExerciseCount": "Exercises",
+  "sharePosterSetCount": "Sets",
+  "sharePosterTotalVolume": "Volume",
+  "sharePosterNote": "Training Note",
+  "sharePosterBrand": "Yours Mark",
   "exerciseLibrary": "Exercise Library",
   "profileTitle": "Profile",
   "dataManagement": "Data Management",
@@ -373,9 +412,29 @@
     }
   },
   "profileVaultPathPending": "Preparing path",
+  "profileVaultNotExported": "Not exported yet",
+  "profileLastVaultExport": "Last export: {date}",
+  "@profileLastVaultExport": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "profileExportVault": "Export Vault",
   "profileImportInbox": "Import inbox",
-  "profileBackupDescription": "Create a backup, then save it to iCloud Drive, Files, or another location",
+  "profileBackupDescription": "Create a backup, then save it to Files or another location",
+  "profileBackupPlaintextWarning": "Backup files contain training data. Store them carefully and do not share them publicly.",
+  "profileBackupAndroidLocation": "Backup files contain training data. On Android, they are visible in Documents/有思/backups.",
+  "profileBackupNotCreated": "No backup yet",
+  "profileLastBackup": "Last backup: {date}",
+  "@profileLastBackup": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "profileLatestBackup": "Latest backup: {name}",
   "@profileLatestBackup": {
     "placeholders": {
@@ -392,6 +451,7 @@
   "profileCopyDiagnostics": "Copy Diagnostics",
   "profileLocalDataSafety": "Local Data Safety",
   "profileProcessingDataShort": "Processing Data",
+  "profileExportingVault": "Exporting Vault",
   "profileNotCreated": "Not created",
   "profileAvailable": "Available",
   "profileManualExport": "Manual Export",
@@ -442,6 +502,7 @@
   },
   "profileCheckingICloud": "Checking iCloud Drive status",
   "profileICloudAvailable": "iCloud Drive is available.",
+  "profileICloudManualHint": "Use it for manual export and restore",
   "profileICloudSignedOut": "This device is not signed in to iCloud, or iCloud Drive is disabled.",
   "profileICloudContainerUnavailable": "No iCloud data directory is available. Check iCloud Drive and the App ID configuration.",
   "profileICloudUnsupported": "iCloud Drive is not supported on this platform.",
@@ -497,6 +558,20 @@
   },
   "profileVaultExportSummary": "Yours Vault exported: {plans} plans, {workouts} workout records, {exercises} exercises.",
   "@profileVaultExportSummary": {
+    "placeholders": {
+      "plans": {
+        "type": "int"
+      },
+      "workouts": {
+        "type": "int"
+      },
+      "exercises": {
+        "type": "int"
+      }
+    }
+  },
+  "profileVaultExportAndroidSummary": "Yours Vault exported: {plans} plans, {workouts} workout records, {exercises} exercises. Public Documents will sync in the background.",
+  "@profileVaultExportAndroidSummary": {
     "placeholders": {
       "plans": {
         "type": "int"
@@ -747,9 +822,24 @@
   "planRecordModeStandard": "Standard",
   "planRecordModeFree": "Free",
   "workoutRecordMode": "Record Mode",
+  "workoutReplaceExercise": "Replace This Exercise",
+  "workoutChooseExercise": "Choose",
+  "workoutExerciseReplaced": "Replaced {from} with {to}",
+  "@workoutExerciseReplaced": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
   "workoutCompleteFreeRecord": "Complete Item",
   "workoutUndoFreeRecord": "Undo Item Record",
   "workoutActivityElapsed": "Item Time",
+  "workoutDurationSeconds": "Duration s",
+  "workoutSavedLocal": "Workout saved locally.",
   "workoutCompletedMixedSummary": "Completed {exercises} exercises · {sets} sets · {freeRecords} free items",
   "@workoutCompletedMixedSummary": {
     "placeholders": {

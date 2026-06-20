@@ -231,6 +231,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get planRest => '休息';
 
   @override
+  String get planDuration => '持续时间';
+
+  @override
   String get planWeight => '重量';
 
   @override
@@ -500,6 +503,82 @@ class AppLocalizationsZh extends AppLocalizations {
   String get commonDone => '完成';
 
   @override
+  String get sharePosterCreate => '生成海报';
+
+  @override
+  String get sharePosterTitle => '生成海报';
+
+  @override
+  String get sharePosterSaveToPhotos => '保存到照片';
+
+  @override
+  String get sharePosterSaving => '正在保存';
+
+  @override
+  String get sharePosterSavedToPhotos => '已保存到照片';
+
+  @override
+  String sharePosterSaveFailed(String error) {
+    return '保存失败：$error';
+  }
+
+  @override
+  String get sharePosterRenderFailed => '无法生成训练海报图片。';
+
+  @override
+  String sharePosterPhotoFailed(String error) {
+    return '选择照片失败：$error';
+  }
+
+  @override
+  String get sharePosterBackground => '背景';
+
+  @override
+  String get sharePosterComponents => '组件';
+
+  @override
+  String get sharePosterUsePhoto => '使用照片';
+
+  @override
+  String get sharePosterPhotoSelected => '照片背景';
+
+  @override
+  String get sharePosterPresetDeepPurple => '深紫黑';
+
+  @override
+  String get sharePosterPresetWarmPaper => '暖米';
+
+  @override
+  String get sharePosterPresetEmber => 'Ember';
+
+  @override
+  String get sharePosterPresetForest => 'Forest';
+
+  @override
+  String get sharePosterWorkoutName => '训练名称';
+
+  @override
+  String get sharePosterDate => '日期';
+
+  @override
+  String get sharePosterDuration => '总用时';
+
+  @override
+  String get sharePosterExerciseCount => '动作数';
+
+  @override
+  String get sharePosterSetCount => '总组数';
+
+  @override
+  String get sharePosterTotalVolume => '总容量';
+
+  @override
+  String get sharePosterNote => '训练备注';
+
+  @override
+  String get sharePosterBrand => 'Yours 标识';
+
+  @override
   String get exerciseLibrary => '动作库';
 
   @override
@@ -526,13 +605,36 @@ class AppLocalizationsZh extends AppLocalizations {
   String get profileVaultPathPending => '路径准备中';
 
   @override
+  String get profileVaultNotExported => '尚未导出';
+
+  @override
+  String profileLastVaultExport(String date) {
+    return '上次导出：$date';
+  }
+
+  @override
   String get profileExportVault => '导出 Vault';
 
   @override
   String get profileImportInbox => '导入 inbox';
 
   @override
-  String get profileBackupDescription => '创建后可保存到 iCloud Drive、文件 App 或其他位置';
+  String get profileBackupDescription => '创建后可保存到文件 App 或其他位置';
+
+  @override
+  String get profileBackupPlaintextWarning => '备份文件包含训练数据，请妥善保存，不要公开分享。';
+
+  @override
+  String get profileBackupAndroidLocation =>
+      '备份文件包含训练数据，请妥善保存。Android 可在 Documents/有思/backups 中查看。';
+
+  @override
+  String get profileBackupNotCreated => '尚未创建';
+
+  @override
+  String profileLastBackup(String date) {
+    return '上次备份：$date';
+  }
 
   @override
   String profileLatestBackup(String name) {
@@ -562,6 +664,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get profileProcessingDataShort => '正在处理数据';
+
+  @override
+  String get profileExportingVault => '正在导出 Vault';
 
   @override
   String get profileNotCreated => '未创建';
@@ -618,6 +723,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get profileICloudAvailable => 'iCloud Drive 可用。';
+
+  @override
+  String get profileICloudManualHint => '用于手动导出和恢复';
 
   @override
   String get profileICloudSignedOut => '当前设备未登录 iCloud，或 iCloud Drive 未启用。';
@@ -744,6 +852,11 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String profileVaultExportSummary(int plans, int workouts, int exercises) {
     return 'Yours Vault 已导出：$plans 个计划、$workouts 份记录、$exercises 个动作。';
+  }
+
+  @override
+  String profileVaultExportAndroidSummary(int plans, int workouts, int exercises) {
+    return 'Yours Vault 已导出：$plans 个计划、$workouts 份记录、$exercises 个动作。公共 Documents 会在后台同步。';
   }
 
   @override
@@ -951,6 +1064,17 @@ class AppLocalizationsZh extends AppLocalizations {
   String get workoutRecordMode => '记录方式';
 
   @override
+  String get workoutReplaceExercise => '替换本次动作';
+
+  @override
+  String get workoutChooseExercise => '选择';
+
+  @override
+  String workoutExerciseReplaced(String from, String to) {
+    return '已将「$from」替换为「$to」';
+  }
+
+  @override
   String get workoutCompleteFreeRecord => '完成本项';
 
   @override
@@ -958,6 +1082,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get workoutActivityElapsed => '本项用时';
+
+  @override
+  String get workoutDurationSeconds => '持续时间 s';
+
+  @override
+  String get workoutSavedLocal => '训练已保存到本地。';
 
   @override
   String workoutCompletedMixedSummary(int exercises, int sets, int freeRecords) {

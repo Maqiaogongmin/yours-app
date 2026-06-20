@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yours/redesign/design_system/yours_design_system.dart';
 import 'package:yours/redesign/localization/generated_language_registry.dart';
 import 'package:yours/redesign/localization/locale_controller.dart';
 import 'package:yours/redesign/localization/localization.dart';
@@ -24,6 +25,7 @@ class SettingsPage extends StatelessWidget {
       child: Column(
         children: [
           _SettingsTile(
+            tileKey: const ValueKey('settings-appearance'),
             icon: Icons.palette_outlined,
             title: context.l10n.appearanceTitle,
             subtitle: context.l10n.appearanceDescription,
@@ -37,6 +39,7 @@ class SettingsPage extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           _SettingsTile(
+            tileKey: const ValueKey('settings-language'),
             icon: Icons.translate_rounded,
             title: context.l10n.language,
             subtitle: context.l10n.languageDescription,
@@ -50,6 +53,7 @@ class SettingsPage extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           _SettingsTile(
+            tileKey: const ValueKey('settings-about'),
             icon: Icons.info_outline,
             title: context.l10n.aboutYours,
             subtitle: context.l10n.aboutDescription,
@@ -153,12 +157,7 @@ class _SettingsScaffold extends StatelessWidget {
                   Expanded(
                     child: Text(
                       title,
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w700,
-                        color: palette.fg,
-                        height: 1.08,
-                      ),
+                      style: context.yoursText(YoursTextRole.pageTitle),
                     ),
                   ),
                 ],
@@ -175,12 +174,14 @@ class _SettingsScaffold extends StatelessWidget {
 
 class _SettingsTile extends StatelessWidget {
   const _SettingsTile({
+    required this.tileKey,
     required this.icon,
     required this.title,
     required this.subtitle,
     required this.onTap,
   });
 
+  final Key tileKey;
   final IconData icon;
   final String title;
   final String subtitle;
@@ -188,55 +189,13 @@ class _SettingsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.yoursPalette;
-    return Material(
-      color: palette.surface,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(kCardRadius),
-        side: BorderSide(color: palette.border),
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(kCardRadius),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(18),
-          child: Row(
-            children: [
-              Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: palette.accentSoft,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Icon(icon, color: palette.accent),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        color: palette.fg,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 3),
-                    Text(
-                      subtitle,
-                      style: TextStyle(color: palette.muted, fontSize: 13),
-                    ),
-                  ],
-                ),
-              ),
-              Icon(Icons.chevron_right, color: palette.muted),
-            ],
-          ),
-        ),
-      ),
+    return YoursListActionCard(
+      key: tileKey,
+      title: title,
+      subtitle: subtitle,
+      leading: YoursIconBadge(icon: icon),
+      onTap: onTap,
+      minHeight: 84,
     );
   }
 }
@@ -255,12 +214,8 @@ class _ChoiceCard<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.yoursPalette;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: palette.surface,
-        borderRadius: BorderRadius.circular(kCardRadius),
-        border: Border.all(color: palette.border),
-      ),
+    return YoursSurfaceCard(
+      padding: EdgeInsets.zero,
       child: RadioGroup<T>(
         groupValue: value,
         onChanged: (newValue) {
@@ -273,7 +228,10 @@ class _ChoiceCard<T> extends StatelessWidget {
             for (var index = 0; index < options.length; index++) ...[
               RadioListTile<T>(
                 value: options[index].$1,
-                title: Text(options[index].$2),
+                title: Text(
+                  options[index].$2,
+                  style: context.yoursText(YoursTextRole.body),
+                ),
               ),
               if (index != options.length - 1)
                 Divider(height: 1, indent: 16, endIndent: 16, color: palette.border),

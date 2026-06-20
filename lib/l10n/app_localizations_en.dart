@@ -232,6 +232,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get planRest => 'Rest';
 
   @override
+  String get planDuration => 'Duration';
+
+  @override
   String get planWeight => 'Weight';
 
   @override
@@ -506,6 +509,82 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonDone => 'Done';
 
   @override
+  String get sharePosterCreate => 'Create Poster';
+
+  @override
+  String get sharePosterTitle => 'Create Poster';
+
+  @override
+  String get sharePosterSaveToPhotos => 'Save to Photos';
+
+  @override
+  String get sharePosterSaving => 'Saving';
+
+  @override
+  String get sharePosterSavedToPhotos => 'Saved to Photos';
+
+  @override
+  String sharePosterSaveFailed(String error) {
+    return 'Save failed: $error';
+  }
+
+  @override
+  String get sharePosterRenderFailed => 'Could not render the workout poster.';
+
+  @override
+  String sharePosterPhotoFailed(String error) {
+    return 'Could not choose photo: $error';
+  }
+
+  @override
+  String get sharePosterBackground => 'Background';
+
+  @override
+  String get sharePosterComponents => 'Components';
+
+  @override
+  String get sharePosterUsePhoto => 'Use Photo';
+
+  @override
+  String get sharePosterPhotoSelected => 'Photo Background';
+
+  @override
+  String get sharePosterPresetDeepPurple => 'Deep Purple';
+
+  @override
+  String get sharePosterPresetWarmPaper => 'Warm Paper';
+
+  @override
+  String get sharePosterPresetEmber => 'Ember';
+
+  @override
+  String get sharePosterPresetForest => 'Forest';
+
+  @override
+  String get sharePosterWorkoutName => 'Workout Name';
+
+  @override
+  String get sharePosterDate => 'Date';
+
+  @override
+  String get sharePosterDuration => 'Duration';
+
+  @override
+  String get sharePosterExerciseCount => 'Exercises';
+
+  @override
+  String get sharePosterSetCount => 'Sets';
+
+  @override
+  String get sharePosterTotalVolume => 'Volume';
+
+  @override
+  String get sharePosterNote => 'Training Note';
+
+  @override
+  String get sharePosterBrand => 'Yours Mark';
+
+  @override
   String get exerciseLibrary => 'Exercise Library';
 
   @override
@@ -532,6 +611,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileVaultPathPending => 'Preparing path';
 
   @override
+  String get profileVaultNotExported => 'Not exported yet';
+
+  @override
+  String profileLastVaultExport(String date) {
+    return 'Last export: $date';
+  }
+
+  @override
   String get profileExportVault => 'Export Vault';
 
   @override
@@ -539,7 +626,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileBackupDescription =>
-      'Create a backup, then save it to iCloud Drive, Files, or another location';
+      'Create a backup, then save it to Files or another location';
+
+  @override
+  String get profileBackupPlaintextWarning =>
+      'Backup files contain training data. Store them carefully and do not share them publicly.';
+
+  @override
+  String get profileBackupAndroidLocation =>
+      'Backup files contain training data. On Android, they are visible in Documents/有思/backups.';
+
+  @override
+  String get profileBackupNotCreated => 'No backup yet';
+
+  @override
+  String profileLastBackup(String date) {
+    return 'Last backup: $date';
+  }
 
   @override
   String profileLatestBackup(String name) {
@@ -569,6 +672,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileProcessingDataShort => 'Processing Data';
+
+  @override
+  String get profileExportingVault => 'Exporting Vault';
 
   @override
   String get profileNotCreated => 'Not created';
@@ -626,6 +732,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileICloudAvailable => 'iCloud Drive is available.';
+
+  @override
+  String get profileICloudManualHint => 'Use it for manual export and restore';
 
   @override
   String get profileICloudSignedOut =>
@@ -754,6 +863,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String profileVaultExportSummary(int plans, int workouts, int exercises) {
     return 'Yours Vault exported: $plans plans, $workouts workout records, $exercises exercises.';
+  }
+
+  @override
+  String profileVaultExportAndroidSummary(int plans, int workouts, int exercises) {
+    return 'Yours Vault exported: $plans plans, $workouts workout records, $exercises exercises. Public Documents will sync in the background.';
   }
 
   @override
@@ -965,6 +1079,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get workoutRecordMode => 'Record Mode';
 
   @override
+  String get workoutReplaceExercise => 'Replace This Exercise';
+
+  @override
+  String get workoutChooseExercise => 'Choose';
+
+  @override
+  String workoutExerciseReplaced(String from, String to) {
+    return 'Replaced $from with $to';
+  }
+
+  @override
   String get workoutCompleteFreeRecord => 'Complete Item';
 
   @override
@@ -972,6 +1097,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get workoutActivityElapsed => 'Item Time';
+
+  @override
+  String get workoutDurationSeconds => 'Duration s';
+
+  @override
+  String get workoutSavedLocal => 'Workout saved locally.';
 
   @override
   String workoutCompletedMixedSummary(int exercises, int sets, int freeRecords) {

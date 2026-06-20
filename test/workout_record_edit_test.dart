@@ -81,6 +81,14 @@ void main() {
     expect(find.byKey(ValueKey('log-duration-$logId-minutes')), findsOneWidget);
     expect(find.byKey(ValueKey('log-duration-$logId-seconds')), findsOneWidget);
     expect(
+      tester.getSize(find.byKey(ValueKey('log-duration-$logId-minutes'))).width,
+      lessThan(40),
+    );
+    expect(
+      tester.getSize(find.byKey(ValueKey('session-$sessionId-start-hours'))).width,
+      lessThan(40),
+    );
+    expect(
       tester
           .widget<TextField>(find.byKey(ValueKey('log-duration-$logId-minutes')))
           .controller

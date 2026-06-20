@@ -137,7 +137,7 @@ class LocalGymSessionController extends ChangeNotifier {
   LocalTrainingActionModel get currentAction => _actions[_exerciseIndex];
   String get currentExercise => currentAction.name;
   bool get isCurrentFreeRecord => currentAction.recordMode == localRecordModeFree;
-  int get currentTargetSets => isCurrentFreeRecord ? 1 : currentAction.targetSets;
+  int get currentTargetSets => currentAction.targetSets.clamp(1, 20);
   int get currentTargetReps => currentAction.targetReps;
   double? get currentTargetWeight => currentAction.targetWeight;
   int? get currentTargetRestSeconds => currentAction.targetRestSeconds;
@@ -345,7 +345,11 @@ class LocalGymSessionController extends ChangeNotifier {
     }
   }
 
-  Future<void> completeFreeRecord() async {
+  Future<void> completeFreeRecord({
+    required double weight,
+    required int durationSeconds,
+    required int restSeconds,
+  }) async {
     final sessionId = _sessionId;
     final routineId = _plan?.id;
     if (sessionId == null || routineId == null || _actions.isEmpty || _saving || _finished) {
@@ -358,24 +362,28 @@ class LocalGymSessionController extends ChangeNotifier {
     _saving = true;
     notifyListeners();
 
+    final safeDurationSeconds = durationSeconds.clamp(0, 24 * 60 * 60);
+    final safeRestSeconds = restSeconds.clamp(0, 3600);
+
     await _repository.deleteSetLogs(
       sessionId: sessionId,
       exerciseName: currentExercise,
-      setIndex: 1,
+      setIndex: _setIndex,
     );
-    _history.removeWhere((s) => s.exerciseIndex == _exerciseIndex && s.setIndex == 1);
+    _history.removeWhere(
+      (s) => s.exerciseIndex == _exerciseIndex && s.setIndex == _setIndex,
+    );
 
-    final durationSeconds = currentActionElapsed.inSeconds.clamp(0, 24 * 60 * 60);
     final logId = await _repository.addLog(
       sessionId: sessionId,
       routineId: routineId,
       dayId: _day?.id,
       exerciseName: currentExercise,
-      setIndex: 1,
-      weight: 0,
+      setIndex: _setIndex,
+      weight: weight,
       reps: 0,
       rir: null,
-      durationSeconds: durationSeconds,
+      durationSeconds: safeDurationSeconds,
       note: currentSetNote,
       recordMode: localRecordModeFree,
     );
@@ -383,23 +391,43 @@ class LocalGymSessionController extends ChangeNotifier {
     _history.add(
       _CompletedSetSnapshot(
         exerciseIndex: _exerciseIndex,
-        setIndex: 1,
+        setIndex: _setIndex,
         logId: logId,
-        weight: 0,
+        weight: weight,
         reps: 0,
-        restSeconds: 0,
+        restSeconds: safeRestSeconds,
         recordMode: localRecordModeFree,
-        durationSeconds: durationSeconds,
+        durationSeconds: safeDurationSeconds,
       ),
     );
     _saving = false;
+    final isLastSet = _setIndex >= currentTargetSets;
     final isLastExercise = _exerciseIndex >= _actions.length - 1;
-    if (isLastExercise) {
+    if (isLastSet && isLastExercise) {
       _finishWorkoutState();
       return;
     }
-    _moveToNextSet();
+
+    if (safeRestSeconds == 0) {
+      advanceAfterRest();
+    } else {
+      _startRest(safeRestSeconds);
+    }
+  }
+
+  void replaceCurrentAction(LocalTrainingActionModel action) {
+    if (_actions.isEmpty || _finished || action.name.trim().isEmpty) {
+      return;
+    }
+    _actions[_exerciseIndex] = action.copyWith(name: action.name);
     notifyListeners();
+  }
+
+  void replaceCurrentExercise(String exerciseName) {
+    if (_actions.isEmpty) {
+      return;
+    }
+    replaceCurrentAction(currentAction.copyWith(name: exerciseName));
   }
 
   void advanceAfterRest() {
@@ -503,6 +531,7 @@ class LocalGymSessionController extends ChangeNotifier {
     if (!_stopwatch.isRunning) {
       _stopwatch.start();
     }
+    _ensureTicker();
     await _repository.deleteWorkoutLog(snapshot.logId);
     notifyListeners();
     return snapshot.toUndo();
@@ -524,12 +553,13 @@ class LocalGymSessionController extends ChangeNotifier {
     if (!_stopwatch.isRunning) {
       _stopwatch.start();
     }
+    _ensureTicker();
     await _repository.deleteWorkoutLog(snapshot.logId);
     notifyListeners();
     return snapshot.toUndo();
   }
 
-  Future<LocalGymFinishResult> finishSession({
+  Future<void> finishSessionLocal({
     String note = '',
     bool markIncomplete = false,
   }) async {
@@ -540,7 +570,12 @@ class LocalGymSessionController extends ChangeNotifier {
     if (sessionId != null) {
       await _repository.finishSession(sessionId, note: finalNote);
     }
+    _saving = false;
+    _active = false;
+    notifyListeners();
+  }
 
+  Future<LocalGymFinishResult> createFinishBackup() async {
     LocalGymFinishResult result;
     try {
       final backup = await _backupService.createAutomaticBackupIfNeeded(
@@ -554,11 +589,15 @@ class LocalGymSessionController extends ChangeNotifier {
     } on Object catch (error) {
       result = LocalGymFinishResult(backupCreated: false, backupError: error);
     }
-
-    _saving = false;
-    _active = false;
-    notifyListeners();
     return result;
+  }
+
+  Future<LocalGymFinishResult> finishSession({
+    String note = '',
+    bool markIncomplete = false,
+  }) async {
+    await finishSessionLocal(note: note, markIncomplete: markIncomplete);
+    return createFinishBackup();
   }
 
   String _basename(String path) {
@@ -632,6 +671,8 @@ class LocalGymSessionController extends ChangeNotifier {
 
   void _finishWorkoutState() {
     _clearRest();
+    _ticker?.cancel();
+    _ticker = null;
     _finished = true;
     _stopwatch.stop();
     notifyListeners();

@@ -42,4 +42,36 @@ void main() {
     expect(activity, contains('"syncVaultToPublicDocuments"'));
     expect(activity, contains('"pickPublicBackup"'));
   });
+
+  test('Android poster photo bridge supports picking and saving images', () {
+    final activity = File(
+      'android/app/src/main/kotlin/com/ly/yours/MainActivity.kt',
+    ).readAsStringSync();
+
+    expect(activity, contains('photosChannelName = "yours/photos"'));
+    expect(activity, contains('"pickPosterBackground"'));
+    expect(activity, contains('"saveImageToPhotos"'));
+    expect(activity, contains('result.success(true)'));
+    expect(activity, contains('MediaStore.Images.Media.EXTERNAL_CONTENT_URI'));
+    expect(activity, contains('Environment.DIRECTORY_PICTURES'));
+    expect(activity, contains('MediaScannerConnection.scanFile'));
+  });
+
+  test('release network security trusts only system CAs while debug allows user CAs', () {
+    final mainConfig = File(
+      'android/app/src/main/res/xml/network_security_config.xml',
+    ).readAsStringSync();
+    final debugConfig = File(
+      'android/app/src/debug/res/xml/network_security_config.xml',
+    ).readAsStringSync();
+    final manifest = File(
+      'android/app/src/main/AndroidManifest.xml',
+    ).readAsStringSync();
+
+    expect(manifest, contains('android:networkSecurityConfig="@xml/network_security_config"'));
+    expect(mainConfig, contains('src="system"'));
+    expect(mainConfig, isNot(contains('src="user"')));
+    expect(debugConfig, contains('src="system"'));
+    expect(debugConfig, contains('src="user"'));
+  });
 }

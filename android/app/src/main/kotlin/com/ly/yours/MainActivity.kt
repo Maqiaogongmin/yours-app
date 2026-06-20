@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -20,10 +21,13 @@ import java.io.File
 
 class MainActivity: FlutterActivity() {
     private val filesChannelName = "yours/files"
+    private val photosChannelName = "yours/photos"
     private val publicRoot = "有思"
     private val backupPickerRequestCode = 4107
     private val storagePermissionRequestCode = 4108
+    private val posterBackgroundPickerRequestCode = 4109
     private var pendingBackupPickerResult: MethodChannel.Result? = null
+    private var pendingPosterBackgroundPickerResult: MethodChannel.Result? = null
     private var pendingStorageAction: (() -> Unit)? = null
     private var pendingStorageResult: MethodChannel.Result? = null
 
@@ -83,6 +87,34 @@ class MainActivity: FlutterActivity() {
                                 result.success(syncVaultToPublicDocuments(File(sourcePath)))
                             } catch (error: Exception) {
                                 result.error("SYNC_PUBLIC_VAULT_FAILED", error.message, null)
+                            }
+                        }
+                    }
+                    else -> result.notImplemented()
+                }
+            }
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, photosChannelName)
+            .setMethodCallHandler { call, result ->
+                when (call.method) {
+                    "pickPosterBackground" -> {
+                        try {
+                            pickPosterBackground(result)
+                        } catch (error: Exception) {
+                            result.error("PHOTO_PICKER_FAILED", error.message, null)
+                        }
+                    }
+                    "saveImageToPhotos" -> {
+                        val bytes = call.argument<ByteArray>("bytes")
+                        if (bytes == null || bytes.isEmpty()) {
+                            result.error("BAD_ARGS", "Missing poster image data", null)
+                            return@setMethodCallHandler
+                        }
+                        withLegacyStoragePermission(result) {
+                            try {
+                                saveImageToPhotos(bytes)
+                                result.success(true)
+                            } catch (error: Exception) {
+                                result.error("PHOTO_SAVE_FAILED", error.message, null)
                             }
                         }
                     }
@@ -226,11 +258,29 @@ class MainActivity: FlutterActivity() {
         startActivityForResult(intent, backupPickerRequestCode)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode != backupPickerRequestCode) {
+    private fun pickPosterBackground(result: MethodChannel.Result) {
+        if (pendingPosterBackgroundPickerResult != null) {
+            result.error("PHOTO_PICKER_BUSY", "A photo picker is already open", null)
             return
         }
+        pendingPosterBackgroundPickerResult = result
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "image/*"
+        }
+        startActivityForResult(intent, posterBackgroundPickerRequestCode)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == backupPickerRequestCode) {
+            handleBackupPickerResult(resultCode, data)
+        } else if (requestCode == posterBackgroundPickerRequestCode) {
+            handlePosterBackgroundPickerResult(resultCode, data)
+        }
+    }
+
+    private fun handleBackupPickerResult(resultCode: Int, data: Intent?) {
         val pending = pendingBackupPickerResult ?: return
         pendingBackupPickerResult = null
         if (resultCode != Activity.RESULT_OK) {
@@ -246,6 +296,25 @@ class MainActivity: FlutterActivity() {
             pending.success(copyUriToLocalBackup(uri))
         } catch (error: Exception) {
             pending.error("PICKED_BACKUP_COPY_FAILED", error.message, null)
+        }
+    }
+
+    private fun handlePosterBackgroundPickerResult(resultCode: Int, data: Intent?) {
+        val pending = pendingPosterBackgroundPickerResult ?: return
+        pendingPosterBackgroundPickerResult = null
+        if (resultCode != Activity.RESULT_OK) {
+            pending.success(null)
+            return
+        }
+        val uri = data?.data
+        if (uri == null) {
+            pending.success(null)
+            return
+        }
+        try {
+            pending.success(copyPosterBackgroundToLocalFile(uri))
+        } catch (error: Exception) {
+            pending.error("PHOTO_PICKER_COPY_FAILED", error.message, null)
         }
     }
 
@@ -285,6 +354,72 @@ class MainActivity: FlutterActivity() {
         val backupsDir = File(filesDir.parentFile ?: filesDir, "app_flutter/backups")
         backupsDir.mkdirs()
         return File(backupsDir, "yours-backup.zip")
+    }
+
+    private fun copyPosterBackgroundToLocalFile(uri: Uri): String {
+        val extension = when (contentResolver.getType(uri)?.lowercase()) {
+            "image/png" -> "png"
+            "image/webp" -> "webp"
+            else -> "jpg"
+        }
+        val backgroundsDir = File(
+            filesDir.parentFile ?: filesDir,
+            "app_flutter/poster_backgrounds"
+        )
+        backgroundsDir.mkdirs()
+        val output = File(backgroundsDir, "poster-background-${System.currentTimeMillis()}.$extension")
+        contentResolver.openInputStream(uri)?.use { input ->
+            output.outputStream().use { stream -> input.copyTo(stream) }
+        } ?: throw IllegalStateException("Unable to read selected photo")
+        return output.absolutePath
+    }
+
+    private fun saveImageToPhotos(bytes: ByteArray): Uri {
+        val filename = "yours-poster-${System.currentTimeMillis()}.png"
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            val pictures = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES
+            )
+            val destinationDirectory = File(pictures, publicRoot)
+            if (!destinationDirectory.exists() && !destinationDirectory.mkdirs()) {
+                throw IllegalStateException("Unable to create public pictures directory")
+            }
+            val destination = File(destinationDirectory, filename)
+            destination.outputStream().use { output -> output.write(bytes) }
+            MediaScannerConnection.scanFile(
+                applicationContext,
+                arrayOf(destination.absolutePath),
+                arrayOf("image/png"),
+                null
+            )
+            return Uri.fromFile(destination)
+        }
+
+        val resolver = applicationContext.contentResolver
+        val uri = resolver.insert(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            ContentValues().apply {
+                put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+                put(MediaStore.MediaColumns.MIME_TYPE, "image/png")
+                put(MediaStore.MediaColumns.RELATIVE_PATH, "${Environment.DIRECTORY_PICTURES}/$publicRoot")
+                put(MediaStore.MediaColumns.IS_PENDING, 1)
+            }
+        ) ?: throw IllegalStateException("Unable to create photo entry")
+
+        try {
+            resolver.openOutputStream(uri, "w")?.use { output -> output.write(bytes) }
+                ?: throw IllegalStateException("Unable to write poster image")
+            resolver.update(
+                uri,
+                ContentValues().apply { put(MediaStore.MediaColumns.IS_PENDING, 0) },
+                null,
+                null
+            )
+        } catch (error: Exception) {
+            resolver.delete(uri, null, null)
+            throw error
+        }
+        return uri
     }
 
     private fun findLatestPublicZipUri(relativePath: String): Uri? {

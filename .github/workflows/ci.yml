@@ -15,5 +15,7 @@ jobs:
           cache: true
       - run: flutter pub get
       - run: flutter analyze
+      - run: dart run tool/check_ui_guard.dart --strict-new
+      - run: flutter test test/yours_theme_test.dart test/yours_ui_kit_test.dart test/entry_pages_ui_test.dart
       - run: flutter test
       - run: flutter build apk --debug

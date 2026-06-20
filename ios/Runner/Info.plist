@@ -49,7 +49,9 @@
 		<key>NSCameraUsageDescription</key>
 		<string>用于拍摄训练记录照片</string>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>用于选择训练数据备份文件以恢复数据</string>
+		<string>用于选择照片作为训练海报背景</string>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>用于将训练记录海报保存到照片应用</string>
 		<key>UIApplicationSceneManifest</key>
 		<dict>
 			<key>UIApplicationSupportsMultipleScenes</key>

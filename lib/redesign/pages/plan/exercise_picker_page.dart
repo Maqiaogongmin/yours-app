@@ -4,6 +4,7 @@ import 'package:yours/redesign/data/custom_exercise_database.dart';
 import 'package:yours/redesign/data/custom_exercise_models.dart';
 import 'package:yours/redesign/data/custom_exercise_repository.dart';
 import 'package:yours/redesign/data/local_training_models.dart';
+import 'package:yours/redesign/design_system/yours_design_system.dart';
 import 'package:yours/redesign/localization/built_in_exercise_localizations.dart';
 import 'package:yours/redesign/localization/localization.dart';
 import 'package:yours/redesign/theme/redesign_theme.dart';
@@ -11,13 +12,17 @@ import 'package:yours/redesign/theme/redesign_theme.dart';
 class ExercisePickerPage extends StatefulWidget {
   final List<LocalTrainingActionModel>? selectedActions;
   final bool allowMultiple;
+  final String? title;
 
   const ExercisePickerPage.multi({
     super.key,
     required this.selectedActions,
+    this.title,
   }) : allowMultiple = true;
 
-  const ExercisePickerPage.single({super.key}) : selectedActions = null, allowMultiple = false;
+  const ExercisePickerPage.single({super.key, this.title})
+    : selectedActions = null,
+      allowMultiple = false;
 
   @override
   State<ExercisePickerPage> createState() => _ExercisePickerPageState();
@@ -74,8 +79,8 @@ class _ExercisePickerPageState extends State<ExercisePickerPage> {
         backgroundColor: palette.accent,
         foregroundColor: Colors.white,
         title: Text(
-          context.l10n.planAddFromLibrary,
-          style: const TextStyle(fontWeight: FontWeight.w600),
+          widget.title ?? context.l10n.planAddFromLibrary,
+          style: context.yoursText(YoursTextRole.body).copyWith(fontWeight: FontWeight.w600),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
@@ -88,7 +93,9 @@ class _ExercisePickerPageState extends State<ExercisePickerPage> {
               child: Center(
                 child: Text(
                   context.l10n.planSelectedCount(_selectedActions.length),
-                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
+                  style: context
+                      .yoursText(YoursTextRole.body)
+                      .copyWith(color: Colors.white, fontWeight: FontWeight.w800),
                 ),
               ),
             ),
@@ -141,10 +148,14 @@ class _ExercisePickerPageState extends State<ExercisePickerPage> {
                           controller: _ctrl,
                           onChanged: (v) => setState(() => _query = v),
                           cursorColor: palette.accent,
-                          style: TextStyle(color: palette.fg, fontSize: 16),
+                          style: context
+                              .yoursText(YoursTextRole.body)
+                              .copyWith(color: palette.fg, fontSize: 16),
                           decoration: InputDecoration(
                             hintText: context.l10n.planSearchLibrary,
-                            hintStyle: TextStyle(color: palette.muted),
+                            hintStyle: context
+                                .yoursText(YoursTextRole.bodyMuted)
+                                .copyWith(color: palette.muted),
                             border: InputBorder.none,
                             enabledBorder: InputBorder.none,
                             focusedBorder: InputBorder.none,
@@ -164,10 +175,12 @@ class _ExercisePickerPageState extends State<ExercisePickerPage> {
                             width: 26,
                             height: 26,
                             decoration: BoxDecoration(color: palette.muted, shape: BoxShape.circle),
-                            child: const Center(
+                            child: Center(
                               child: Text(
                                 'x',
-                                style: TextStyle(color: Colors.white, fontSize: 15),
+                                style: context
+                                    .yoursText(YoursTextRole.body)
+                                    .copyWith(color: Colors.white, fontSize: 15),
                               ),
                             ),
                           ),
@@ -181,7 +194,9 @@ class _ExercisePickerPageState extends State<ExercisePickerPage> {
                     ? Center(
                         child: Text(
                           context.l10n.planNoMatchingExercise,
-                          style: TextStyle(color: palette.muted),
+                          style: context
+                              .yoursText(YoursTextRole.body)
+                              .copyWith(color: palette.muted),
                         ),
                       )
                     : ListView(
@@ -221,10 +236,12 @@ class _ExercisePickerPageState extends State<ExercisePickerPage> {
                                     backgroundColor: palette.accentSoft,
                                     child: Text(
                                       localizedExerciseAbbr(context, exercise),
-                                      style: TextStyle(
-                                        color: palette.accent,
-                                        fontWeight: FontWeight.w800,
-                                      ),
+                                      style: context
+                                          .yoursText(YoursTextRole.body)
+                                          .copyWith(
+                                            color: palette.accent,
+                                            fontWeight: FontWeight.w800,
+                                          ),
                                     ),
                                   ),
                                   const SizedBox(width: 12),
@@ -234,16 +251,20 @@ class _ExercisePickerPageState extends State<ExercisePickerPage> {
                                       children: [
                                         Text(
                                           builtIn?.name ?? exercise.displayName,
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w600,
-                                            color: palette.fg,
-                                          ),
+                                          style: context
+                                              .yoursText(YoursTextRole.body)
+                                              .copyWith(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w600,
+                                                color: palette.fg,
+                                              ),
                                         ),
                                         const SizedBox(height: 2),
                                         Text(
                                           summary.isEmpty ? context.l10n.notCategorized : summary,
-                                          style: TextStyle(fontSize: 12, color: palette.muted),
+                                          style: context
+                                              .yoursText(YoursTextRole.body)
+                                              .copyWith(fontSize: 12, color: palette.muted),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                         ),
@@ -256,7 +277,7 @@ class _ExercisePickerPageState extends State<ExercisePickerPage> {
                                       vertical: 7,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: added
+                                      color: widget.allowMultiple && added
                                           ? palette.success.withValues(alpha: 0.1)
                                           : palette.accentSoft,
                                       borderRadius: BorderRadius.circular(999),
@@ -264,7 +285,7 @@ class _ExercisePickerPageState extends State<ExercisePickerPage> {
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        if (added) ...[
+                                        if (widget.allowMultiple && added) ...[
                                           Icon(
                                             Icons.check_rounded,
                                             size: 14,
@@ -273,12 +294,20 @@ class _ExercisePickerPageState extends State<ExercisePickerPage> {
                                           const SizedBox(width: 3),
                                         ],
                                         Text(
-                                          added ? context.l10n.planAdded : context.l10n.commonAdd,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w800,
-                                            color: added ? palette.success : palette.accent,
-                                          ),
+                                          widget.allowMultiple
+                                              ? (added
+                                                    ? context.l10n.planAdded
+                                                    : context.l10n.commonAdd)
+                                              : context.l10n.workoutChooseExercise,
+                                          style: context
+                                              .yoursText(YoursTextRole.body)
+                                              .copyWith(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w800,
+                                                color: widget.allowMultiple && added
+                                                    ? palette.success
+                                                    : palette.accent,
+                                              ),
                                         ),
                                       ],
                                     ),
