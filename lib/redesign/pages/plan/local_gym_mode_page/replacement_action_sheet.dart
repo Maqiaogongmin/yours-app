@@ -27,7 +27,9 @@ class _ReplacementActionSheetState extends State<_ReplacementActionSheet> {
     super.initState();
     final action = widget.initialAction;
     _recordMode = normalizeLocalRecordMode(action.recordMode);
-    _setsCtrl = TextEditingController(text: action.targetSets.toString());
+    _setsCtrl = TextEditingController(
+      text: normalizeTargetSetsForRecordMode(action.recordMode, action.targetSets).toString(),
+    );
     _repsCtrl = TextEditingController(text: action.targetReps.toString());
     _weightCtrl = TextEditingController(text: _formatWeight(action.targetWeight));
     _durationCtrl = TextEditingController(text: action.targetDurationSeconds?.toString() ?? '');
@@ -66,8 +68,17 @@ class _ReplacementActionSheetState extends State<_ReplacementActionSheet> {
   }
 
   void _confirm() {
+    final normalizedRecordMode = normalizeLocalRecordMode(_recordMode);
+    final targetSets = _setsCtrl.text.trim().isEmpty
+        ? defaultTargetSetsForRecordMode(normalizedRecordMode)
+        : _intValue(
+            _setsCtrl,
+            defaultTargetSetsForRecordMode(normalizedRecordMode),
+            min: 1,
+            max: 20,
+          );
     final action = widget.initialAction.copyWith(
-      targetSets: _intValue(_setsCtrl, widget.initialAction.targetSets, min: 1, max: 20),
+      targetSets: targetSets,
       targetReps: _intValue(_repsCtrl, widget.initialAction.targetReps, min: 1, max: 50),
       targetWeight: _weightValue(),
       clearTargetWeight: _weightCtrl.text.trim().isEmpty,
@@ -83,7 +94,7 @@ class _ReplacementActionSheetState extends State<_ReplacementActionSheet> {
               max: 24 * 60 * 60,
             ),
       clearTargetDurationSeconds: _durationCtrl.text.trim().isEmpty,
-      recordMode: _recordMode,
+      recordMode: normalizedRecordMode,
       note: _noteCtrl.text,
     );
     Navigator.pop(context, action);

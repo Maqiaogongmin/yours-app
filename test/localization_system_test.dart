@@ -32,6 +32,23 @@ void main() {
     );
   });
 
+  test('unsupported system locales fall back to English', () {
+    expect(
+      resolveYoursLocales(
+        const [Locale('fr', 'FR')],
+        yoursSupportedLocales,
+      ),
+      const Locale('en'),
+    );
+    expect(
+      resolveYoursLocales(
+        const [Locale('de', 'DE'), Locale('ja', 'JP')],
+        yoursSupportedLocales,
+      ),
+      const Locale('ja'),
+    );
+  });
+
   test('locale controller accepts legacy language-code preferences', () async {
     final controller = YoursLocaleController(readLocale: () async => 'zh');
     await controller.load();

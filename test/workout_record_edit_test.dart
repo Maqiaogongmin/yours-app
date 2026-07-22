@@ -268,6 +268,49 @@ void main() {
     expect(logs.single.durationSeconds, 50 * 60);
   });
 
+  testWidgets('interrupted empty workout asks for an exercise before saving', (tester) async {
+    tester.view.physicalSize = const Size(430, 932);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    final db = LocalTrainingDatabase.inMemory(NativeDatabase.memory());
+    addTearDown(db.close);
+    final repository = LocalTrainingRepository(db);
+    final plan = LocalTrainingPlanModel(name: '中断测试', totalWeeks: 1, daysPerWeek: 1);
+    plan.days['1-1'] = LocalTrainingDayModel(week: 1, day: 1, name: 'D1');
+    await repository.savePlan(plan);
+    final savedPlan = (await repository.getPlans()).single;
+    final day = savedPlan.days.values.single;
+    final sessionId = await repository.startSession(savedPlan, day);
+    final startedAt = DateTime(2026, 7, 1, 20);
+    await repository.updateWorkoutSession(
+      sessionId: sessionId,
+      startedAt: startedAt,
+      endedAt: null,
+      note: '',
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        locale: const Locale('zh'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        theme: yoursLightTheme,
+        home: WorkoutRecordDetailPage(date: startedAt, repository: repository),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byKey(ValueKey('session-$sessionId-end-hours')), '20');
+    await tester.enterText(find.byKey(ValueKey('session-$sessionId-end-minutes')), '45');
+    await tester.tap(find.text('保存'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('保存失败：请先添加动作'), findsOneWidget);
+    expect(find.text('保存失败：未知错误'), findsNothing);
+  });
+
   testWidgets('unfinished workout with an existing log keeps split end time after reopening', (
     tester,
   ) async {

@@ -15,6 +15,8 @@ import 'package:flutter/services.dart';
 import 'package:yours/redesign/data/app_database.dart';
 import 'package:yours/redesign/data/app_update_service.dart';
 import 'package:yours/redesign/data/backup_service.dart';
+import 'package:yours/redesign/data/backup_platform_bridge.dart';
+import 'package:yours/redesign/data/harmony_sqlite.dart';
 import 'package:yours/redesign/data/local_sync_queue_repository.dart';
 import 'package:yours/redesign/data/local_training_database.dart';
 import 'package:yours/redesign/data/redesign_data_refresh.dart';
@@ -36,7 +38,76 @@ part 'profile_page/profile_actions_settings.dart';
 part 'profile_page/profile_actions_vault.dart';
 
 const _officialWebsiteUrl = 'https://yours-app.uk';
+const _privacyPolicyUrl = 'https://yours-app.uk/privacy-policy.html';
 const _githubRepositoryUrl = 'https://github.com/Maqiaogongmin/yours-app';
+const _harmonyFilesChannel = MethodChannel('yours/files');
+
+Future<bool> _openExternalUrlOnHarmonyOS(String url) async {
+  final launched = await _harmonyFilesChannel.invokeMethod<bool>(
+    'openExternalUrl',
+    {'url': url},
+  );
+  return launched ?? false;
+}
+
+void _showExternalUrlFailureMessage(BuildContext context, String message) {
+  final overlay = Overlay.maybeOf(context, rootOverlay: true);
+  if (overlay == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), behavior: SnackBarBehavior.floating),
+    );
+    return;
+  }
+
+  late final OverlayEntry entry;
+  entry = OverlayEntry(
+    builder: (overlayContext) {
+      final bottomInset = MediaQuery.viewInsetsOf(overlayContext).bottom;
+      return Positioned(
+        left: 18,
+        right: 18,
+        bottom: bottomInset + 24,
+        child: IgnorePointer(
+          child: SafeArea(
+            top: false,
+            child: Material(
+              color: Colors.transparent,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Theme.of(overlayContext).colorScheme.inverseSurface,
+                  borderRadius: BorderRadius.circular(14),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color(0x33000000),
+                      blurRadius: 18,
+                      offset: Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  child: Text(
+                    message,
+                    style: Theme.of(overlayContext).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(overlayContext).colorScheme.onInverseSurface,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    },
+  );
+  overlay.insert(entry);
+  Timer(const Duration(seconds: 3), () {
+    if (entry.mounted) {
+      entry.remove();
+    }
+  });
+}
 
 Future<void> _openExternalUrl(
   BuildContext context,
@@ -45,22 +116,20 @@ Future<void> _openExternalUrl(
 }) async {
   final resolvedFailureMessage = failureMessage ?? context.l10n.profileOpenLinkFailed;
   try {
-    final launched = await launchUrl(
-      Uri.parse(url),
-      mode: LaunchMode.externalApplication,
-    );
+    final launched = isHarmonyOS
+        ? await _openExternalUrlOnHarmonyOS(url)
+        : await launchUrl(
+            Uri.parse(url),
+            mode: LaunchMode.externalApplication,
+          );
     if (!launched && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(resolvedFailureMessage), behavior: SnackBarBehavior.floating),
-      );
+      _showExternalUrlFailureMessage(context, resolvedFailureMessage);
     }
   } on Object {
     if (!context.mounted) {
       return;
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(resolvedFailureMessage), behavior: SnackBarBehavior.floating),
-    );
+    _showExternalUrlFailureMessage(context, resolvedFailureMessage);
   }
 }
 

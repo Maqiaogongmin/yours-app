@@ -20,6 +20,7 @@ void main() {
     }
     source.copySync('${root.path}/lib/l10n/${language.arbFileName}');
     _writeNativeResources(root, language);
+    _writeHarmonyResources(root, language);
   }
 
   _writeRegistry(root, enabled);
@@ -218,6 +219,10 @@ void _writeNativeResources(Directory root, LanguageDefinition language) {
         'NSPhotoLibraryUsageDescription',
         platform['photo_library_usage'] as String,
       ),
+      _appleString(
+        'NSPhotoLibraryAddUsageDescription',
+        platform['photo_library_add_usage'] as String,
+      ),
       '',
     ].join('\n'),
   );
@@ -241,6 +246,53 @@ void _writeNativeResources(Directory root, LanguageDefinition language) {
     '    <string name="app_name">${_xmlEscape(platform['app_name'] as String)}</string>\n'
     '</resources>\n',
   );
+}
+
+void _writeHarmonyResources(Directory root, LanguageDefinition language) {
+  final platformFile = File(
+    '${root.path}/localization/${language.directoryName}/platform.yaml',
+  );
+  final platform = loadYaml(platformFile.readAsStringSync()) as YamlMap;
+  final appName = platform['app_name'] as String;
+  final qualifier = switch (language.flutterLocale) {
+    'zh' => 'zh_CN',
+    'en' => 'en_US',
+    'ja' => 'ja_JP',
+    final locale => locale.replaceAll('-', '_'),
+  };
+  final appScopeStrings = {
+    'string': [
+      {'name': 'app_name', 'value': appName},
+    ],
+  };
+  final entryStrings = {
+    'string': [
+      {'name': 'module_desc', 'value': appName},
+      {'name': 'EntryAbility_desc', 'value': appName},
+      {'name': 'EntryAbility_label', 'value': appName},
+    ],
+  };
+  const encoder = JsonEncoder.withIndent('  ');
+
+  void writeResources(String directoryName) {
+    final appScopeDirectory = Directory(
+      '${root.path}/ohos/AppScope/resources/$directoryName/element',
+    )..createSync(recursive: true);
+    final entryDirectory = Directory(
+      '${root.path}/ohos/entry/src/main/resources/$directoryName/element',
+    )..createSync(recursive: true);
+    File('${appScopeDirectory.path}/string.json').writeAsStringSync(
+      '${encoder.convert(appScopeStrings)}\n',
+    );
+    File('${entryDirectory.path}/string.json').writeAsStringSync(
+      '${encoder.convert(entryStrings)}\n',
+    );
+  }
+
+  writeResources(qualifier);
+  if (language.flutterLocale == 'zh') {
+    writeResources('base');
+  }
 }
 
 void _writeAndroidLocaleConfig(

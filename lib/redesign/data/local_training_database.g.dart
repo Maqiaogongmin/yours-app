@@ -3,7 +3,8 @@
 part of 'local_training_database.dart';
 
 // ignore_for_file: type=lint
-class $LocalRoutinesTable extends LocalRoutines with TableInfo<$LocalRoutinesTable, LocalRoutine> {
+class $LocalRoutinesTable extends LocalRoutines
+    with TableInfo<$LocalRoutinesTable, LocalRoutine> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -90,18 +91,18 @@ class $LocalRoutinesTable extends LocalRoutines with TableInfo<$LocalRoutinesTab
     ),
     defaultValue: const Constant(false),
   );
-  static const VerificationMeta _completedWeeksJsonMeta = const VerificationMeta(
-    'completedWeeksJson',
-  );
+  static const VerificationMeta _completedWeeksJsonMeta =
+      const VerificationMeta('completedWeeksJson');
   @override
-  late final GeneratedColumn<String> completedWeeksJson = GeneratedColumn<String>(
-    'completed_weeks_json',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-    defaultValue: const Constant('[]'),
-  );
+  late final GeneratedColumn<String> completedWeeksJson =
+      GeneratedColumn<String>(
+        'completed_weeks_json',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: const Constant('[]'),
+      );
   static const VerificationMeta _syncStatusMeta = const VerificationMeta(
     'syncStatus',
   );
@@ -376,7 +377,9 @@ class LocalRoutine extends DataClass implements Insertable<LocalRoutine> {
     return LocalRoutinesCompanion(
       id: Value(id),
       syncId: Value(syncId),
-      remoteId: remoteId == null && nullToAbsent ? const Value.absent() : Value(remoteId),
+      remoteId: remoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(remoteId),
       name: Value(name),
       totalWeeks: Value(totalWeeks),
       daysPerWeek: Value(daysPerWeek),
@@ -463,13 +466,19 @@ class LocalRoutine extends DataClass implements Insertable<LocalRoutine> {
       syncId: data.syncId.present ? data.syncId.value : this.syncId,
       remoteId: data.remoteId.present ? data.remoteId.value : this.remoteId,
       name: data.name.present ? data.name.value : this.name,
-      totalWeeks: data.totalWeeks.present ? data.totalWeeks.value : this.totalWeeks,
-      daysPerWeek: data.daysPerWeek.present ? data.daysPerWeek.value : this.daysPerWeek,
+      totalWeeks: data.totalWeeks.present
+          ? data.totalWeeks.value
+          : this.totalWeeks,
+      daysPerWeek: data.daysPerWeek.present
+          ? data.daysPerWeek.value
+          : this.daysPerWeek,
       archived: data.archived.present ? data.archived.value : this.archived,
       completedWeeksJson: data.completedWeeksJson.present
           ? data.completedWeeksJson.value
           : this.completedWeeksJson,
-      syncStatus: data.syncStatus.present ? data.syncStatus.value : this.syncStatus,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
       deleted: data.deleted.present ? data.deleted.value : this.deleted,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
@@ -593,7 +602,8 @@ class LocalRoutinesCompanion extends UpdateCompanion<LocalRoutine> {
       if (totalWeeks != null) 'total_weeks': totalWeeks,
       if (daysPerWeek != null) 'days_per_week': daysPerWeek,
       if (archived != null) 'archived': archived,
-      if (completedWeeksJson != null) 'completed_weeks_json': completedWeeksJson,
+      if (completedWeeksJson != null)
+        'completed_weeks_json': completedWeeksJson,
       if (syncStatus != null) 'sync_status': syncStatus,
       if (deleted != null) 'deleted': deleted,
       if (createdAt != null) 'created_at': createdAt,
@@ -962,7 +972,8 @@ class $LocalTrainingDaysTable extends LocalTrainingDays
   }
 }
 
-class LocalTrainingDay extends DataClass implements Insertable<LocalTrainingDay> {
+class LocalTrainingDay extends DataClass
+    implements Insertable<LocalTrainingDay> {
   final int id;
   final String syncId;
   final int? remoteId;
@@ -1007,7 +1018,9 @@ class LocalTrainingDay extends DataClass implements Insertable<LocalTrainingDay>
     return LocalTrainingDaysCompanion(
       id: Value(id),
       syncId: Value(syncId),
-      remoteId: remoteId == null && nullToAbsent ? const Value.absent() : Value(remoteId),
+      remoteId: remoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(remoteId),
       routineId: Value(routineId),
       week: Value(week),
       day: Value(day),
@@ -1085,8 +1098,12 @@ class LocalTrainingDay extends DataClass implements Insertable<LocalTrainingDay>
       week: data.week.present ? data.week.value : this.week,
       day: data.day.present ? data.day.value : this.day,
       name: data.name.present ? data.name.value : this.name,
-      actionsJson: data.actionsJson.present ? data.actionsJson.value : this.actionsJson,
-      syncStatus: data.syncStatus.present ? data.syncStatus.value : this.syncStatus,
+      actionsJson: data.actionsJson.present
+          ? data.actionsJson.value
+          : this.actionsJson,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
     );
   }
@@ -1282,7 +1299,8 @@ class LocalTrainingDaysCompanion extends UpdateCompanion<LocalTrainingDay> {
   }
 }
 
-class $LocalSlotsTable extends LocalSlots with TableInfo<$LocalSlotsTable, LocalSlot> {
+class $LocalSlotsTable extends LocalSlots
+    with TableInfo<$LocalSlotsTable, LocalSlot> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -1487,7 +1505,9 @@ class LocalSlot extends DataClass implements Insertable<LocalSlot> {
     return LocalSlotsCompanion(
       id: Value(id),
       syncId: Value(syncId),
-      remoteId: remoteId == null && nullToAbsent ? const Value.absent() : Value(remoteId),
+      remoteId: remoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(remoteId),
       dayId: Value(dayId),
       order: Value(order),
       syncStatus: Value(syncStatus),
@@ -1543,7 +1563,9 @@ class LocalSlot extends DataClass implements Insertable<LocalSlot> {
       remoteId: data.remoteId.present ? data.remoteId.value : this.remoteId,
       dayId: data.dayId.present ? data.dayId.value : this.dayId,
       order: data.order.present ? data.order.value : this.order,
-      syncStatus: data.syncStatus.present ? data.syncStatus.value : this.syncStatus,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
     );
   }
 
@@ -1561,7 +1583,8 @@ class LocalSlot extends DataClass implements Insertable<LocalSlot> {
   }
 
   @override
-  int get hashCode => Object.hash(id, syncId, remoteId, dayId, order, syncStatus);
+  int get hashCode =>
+      Object.hash(id, syncId, remoteId, dayId, order, syncStatus);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2019,12 +2042,18 @@ class LocalSlotEntry extends DataClass implements Insertable<LocalSlotEntry> {
     return LocalSlotEntriesCompanion(
       id: Value(id),
       syncId: Value(syncId),
-      remoteId: remoteId == null && nullToAbsent ? const Value.absent() : Value(remoteId),
+      remoteId: remoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(remoteId),
       slotId: Value(slotId),
       exerciseName: Value(exerciseName),
-      exerciseId: exerciseId == null && nullToAbsent ? const Value.absent() : Value(exerciseId),
+      exerciseId: exerciseId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(exerciseId),
       targetSets: Value(targetSets),
-      targetReps: targetReps == null && nullToAbsent ? const Value.absent() : Value(targetReps),
+      targetReps: targetReps == null && nullToAbsent
+          ? const Value.absent()
+          : Value(targetReps),
       targetWeight: targetWeight == null && nullToAbsent
           ? const Value.absent()
           : Value(targetWeight),
@@ -2101,13 +2130,27 @@ class LocalSlotEntry extends DataClass implements Insertable<LocalSlotEntry> {
       syncId: data.syncId.present ? data.syncId.value : this.syncId,
       remoteId: data.remoteId.present ? data.remoteId.value : this.remoteId,
       slotId: data.slotId.present ? data.slotId.value : this.slotId,
-      exerciseName: data.exerciseName.present ? data.exerciseName.value : this.exerciseName,
-      exerciseId: data.exerciseId.present ? data.exerciseId.value : this.exerciseId,
-      targetSets: data.targetSets.present ? data.targetSets.value : this.targetSets,
-      targetReps: data.targetReps.present ? data.targetReps.value : this.targetReps,
-      targetWeight: data.targetWeight.present ? data.targetWeight.value : this.targetWeight,
-      recordMode: data.recordMode.present ? data.recordMode.value : this.recordMode,
-      syncStatus: data.syncStatus.present ? data.syncStatus.value : this.syncStatus,
+      exerciseName: data.exerciseName.present
+          ? data.exerciseName.value
+          : this.exerciseName,
+      exerciseId: data.exerciseId.present
+          ? data.exerciseId.value
+          : this.exerciseId,
+      targetSets: data.targetSets.present
+          ? data.targetSets.value
+          : this.targetSets,
+      targetReps: data.targetReps.present
+          ? data.targetReps.value
+          : this.targetReps,
+      targetWeight: data.targetWeight.present
+          ? data.targetWeight.value
+          : this.targetWeight,
+      recordMode: data.recordMode.present
+          ? data.recordMode.value
+          : this.recordMode,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
     );
   }
 
@@ -2379,6 +2422,77 @@ class $LocalWorkoutSessionsTable extends LocalWorkoutSessions
       'REFERENCES local_training_days (id)',
     ),
   );
+  static const VerificationMeta _routineNameSnapshotMeta =
+      const VerificationMeta('routineNameSnapshot');
+  @override
+  late final GeneratedColumn<String> routineNameSnapshot =
+      GeneratedColumn<String>(
+        'routine_name_snapshot',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: const Constant(''),
+      );
+  static const VerificationMeta _routineSyncIdSnapshotMeta =
+      const VerificationMeta('routineSyncIdSnapshot');
+  @override
+  late final GeneratedColumn<String> routineSyncIdSnapshot =
+      GeneratedColumn<String>(
+        'routine_sync_id_snapshot',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: const Constant(''),
+      );
+  static const VerificationMeta _dayNameSnapshotMeta = const VerificationMeta(
+    'dayNameSnapshot',
+  );
+  @override
+  late final GeneratedColumn<String> dayNameSnapshot = GeneratedColumn<String>(
+    'day_name_snapshot',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _dayWeekSnapshotMeta = const VerificationMeta(
+    'dayWeekSnapshot',
+  );
+  @override
+  late final GeneratedColumn<int> dayWeekSnapshot = GeneratedColumn<int>(
+    'day_week_snapshot',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _dayIndexSnapshotMeta = const VerificationMeta(
+    'dayIndexSnapshot',
+  );
+  @override
+  late final GeneratedColumn<int> dayIndexSnapshot = GeneratedColumn<int>(
+    'day_index_snapshot',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _daySyncIdSnapshotMeta = const VerificationMeta(
+    'daySyncIdSnapshot',
+  );
+  @override
+  late final GeneratedColumn<String> daySyncIdSnapshot =
+      GeneratedColumn<String>(
+        'day_sync_id_snapshot',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: const Constant(''),
+      );
   static const VerificationMeta _startedAtMeta = const VerificationMeta(
     'startedAt',
   );
@@ -2441,6 +2555,12 @@ class $LocalWorkoutSessionsTable extends LocalWorkoutSessions
     remoteId,
     routineId,
     dayId,
+    routineNameSnapshot,
+    routineSyncIdSnapshot,
+    dayNameSnapshot,
+    dayWeekSnapshot,
+    dayIndexSnapshot,
+    daySyncIdSnapshot,
     startedAt,
     endedAt,
     note,
@@ -2486,6 +2606,60 @@ class $LocalWorkoutSessionsTable extends LocalWorkoutSessions
       context.handle(
         _dayIdMeta,
         dayId.isAcceptableOrUnknown(data['day_id']!, _dayIdMeta),
+      );
+    }
+    if (data.containsKey('routine_name_snapshot')) {
+      context.handle(
+        _routineNameSnapshotMeta,
+        routineNameSnapshot.isAcceptableOrUnknown(
+          data['routine_name_snapshot']!,
+          _routineNameSnapshotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('routine_sync_id_snapshot')) {
+      context.handle(
+        _routineSyncIdSnapshotMeta,
+        routineSyncIdSnapshot.isAcceptableOrUnknown(
+          data['routine_sync_id_snapshot']!,
+          _routineSyncIdSnapshotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('day_name_snapshot')) {
+      context.handle(
+        _dayNameSnapshotMeta,
+        dayNameSnapshot.isAcceptableOrUnknown(
+          data['day_name_snapshot']!,
+          _dayNameSnapshotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('day_week_snapshot')) {
+      context.handle(
+        _dayWeekSnapshotMeta,
+        dayWeekSnapshot.isAcceptableOrUnknown(
+          data['day_week_snapshot']!,
+          _dayWeekSnapshotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('day_index_snapshot')) {
+      context.handle(
+        _dayIndexSnapshotMeta,
+        dayIndexSnapshot.isAcceptableOrUnknown(
+          data['day_index_snapshot']!,
+          _dayIndexSnapshotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('day_sync_id_snapshot')) {
+      context.handle(
+        _daySyncIdSnapshotMeta,
+        daySyncIdSnapshot.isAcceptableOrUnknown(
+          data['day_sync_id_snapshot']!,
+          _daySyncIdSnapshotMeta,
+        ),
       );
     }
     if (data.containsKey('started_at')) {
@@ -2551,6 +2725,30 @@ class $LocalWorkoutSessionsTable extends LocalWorkoutSessions
         DriftSqlType.int,
         data['${effectivePrefix}day_id'],
       ),
+      routineNameSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}routine_name_snapshot'],
+      )!,
+      routineSyncIdSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}routine_sync_id_snapshot'],
+      )!,
+      dayNameSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}day_name_snapshot'],
+      )!,
+      dayWeekSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}day_week_snapshot'],
+      ),
+      dayIndexSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}day_index_snapshot'],
+      ),
+      daySyncIdSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}day_sync_id_snapshot'],
+      )!,
       startedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}started_at'],
@@ -2580,12 +2778,19 @@ class $LocalWorkoutSessionsTable extends LocalWorkoutSessions
   }
 }
 
-class LocalWorkoutSession extends DataClass implements Insertable<LocalWorkoutSession> {
+class LocalWorkoutSession extends DataClass
+    implements Insertable<LocalWorkoutSession> {
   final int id;
   final String syncId;
   final int? remoteId;
   final int routineId;
   final int? dayId;
+  final String routineNameSnapshot;
+  final String routineSyncIdSnapshot;
+  final String dayNameSnapshot;
+  final int? dayWeekSnapshot;
+  final int? dayIndexSnapshot;
+  final String daySyncIdSnapshot;
   final DateTime startedAt;
   final DateTime? endedAt;
   final String note;
@@ -2597,6 +2802,12 @@ class LocalWorkoutSession extends DataClass implements Insertable<LocalWorkoutSe
     this.remoteId,
     required this.routineId,
     this.dayId,
+    required this.routineNameSnapshot,
+    required this.routineSyncIdSnapshot,
+    required this.dayNameSnapshot,
+    this.dayWeekSnapshot,
+    this.dayIndexSnapshot,
+    required this.daySyncIdSnapshot,
     required this.startedAt,
     this.endedAt,
     required this.note,
@@ -2615,6 +2826,16 @@ class LocalWorkoutSession extends DataClass implements Insertable<LocalWorkoutSe
     if (!nullToAbsent || dayId != null) {
       map['day_id'] = Variable<int>(dayId);
     }
+    map['routine_name_snapshot'] = Variable<String>(routineNameSnapshot);
+    map['routine_sync_id_snapshot'] = Variable<String>(routineSyncIdSnapshot);
+    map['day_name_snapshot'] = Variable<String>(dayNameSnapshot);
+    if (!nullToAbsent || dayWeekSnapshot != null) {
+      map['day_week_snapshot'] = Variable<int>(dayWeekSnapshot);
+    }
+    if (!nullToAbsent || dayIndexSnapshot != null) {
+      map['day_index_snapshot'] = Variable<int>(dayIndexSnapshot);
+    }
+    map['day_sync_id_snapshot'] = Variable<String>(daySyncIdSnapshot);
     map['started_at'] = Variable<DateTime>(startedAt);
     if (!nullToAbsent || endedAt != null) {
       map['ended_at'] = Variable<DateTime>(endedAt);
@@ -2629,11 +2850,27 @@ class LocalWorkoutSession extends DataClass implements Insertable<LocalWorkoutSe
     return LocalWorkoutSessionsCompanion(
       id: Value(id),
       syncId: Value(syncId),
-      remoteId: remoteId == null && nullToAbsent ? const Value.absent() : Value(remoteId),
+      remoteId: remoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(remoteId),
       routineId: Value(routineId),
-      dayId: dayId == null && nullToAbsent ? const Value.absent() : Value(dayId),
+      dayId: dayId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dayId),
+      routineNameSnapshot: Value(routineNameSnapshot),
+      routineSyncIdSnapshot: Value(routineSyncIdSnapshot),
+      dayNameSnapshot: Value(dayNameSnapshot),
+      dayWeekSnapshot: dayWeekSnapshot == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dayWeekSnapshot),
+      dayIndexSnapshot: dayIndexSnapshot == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dayIndexSnapshot),
+      daySyncIdSnapshot: Value(daySyncIdSnapshot),
       startedAt: Value(startedAt),
-      endedAt: endedAt == null && nullToAbsent ? const Value.absent() : Value(endedAt),
+      endedAt: endedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(endedAt),
       note: Value(note),
       syncStatus: Value(syncStatus),
       updatedAt: Value(updatedAt),
@@ -2651,6 +2888,16 @@ class LocalWorkoutSession extends DataClass implements Insertable<LocalWorkoutSe
       remoteId: serializer.fromJson<int?>(json['remoteId']),
       routineId: serializer.fromJson<int>(json['routineId']),
       dayId: serializer.fromJson<int?>(json['dayId']),
+      routineNameSnapshot: serializer.fromJson<String>(
+        json['routineNameSnapshot'],
+      ),
+      routineSyncIdSnapshot: serializer.fromJson<String>(
+        json['routineSyncIdSnapshot'],
+      ),
+      dayNameSnapshot: serializer.fromJson<String>(json['dayNameSnapshot']),
+      dayWeekSnapshot: serializer.fromJson<int?>(json['dayWeekSnapshot']),
+      dayIndexSnapshot: serializer.fromJson<int?>(json['dayIndexSnapshot']),
+      daySyncIdSnapshot: serializer.fromJson<String>(json['daySyncIdSnapshot']),
       startedAt: serializer.fromJson<DateTime>(json['startedAt']),
       endedAt: serializer.fromJson<DateTime?>(json['endedAt']),
       note: serializer.fromJson<String>(json['note']),
@@ -2667,6 +2914,12 @@ class LocalWorkoutSession extends DataClass implements Insertable<LocalWorkoutSe
       'remoteId': serializer.toJson<int?>(remoteId),
       'routineId': serializer.toJson<int>(routineId),
       'dayId': serializer.toJson<int?>(dayId),
+      'routineNameSnapshot': serializer.toJson<String>(routineNameSnapshot),
+      'routineSyncIdSnapshot': serializer.toJson<String>(routineSyncIdSnapshot),
+      'dayNameSnapshot': serializer.toJson<String>(dayNameSnapshot),
+      'dayWeekSnapshot': serializer.toJson<int?>(dayWeekSnapshot),
+      'dayIndexSnapshot': serializer.toJson<int?>(dayIndexSnapshot),
+      'daySyncIdSnapshot': serializer.toJson<String>(daySyncIdSnapshot),
       'startedAt': serializer.toJson<DateTime>(startedAt),
       'endedAt': serializer.toJson<DateTime?>(endedAt),
       'note': serializer.toJson<String>(note),
@@ -2681,6 +2934,12 @@ class LocalWorkoutSession extends DataClass implements Insertable<LocalWorkoutSe
     Value<int?> remoteId = const Value.absent(),
     int? routineId,
     Value<int?> dayId = const Value.absent(),
+    String? routineNameSnapshot,
+    String? routineSyncIdSnapshot,
+    String? dayNameSnapshot,
+    Value<int?> dayWeekSnapshot = const Value.absent(),
+    Value<int?> dayIndexSnapshot = const Value.absent(),
+    String? daySyncIdSnapshot,
     DateTime? startedAt,
     Value<DateTime?> endedAt = const Value.absent(),
     String? note,
@@ -2692,6 +2951,16 @@ class LocalWorkoutSession extends DataClass implements Insertable<LocalWorkoutSe
     remoteId: remoteId.present ? remoteId.value : this.remoteId,
     routineId: routineId ?? this.routineId,
     dayId: dayId.present ? dayId.value : this.dayId,
+    routineNameSnapshot: routineNameSnapshot ?? this.routineNameSnapshot,
+    routineSyncIdSnapshot: routineSyncIdSnapshot ?? this.routineSyncIdSnapshot,
+    dayNameSnapshot: dayNameSnapshot ?? this.dayNameSnapshot,
+    dayWeekSnapshot: dayWeekSnapshot.present
+        ? dayWeekSnapshot.value
+        : this.dayWeekSnapshot,
+    dayIndexSnapshot: dayIndexSnapshot.present
+        ? dayIndexSnapshot.value
+        : this.dayIndexSnapshot,
+    daySyncIdSnapshot: daySyncIdSnapshot ?? this.daySyncIdSnapshot,
     startedAt: startedAt ?? this.startedAt,
     endedAt: endedAt.present ? endedAt.value : this.endedAt,
     note: note ?? this.note,
@@ -2705,10 +2974,30 @@ class LocalWorkoutSession extends DataClass implements Insertable<LocalWorkoutSe
       remoteId: data.remoteId.present ? data.remoteId.value : this.remoteId,
       routineId: data.routineId.present ? data.routineId.value : this.routineId,
       dayId: data.dayId.present ? data.dayId.value : this.dayId,
+      routineNameSnapshot: data.routineNameSnapshot.present
+          ? data.routineNameSnapshot.value
+          : this.routineNameSnapshot,
+      routineSyncIdSnapshot: data.routineSyncIdSnapshot.present
+          ? data.routineSyncIdSnapshot.value
+          : this.routineSyncIdSnapshot,
+      dayNameSnapshot: data.dayNameSnapshot.present
+          ? data.dayNameSnapshot.value
+          : this.dayNameSnapshot,
+      dayWeekSnapshot: data.dayWeekSnapshot.present
+          ? data.dayWeekSnapshot.value
+          : this.dayWeekSnapshot,
+      dayIndexSnapshot: data.dayIndexSnapshot.present
+          ? data.dayIndexSnapshot.value
+          : this.dayIndexSnapshot,
+      daySyncIdSnapshot: data.daySyncIdSnapshot.present
+          ? data.daySyncIdSnapshot.value
+          : this.daySyncIdSnapshot,
       startedAt: data.startedAt.present ? data.startedAt.value : this.startedAt,
       endedAt: data.endedAt.present ? data.endedAt.value : this.endedAt,
       note: data.note.present ? data.note.value : this.note,
-      syncStatus: data.syncStatus.present ? data.syncStatus.value : this.syncStatus,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
     );
   }
@@ -2721,6 +3010,12 @@ class LocalWorkoutSession extends DataClass implements Insertable<LocalWorkoutSe
           ..write('remoteId: $remoteId, ')
           ..write('routineId: $routineId, ')
           ..write('dayId: $dayId, ')
+          ..write('routineNameSnapshot: $routineNameSnapshot, ')
+          ..write('routineSyncIdSnapshot: $routineSyncIdSnapshot, ')
+          ..write('dayNameSnapshot: $dayNameSnapshot, ')
+          ..write('dayWeekSnapshot: $dayWeekSnapshot, ')
+          ..write('dayIndexSnapshot: $dayIndexSnapshot, ')
+          ..write('daySyncIdSnapshot: $daySyncIdSnapshot, ')
           ..write('startedAt: $startedAt, ')
           ..write('endedAt: $endedAt, ')
           ..write('note: $note, ')
@@ -2737,6 +3032,12 @@ class LocalWorkoutSession extends DataClass implements Insertable<LocalWorkoutSe
     remoteId,
     routineId,
     dayId,
+    routineNameSnapshot,
+    routineSyncIdSnapshot,
+    dayNameSnapshot,
+    dayWeekSnapshot,
+    dayIndexSnapshot,
+    daySyncIdSnapshot,
     startedAt,
     endedAt,
     note,
@@ -2752,6 +3053,12 @@ class LocalWorkoutSession extends DataClass implements Insertable<LocalWorkoutSe
           other.remoteId == this.remoteId &&
           other.routineId == this.routineId &&
           other.dayId == this.dayId &&
+          other.routineNameSnapshot == this.routineNameSnapshot &&
+          other.routineSyncIdSnapshot == this.routineSyncIdSnapshot &&
+          other.dayNameSnapshot == this.dayNameSnapshot &&
+          other.dayWeekSnapshot == this.dayWeekSnapshot &&
+          other.dayIndexSnapshot == this.dayIndexSnapshot &&
+          other.daySyncIdSnapshot == this.daySyncIdSnapshot &&
           other.startedAt == this.startedAt &&
           other.endedAt == this.endedAt &&
           other.note == this.note &&
@@ -2759,12 +3066,19 @@ class LocalWorkoutSession extends DataClass implements Insertable<LocalWorkoutSe
           other.updatedAt == this.updatedAt);
 }
 
-class LocalWorkoutSessionsCompanion extends UpdateCompanion<LocalWorkoutSession> {
+class LocalWorkoutSessionsCompanion
+    extends UpdateCompanion<LocalWorkoutSession> {
   final Value<int> id;
   final Value<String> syncId;
   final Value<int?> remoteId;
   final Value<int> routineId;
   final Value<int?> dayId;
+  final Value<String> routineNameSnapshot;
+  final Value<String> routineSyncIdSnapshot;
+  final Value<String> dayNameSnapshot;
+  final Value<int?> dayWeekSnapshot;
+  final Value<int?> dayIndexSnapshot;
+  final Value<String> daySyncIdSnapshot;
   final Value<DateTime> startedAt;
   final Value<DateTime?> endedAt;
   final Value<String> note;
@@ -2776,6 +3090,12 @@ class LocalWorkoutSessionsCompanion extends UpdateCompanion<LocalWorkoutSession>
     this.remoteId = const Value.absent(),
     this.routineId = const Value.absent(),
     this.dayId = const Value.absent(),
+    this.routineNameSnapshot = const Value.absent(),
+    this.routineSyncIdSnapshot = const Value.absent(),
+    this.dayNameSnapshot = const Value.absent(),
+    this.dayWeekSnapshot = const Value.absent(),
+    this.dayIndexSnapshot = const Value.absent(),
+    this.daySyncIdSnapshot = const Value.absent(),
     this.startedAt = const Value.absent(),
     this.endedAt = const Value.absent(),
     this.note = const Value.absent(),
@@ -2788,6 +3108,12 @@ class LocalWorkoutSessionsCompanion extends UpdateCompanion<LocalWorkoutSession>
     this.remoteId = const Value.absent(),
     required int routineId,
     this.dayId = const Value.absent(),
+    this.routineNameSnapshot = const Value.absent(),
+    this.routineSyncIdSnapshot = const Value.absent(),
+    this.dayNameSnapshot = const Value.absent(),
+    this.dayWeekSnapshot = const Value.absent(),
+    this.dayIndexSnapshot = const Value.absent(),
+    this.daySyncIdSnapshot = const Value.absent(),
     required DateTime startedAt,
     this.endedAt = const Value.absent(),
     this.note = const Value.absent(),
@@ -2802,6 +3128,12 @@ class LocalWorkoutSessionsCompanion extends UpdateCompanion<LocalWorkoutSession>
     Expression<int>? remoteId,
     Expression<int>? routineId,
     Expression<int>? dayId,
+    Expression<String>? routineNameSnapshot,
+    Expression<String>? routineSyncIdSnapshot,
+    Expression<String>? dayNameSnapshot,
+    Expression<int>? dayWeekSnapshot,
+    Expression<int>? dayIndexSnapshot,
+    Expression<String>? daySyncIdSnapshot,
     Expression<DateTime>? startedAt,
     Expression<DateTime>? endedAt,
     Expression<String>? note,
@@ -2814,6 +3146,14 @@ class LocalWorkoutSessionsCompanion extends UpdateCompanion<LocalWorkoutSession>
       if (remoteId != null) 'remote_id': remoteId,
       if (routineId != null) 'routine_id': routineId,
       if (dayId != null) 'day_id': dayId,
+      if (routineNameSnapshot != null)
+        'routine_name_snapshot': routineNameSnapshot,
+      if (routineSyncIdSnapshot != null)
+        'routine_sync_id_snapshot': routineSyncIdSnapshot,
+      if (dayNameSnapshot != null) 'day_name_snapshot': dayNameSnapshot,
+      if (dayWeekSnapshot != null) 'day_week_snapshot': dayWeekSnapshot,
+      if (dayIndexSnapshot != null) 'day_index_snapshot': dayIndexSnapshot,
+      if (daySyncIdSnapshot != null) 'day_sync_id_snapshot': daySyncIdSnapshot,
       if (startedAt != null) 'started_at': startedAt,
       if (endedAt != null) 'ended_at': endedAt,
       if (note != null) 'note': note,
@@ -2828,6 +3168,12 @@ class LocalWorkoutSessionsCompanion extends UpdateCompanion<LocalWorkoutSession>
     Value<int?>? remoteId,
     Value<int>? routineId,
     Value<int?>? dayId,
+    Value<String>? routineNameSnapshot,
+    Value<String>? routineSyncIdSnapshot,
+    Value<String>? dayNameSnapshot,
+    Value<int?>? dayWeekSnapshot,
+    Value<int?>? dayIndexSnapshot,
+    Value<String>? daySyncIdSnapshot,
     Value<DateTime>? startedAt,
     Value<DateTime?>? endedAt,
     Value<String>? note,
@@ -2840,6 +3186,13 @@ class LocalWorkoutSessionsCompanion extends UpdateCompanion<LocalWorkoutSession>
       remoteId: remoteId ?? this.remoteId,
       routineId: routineId ?? this.routineId,
       dayId: dayId ?? this.dayId,
+      routineNameSnapshot: routineNameSnapshot ?? this.routineNameSnapshot,
+      routineSyncIdSnapshot:
+          routineSyncIdSnapshot ?? this.routineSyncIdSnapshot,
+      dayNameSnapshot: dayNameSnapshot ?? this.dayNameSnapshot,
+      dayWeekSnapshot: dayWeekSnapshot ?? this.dayWeekSnapshot,
+      dayIndexSnapshot: dayIndexSnapshot ?? this.dayIndexSnapshot,
+      daySyncIdSnapshot: daySyncIdSnapshot ?? this.daySyncIdSnapshot,
       startedAt: startedAt ?? this.startedAt,
       endedAt: endedAt ?? this.endedAt,
       note: note ?? this.note,
@@ -2865,6 +3218,28 @@ class LocalWorkoutSessionsCompanion extends UpdateCompanion<LocalWorkoutSession>
     }
     if (dayId.present) {
       map['day_id'] = Variable<int>(dayId.value);
+    }
+    if (routineNameSnapshot.present) {
+      map['routine_name_snapshot'] = Variable<String>(
+        routineNameSnapshot.value,
+      );
+    }
+    if (routineSyncIdSnapshot.present) {
+      map['routine_sync_id_snapshot'] = Variable<String>(
+        routineSyncIdSnapshot.value,
+      );
+    }
+    if (dayNameSnapshot.present) {
+      map['day_name_snapshot'] = Variable<String>(dayNameSnapshot.value);
+    }
+    if (dayWeekSnapshot.present) {
+      map['day_week_snapshot'] = Variable<int>(dayWeekSnapshot.value);
+    }
+    if (dayIndexSnapshot.present) {
+      map['day_index_snapshot'] = Variable<int>(dayIndexSnapshot.value);
+    }
+    if (daySyncIdSnapshot.present) {
+      map['day_sync_id_snapshot'] = Variable<String>(daySyncIdSnapshot.value);
     }
     if (startedAt.present) {
       map['started_at'] = Variable<DateTime>(startedAt.value);
@@ -2892,6 +3267,12 @@ class LocalWorkoutSessionsCompanion extends UpdateCompanion<LocalWorkoutSession>
           ..write('remoteId: $remoteId, ')
           ..write('routineId: $routineId, ')
           ..write('dayId: $dayId, ')
+          ..write('routineNameSnapshot: $routineNameSnapshot, ')
+          ..write('routineSyncIdSnapshot: $routineSyncIdSnapshot, ')
+          ..write('dayNameSnapshot: $dayNameSnapshot, ')
+          ..write('dayWeekSnapshot: $dayWeekSnapshot, ')
+          ..write('dayIndexSnapshot: $dayIndexSnapshot, ')
+          ..write('daySyncIdSnapshot: $daySyncIdSnapshot, ')
           ..write('startedAt: $startedAt, ')
           ..write('endedAt: $endedAt, ')
           ..write('note: $note, ')
@@ -3045,6 +3426,64 @@ class $LocalWorkoutLogsTable extends LocalWorkoutLogs
     requiredDuringInsert: false,
     defaultValue: const Constant(0),
   );
+  static const VerificationMeta _actualWeightMeta = const VerificationMeta(
+    'actualWeight',
+  );
+  @override
+  late final GeneratedColumn<double> actualWeight = GeneratedColumn<double>(
+    'actual_weight',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _actualRepsMeta = const VerificationMeta(
+    'actualReps',
+  );
+  @override
+  late final GeneratedColumn<int> actualReps = GeneratedColumn<int>(
+    'actual_reps',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _actualDurationSecondsMeta =
+      const VerificationMeta('actualDurationSeconds');
+  @override
+  late final GeneratedColumn<int> actualDurationSeconds = GeneratedColumn<int>(
+    'actual_duration_seconds',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _restSecondsMeta = const VerificationMeta(
+    'restSeconds',
+  );
+  @override
+  late final GeneratedColumn<int> restSeconds = GeneratedColumn<int>(
+    'rest_seconds',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _hasActualValuesMeta = const VerificationMeta(
+    'hasActualValues',
+  );
+  @override
+  late final GeneratedColumn<bool> hasActualValues = GeneratedColumn<bool>(
+    'has_actual_values',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("has_actual_values" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
   static const VerificationMeta _recordModeMeta = const VerificationMeta(
     'recordMode',
   );
@@ -3104,6 +3543,11 @@ class $LocalWorkoutLogsTable extends LocalWorkoutLogs
     reps,
     rir,
     durationSeconds,
+    actualWeight,
+    actualReps,
+    actualDurationSeconds,
+    restSeconds,
+    hasActualValues,
     recordMode,
     note,
     syncStatus,
@@ -3204,6 +3648,48 @@ class $LocalWorkoutLogsTable extends LocalWorkoutLogs
         ),
       );
     }
+    if (data.containsKey('actual_weight')) {
+      context.handle(
+        _actualWeightMeta,
+        actualWeight.isAcceptableOrUnknown(
+          data['actual_weight']!,
+          _actualWeightMeta,
+        ),
+      );
+    }
+    if (data.containsKey('actual_reps')) {
+      context.handle(
+        _actualRepsMeta,
+        actualReps.isAcceptableOrUnknown(data['actual_reps']!, _actualRepsMeta),
+      );
+    }
+    if (data.containsKey('actual_duration_seconds')) {
+      context.handle(
+        _actualDurationSecondsMeta,
+        actualDurationSeconds.isAcceptableOrUnknown(
+          data['actual_duration_seconds']!,
+          _actualDurationSecondsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('rest_seconds')) {
+      context.handle(
+        _restSecondsMeta,
+        restSeconds.isAcceptableOrUnknown(
+          data['rest_seconds']!,
+          _restSecondsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('has_actual_values')) {
+      context.handle(
+        _hasActualValuesMeta,
+        hasActualValues.isAcceptableOrUnknown(
+          data['has_actual_values']!,
+          _hasActualValuesMeta,
+        ),
+      );
+    }
     if (data.containsKey('record_mode')) {
       context.handle(
         _recordModeMeta,
@@ -3287,6 +3773,26 @@ class $LocalWorkoutLogsTable extends LocalWorkoutLogs
         DriftSqlType.int,
         data['${effectivePrefix}duration_seconds'],
       )!,
+      actualWeight: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}actual_weight'],
+      ),
+      actualReps: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}actual_reps'],
+      ),
+      actualDurationSeconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}actual_duration_seconds'],
+      ),
+      restSeconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}rest_seconds'],
+      ),
+      hasActualValues: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}has_actual_values'],
+      )!,
       recordMode: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}record_mode'],
@@ -3325,6 +3831,11 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
   final int reps;
   final double? rir;
   final int durationSeconds;
+  final double? actualWeight;
+  final int? actualReps;
+  final int? actualDurationSeconds;
+  final int? restSeconds;
+  final bool hasActualValues;
   final String recordMode;
   final String note;
   final String syncStatus;
@@ -3342,6 +3853,11 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
     required this.reps,
     this.rir,
     required this.durationSeconds,
+    this.actualWeight,
+    this.actualReps,
+    this.actualDurationSeconds,
+    this.restSeconds,
+    required this.hasActualValues,
     required this.recordMode,
     required this.note,
     required this.syncStatus,
@@ -3368,6 +3884,19 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
       map['rir'] = Variable<double>(rir);
     }
     map['duration_seconds'] = Variable<int>(durationSeconds);
+    if (!nullToAbsent || actualWeight != null) {
+      map['actual_weight'] = Variable<double>(actualWeight);
+    }
+    if (!nullToAbsent || actualReps != null) {
+      map['actual_reps'] = Variable<int>(actualReps);
+    }
+    if (!nullToAbsent || actualDurationSeconds != null) {
+      map['actual_duration_seconds'] = Variable<int>(actualDurationSeconds);
+    }
+    if (!nullToAbsent || restSeconds != null) {
+      map['rest_seconds'] = Variable<int>(restSeconds);
+    }
+    map['has_actual_values'] = Variable<bool>(hasActualValues);
     map['record_mode'] = Variable<String>(recordMode);
     map['note'] = Variable<String>(note);
     map['sync_status'] = Variable<String>(syncStatus);
@@ -3379,16 +3908,33 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
     return LocalWorkoutLogsCompanion(
       id: Value(id),
       syncId: Value(syncId),
-      remoteId: remoteId == null && nullToAbsent ? const Value.absent() : Value(remoteId),
+      remoteId: remoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(remoteId),
       sessionId: Value(sessionId),
       routineId: Value(routineId),
-      dayId: dayId == null && nullToAbsent ? const Value.absent() : Value(dayId),
+      dayId: dayId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dayId),
       exerciseName: Value(exerciseName),
       setIndex: Value(setIndex),
       weight: Value(weight),
       reps: Value(reps),
       rir: rir == null && nullToAbsent ? const Value.absent() : Value(rir),
       durationSeconds: Value(durationSeconds),
+      actualWeight: actualWeight == null && nullToAbsent
+          ? const Value.absent()
+          : Value(actualWeight),
+      actualReps: actualReps == null && nullToAbsent
+          ? const Value.absent()
+          : Value(actualReps),
+      actualDurationSeconds: actualDurationSeconds == null && nullToAbsent
+          ? const Value.absent()
+          : Value(actualDurationSeconds),
+      restSeconds: restSeconds == null && nullToAbsent
+          ? const Value.absent()
+          : Value(restSeconds),
+      hasActualValues: Value(hasActualValues),
       recordMode: Value(recordMode),
       note: Value(note),
       syncStatus: Value(syncStatus),
@@ -3414,6 +3960,13 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
       reps: serializer.fromJson<int>(json['reps']),
       rir: serializer.fromJson<double?>(json['rir']),
       durationSeconds: serializer.fromJson<int>(json['durationSeconds']),
+      actualWeight: serializer.fromJson<double?>(json['actualWeight']),
+      actualReps: serializer.fromJson<int?>(json['actualReps']),
+      actualDurationSeconds: serializer.fromJson<int?>(
+        json['actualDurationSeconds'],
+      ),
+      restSeconds: serializer.fromJson<int?>(json['restSeconds']),
+      hasActualValues: serializer.fromJson<bool>(json['hasActualValues']),
       recordMode: serializer.fromJson<String>(json['recordMode']),
       note: serializer.fromJson<String>(json['note']),
       syncStatus: serializer.fromJson<String>(json['syncStatus']),
@@ -3436,6 +3989,11 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
       'reps': serializer.toJson<int>(reps),
       'rir': serializer.toJson<double?>(rir),
       'durationSeconds': serializer.toJson<int>(durationSeconds),
+      'actualWeight': serializer.toJson<double?>(actualWeight),
+      'actualReps': serializer.toJson<int?>(actualReps),
+      'actualDurationSeconds': serializer.toJson<int?>(actualDurationSeconds),
+      'restSeconds': serializer.toJson<int?>(restSeconds),
+      'hasActualValues': serializer.toJson<bool>(hasActualValues),
       'recordMode': serializer.toJson<String>(recordMode),
       'note': serializer.toJson<String>(note),
       'syncStatus': serializer.toJson<String>(syncStatus),
@@ -3456,6 +4014,11 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
     int? reps,
     Value<double?> rir = const Value.absent(),
     int? durationSeconds,
+    Value<double?> actualWeight = const Value.absent(),
+    Value<int?> actualReps = const Value.absent(),
+    Value<int?> actualDurationSeconds = const Value.absent(),
+    Value<int?> restSeconds = const Value.absent(),
+    bool? hasActualValues,
     String? recordMode,
     String? note,
     String? syncStatus,
@@ -3473,6 +4036,13 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
     reps: reps ?? this.reps,
     rir: rir.present ? rir.value : this.rir,
     durationSeconds: durationSeconds ?? this.durationSeconds,
+    actualWeight: actualWeight.present ? actualWeight.value : this.actualWeight,
+    actualReps: actualReps.present ? actualReps.value : this.actualReps,
+    actualDurationSeconds: actualDurationSeconds.present
+        ? actualDurationSeconds.value
+        : this.actualDurationSeconds,
+    restSeconds: restSeconds.present ? restSeconds.value : this.restSeconds,
+    hasActualValues: hasActualValues ?? this.hasActualValues,
     recordMode: recordMode ?? this.recordMode,
     note: note ?? this.note,
     syncStatus: syncStatus ?? this.syncStatus,
@@ -3486,7 +4056,9 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
       sessionId: data.sessionId.present ? data.sessionId.value : this.sessionId,
       routineId: data.routineId.present ? data.routineId.value : this.routineId,
       dayId: data.dayId.present ? data.dayId.value : this.dayId,
-      exerciseName: data.exerciseName.present ? data.exerciseName.value : this.exerciseName,
+      exerciseName: data.exerciseName.present
+          ? data.exerciseName.value
+          : this.exerciseName,
       setIndex: data.setIndex.present ? data.setIndex.value : this.setIndex,
       weight: data.weight.present ? data.weight.value : this.weight,
       reps: data.reps.present ? data.reps.value : this.reps,
@@ -3494,9 +4066,28 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
       durationSeconds: data.durationSeconds.present
           ? data.durationSeconds.value
           : this.durationSeconds,
-      recordMode: data.recordMode.present ? data.recordMode.value : this.recordMode,
+      actualWeight: data.actualWeight.present
+          ? data.actualWeight.value
+          : this.actualWeight,
+      actualReps: data.actualReps.present
+          ? data.actualReps.value
+          : this.actualReps,
+      actualDurationSeconds: data.actualDurationSeconds.present
+          ? data.actualDurationSeconds.value
+          : this.actualDurationSeconds,
+      restSeconds: data.restSeconds.present
+          ? data.restSeconds.value
+          : this.restSeconds,
+      hasActualValues: data.hasActualValues.present
+          ? data.hasActualValues.value
+          : this.hasActualValues,
+      recordMode: data.recordMode.present
+          ? data.recordMode.value
+          : this.recordMode,
       note: data.note.present ? data.note.value : this.note,
-      syncStatus: data.syncStatus.present ? data.syncStatus.value : this.syncStatus,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
   }
@@ -3516,6 +4107,11 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
           ..write('reps: $reps, ')
           ..write('rir: $rir, ')
           ..write('durationSeconds: $durationSeconds, ')
+          ..write('actualWeight: $actualWeight, ')
+          ..write('actualReps: $actualReps, ')
+          ..write('actualDurationSeconds: $actualDurationSeconds, ')
+          ..write('restSeconds: $restSeconds, ')
+          ..write('hasActualValues: $hasActualValues, ')
           ..write('recordMode: $recordMode, ')
           ..write('note: $note, ')
           ..write('syncStatus: $syncStatus, ')
@@ -3525,7 +4121,7 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
   }
 
   @override
-  int get hashCode => Object.hash(
+  int get hashCode => Object.hashAll([
     id,
     syncId,
     remoteId,
@@ -3538,11 +4134,16 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
     reps,
     rir,
     durationSeconds,
+    actualWeight,
+    actualReps,
+    actualDurationSeconds,
+    restSeconds,
+    hasActualValues,
     recordMode,
     note,
     syncStatus,
     createdAt,
-  );
+  ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -3559,6 +4160,11 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
           other.reps == this.reps &&
           other.rir == this.rir &&
           other.durationSeconds == this.durationSeconds &&
+          other.actualWeight == this.actualWeight &&
+          other.actualReps == this.actualReps &&
+          other.actualDurationSeconds == this.actualDurationSeconds &&
+          other.restSeconds == this.restSeconds &&
+          other.hasActualValues == this.hasActualValues &&
           other.recordMode == this.recordMode &&
           other.note == this.note &&
           other.syncStatus == this.syncStatus &&
@@ -3578,6 +4184,11 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
   final Value<int> reps;
   final Value<double?> rir;
   final Value<int> durationSeconds;
+  final Value<double?> actualWeight;
+  final Value<int?> actualReps;
+  final Value<int?> actualDurationSeconds;
+  final Value<int?> restSeconds;
+  final Value<bool> hasActualValues;
   final Value<String> recordMode;
   final Value<String> note;
   final Value<String> syncStatus;
@@ -3595,6 +4206,11 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
     this.reps = const Value.absent(),
     this.rir = const Value.absent(),
     this.durationSeconds = const Value.absent(),
+    this.actualWeight = const Value.absent(),
+    this.actualReps = const Value.absent(),
+    this.actualDurationSeconds = const Value.absent(),
+    this.restSeconds = const Value.absent(),
+    this.hasActualValues = const Value.absent(),
     this.recordMode = const Value.absent(),
     this.note = const Value.absent(),
     this.syncStatus = const Value.absent(),
@@ -3613,6 +4229,11 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
     this.reps = const Value.absent(),
     this.rir = const Value.absent(),
     this.durationSeconds = const Value.absent(),
+    this.actualWeight = const Value.absent(),
+    this.actualReps = const Value.absent(),
+    this.actualDurationSeconds = const Value.absent(),
+    this.restSeconds = const Value.absent(),
+    this.hasActualValues = const Value.absent(),
     this.recordMode = const Value.absent(),
     this.note = const Value.absent(),
     this.syncStatus = const Value.absent(),
@@ -3635,6 +4256,11 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
     Expression<int>? reps,
     Expression<double>? rir,
     Expression<int>? durationSeconds,
+    Expression<double>? actualWeight,
+    Expression<int>? actualReps,
+    Expression<int>? actualDurationSeconds,
+    Expression<int>? restSeconds,
+    Expression<bool>? hasActualValues,
     Expression<String>? recordMode,
     Expression<String>? note,
     Expression<String>? syncStatus,
@@ -3653,6 +4279,12 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
       if (reps != null) 'reps': reps,
       if (rir != null) 'rir': rir,
       if (durationSeconds != null) 'duration_seconds': durationSeconds,
+      if (actualWeight != null) 'actual_weight': actualWeight,
+      if (actualReps != null) 'actual_reps': actualReps,
+      if (actualDurationSeconds != null)
+        'actual_duration_seconds': actualDurationSeconds,
+      if (restSeconds != null) 'rest_seconds': restSeconds,
+      if (hasActualValues != null) 'has_actual_values': hasActualValues,
       if (recordMode != null) 'record_mode': recordMode,
       if (note != null) 'note': note,
       if (syncStatus != null) 'sync_status': syncStatus,
@@ -3673,6 +4305,11 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
     Value<int>? reps,
     Value<double?>? rir,
     Value<int>? durationSeconds,
+    Value<double?>? actualWeight,
+    Value<int?>? actualReps,
+    Value<int?>? actualDurationSeconds,
+    Value<int?>? restSeconds,
+    Value<bool>? hasActualValues,
     Value<String>? recordMode,
     Value<String>? note,
     Value<String>? syncStatus,
@@ -3691,6 +4328,12 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
       reps: reps ?? this.reps,
       rir: rir ?? this.rir,
       durationSeconds: durationSeconds ?? this.durationSeconds,
+      actualWeight: actualWeight ?? this.actualWeight,
+      actualReps: actualReps ?? this.actualReps,
+      actualDurationSeconds:
+          actualDurationSeconds ?? this.actualDurationSeconds,
+      restSeconds: restSeconds ?? this.restSeconds,
+      hasActualValues: hasActualValues ?? this.hasActualValues,
       recordMode: recordMode ?? this.recordMode,
       note: note ?? this.note,
       syncStatus: syncStatus ?? this.syncStatus,
@@ -3737,6 +4380,23 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
     if (durationSeconds.present) {
       map['duration_seconds'] = Variable<int>(durationSeconds.value);
     }
+    if (actualWeight.present) {
+      map['actual_weight'] = Variable<double>(actualWeight.value);
+    }
+    if (actualReps.present) {
+      map['actual_reps'] = Variable<int>(actualReps.value);
+    }
+    if (actualDurationSeconds.present) {
+      map['actual_duration_seconds'] = Variable<int>(
+        actualDurationSeconds.value,
+      );
+    }
+    if (restSeconds.present) {
+      map['rest_seconds'] = Variable<int>(restSeconds.value);
+    }
+    if (hasActualValues.present) {
+      map['has_actual_values'] = Variable<bool>(hasActualValues.value);
+    }
     if (recordMode.present) {
       map['record_mode'] = Variable<String>(recordMode.value);
     }
@@ -3767,10 +4427,624 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
           ..write('reps: $reps, ')
           ..write('rir: $rir, ')
           ..write('durationSeconds: $durationSeconds, ')
+          ..write('actualWeight: $actualWeight, ')
+          ..write('actualReps: $actualReps, ')
+          ..write('actualDurationSeconds: $actualDurationSeconds, ')
+          ..write('restSeconds: $restSeconds, ')
+          ..write('hasActualValues: $hasActualValues, ')
           ..write('recordMode: $recordMode, ')
           ..write('note: $note, ')
           ..write('syncStatus: $syncStatus, ')
           ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $LocalWorkoutSetDraftsTable extends LocalWorkoutSetDrafts
+    with TableInfo<$LocalWorkoutSetDraftsTable, LocalWorkoutSetDraft> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LocalWorkoutSetDraftsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _sessionIdMeta = const VerificationMeta(
+    'sessionId',
+  );
+  @override
+  late final GeneratedColumn<int> sessionId = GeneratedColumn<int>(
+    'session_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES local_workout_sessions (id)',
+    ),
+  );
+  static const VerificationMeta _actionIndexMeta = const VerificationMeta(
+    'actionIndex',
+  );
+  @override
+  late final GeneratedColumn<int> actionIndex = GeneratedColumn<int>(
+    'action_index',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _setIndexMeta = const VerificationMeta(
+    'setIndex',
+  );
+  @override
+  late final GeneratedColumn<int> setIndex = GeneratedColumn<int>(
+    'set_index',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _weightTextMeta = const VerificationMeta(
+    'weightText',
+  );
+  @override
+  late final GeneratedColumn<String> weightText = GeneratedColumn<String>(
+    'weight_text',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _repsTextMeta = const VerificationMeta(
+    'repsText',
+  );
+  @override
+  late final GeneratedColumn<String> repsText = GeneratedColumn<String>(
+    'reps_text',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _durationTextMeta = const VerificationMeta(
+    'durationText',
+  );
+  @override
+  late final GeneratedColumn<String> durationText = GeneratedColumn<String>(
+    'duration_text',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _restTextMeta = const VerificationMeta(
+    'restText',
+  );
+  @override
+  late final GeneratedColumn<String> restText = GeneratedColumn<String>(
+    'rest_text',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _noteTextMeta = const VerificationMeta(
+    'noteText',
+  );
+  @override
+  late final GeneratedColumn<String> noteText = GeneratedColumn<String>(
+    'note_text',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    sessionId,
+    actionIndex,
+    setIndex,
+    weightText,
+    repsText,
+    durationText,
+    restText,
+    noteText,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'local_workout_set_drafts';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<LocalWorkoutSetDraft> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('session_id')) {
+      context.handle(
+        _sessionIdMeta,
+        sessionId.isAcceptableOrUnknown(data['session_id']!, _sessionIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sessionIdMeta);
+    }
+    if (data.containsKey('action_index')) {
+      context.handle(
+        _actionIndexMeta,
+        actionIndex.isAcceptableOrUnknown(
+          data['action_index']!,
+          _actionIndexMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_actionIndexMeta);
+    }
+    if (data.containsKey('set_index')) {
+      context.handle(
+        _setIndexMeta,
+        setIndex.isAcceptableOrUnknown(data['set_index']!, _setIndexMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_setIndexMeta);
+    }
+    if (data.containsKey('weight_text')) {
+      context.handle(
+        _weightTextMeta,
+        weightText.isAcceptableOrUnknown(data['weight_text']!, _weightTextMeta),
+      );
+    }
+    if (data.containsKey('reps_text')) {
+      context.handle(
+        _repsTextMeta,
+        repsText.isAcceptableOrUnknown(data['reps_text']!, _repsTextMeta),
+      );
+    }
+    if (data.containsKey('duration_text')) {
+      context.handle(
+        _durationTextMeta,
+        durationText.isAcceptableOrUnknown(
+          data['duration_text']!,
+          _durationTextMeta,
+        ),
+      );
+    }
+    if (data.containsKey('rest_text')) {
+      context.handle(
+        _restTextMeta,
+        restText.isAcceptableOrUnknown(data['rest_text']!, _restTextMeta),
+      );
+    }
+    if (data.containsKey('note_text')) {
+      context.handle(
+        _noteTextMeta,
+        noteText.isAcceptableOrUnknown(data['note_text']!, _noteTextMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {sessionId, actionIndex, setIndex},
+  ];
+  @override
+  LocalWorkoutSetDraft map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LocalWorkoutSetDraft(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      sessionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}session_id'],
+      )!,
+      actionIndex: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}action_index'],
+      )!,
+      setIndex: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}set_index'],
+      )!,
+      weightText: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}weight_text'],
+      )!,
+      repsText: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reps_text'],
+      )!,
+      durationText: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}duration_text'],
+      )!,
+      restText: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}rest_text'],
+      )!,
+      noteText: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note_text'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
+  }
+
+  @override
+  $LocalWorkoutSetDraftsTable createAlias(String alias) {
+    return $LocalWorkoutSetDraftsTable(attachedDatabase, alias);
+  }
+}
+
+class LocalWorkoutSetDraft extends DataClass
+    implements Insertable<LocalWorkoutSetDraft> {
+  final int id;
+  final int sessionId;
+  final int actionIndex;
+  final int setIndex;
+  final String weightText;
+  final String repsText;
+  final String durationText;
+  final String restText;
+  final String noteText;
+  final DateTime updatedAt;
+  const LocalWorkoutSetDraft({
+    required this.id,
+    required this.sessionId,
+    required this.actionIndex,
+    required this.setIndex,
+    required this.weightText,
+    required this.repsText,
+    required this.durationText,
+    required this.restText,
+    required this.noteText,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['session_id'] = Variable<int>(sessionId);
+    map['action_index'] = Variable<int>(actionIndex);
+    map['set_index'] = Variable<int>(setIndex);
+    map['weight_text'] = Variable<String>(weightText);
+    map['reps_text'] = Variable<String>(repsText);
+    map['duration_text'] = Variable<String>(durationText);
+    map['rest_text'] = Variable<String>(restText);
+    map['note_text'] = Variable<String>(noteText);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  LocalWorkoutSetDraftsCompanion toCompanion(bool nullToAbsent) {
+    return LocalWorkoutSetDraftsCompanion(
+      id: Value(id),
+      sessionId: Value(sessionId),
+      actionIndex: Value(actionIndex),
+      setIndex: Value(setIndex),
+      weightText: Value(weightText),
+      repsText: Value(repsText),
+      durationText: Value(durationText),
+      restText: Value(restText),
+      noteText: Value(noteText),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory LocalWorkoutSetDraft.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LocalWorkoutSetDraft(
+      id: serializer.fromJson<int>(json['id']),
+      sessionId: serializer.fromJson<int>(json['sessionId']),
+      actionIndex: serializer.fromJson<int>(json['actionIndex']),
+      setIndex: serializer.fromJson<int>(json['setIndex']),
+      weightText: serializer.fromJson<String>(json['weightText']),
+      repsText: serializer.fromJson<String>(json['repsText']),
+      durationText: serializer.fromJson<String>(json['durationText']),
+      restText: serializer.fromJson<String>(json['restText']),
+      noteText: serializer.fromJson<String>(json['noteText']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'sessionId': serializer.toJson<int>(sessionId),
+      'actionIndex': serializer.toJson<int>(actionIndex),
+      'setIndex': serializer.toJson<int>(setIndex),
+      'weightText': serializer.toJson<String>(weightText),
+      'repsText': serializer.toJson<String>(repsText),
+      'durationText': serializer.toJson<String>(durationText),
+      'restText': serializer.toJson<String>(restText),
+      'noteText': serializer.toJson<String>(noteText),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  LocalWorkoutSetDraft copyWith({
+    int? id,
+    int? sessionId,
+    int? actionIndex,
+    int? setIndex,
+    String? weightText,
+    String? repsText,
+    String? durationText,
+    String? restText,
+    String? noteText,
+    DateTime? updatedAt,
+  }) => LocalWorkoutSetDraft(
+    id: id ?? this.id,
+    sessionId: sessionId ?? this.sessionId,
+    actionIndex: actionIndex ?? this.actionIndex,
+    setIndex: setIndex ?? this.setIndex,
+    weightText: weightText ?? this.weightText,
+    repsText: repsText ?? this.repsText,
+    durationText: durationText ?? this.durationText,
+    restText: restText ?? this.restText,
+    noteText: noteText ?? this.noteText,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  LocalWorkoutSetDraft copyWithCompanion(LocalWorkoutSetDraftsCompanion data) {
+    return LocalWorkoutSetDraft(
+      id: data.id.present ? data.id.value : this.id,
+      sessionId: data.sessionId.present ? data.sessionId.value : this.sessionId,
+      actionIndex: data.actionIndex.present
+          ? data.actionIndex.value
+          : this.actionIndex,
+      setIndex: data.setIndex.present ? data.setIndex.value : this.setIndex,
+      weightText: data.weightText.present
+          ? data.weightText.value
+          : this.weightText,
+      repsText: data.repsText.present ? data.repsText.value : this.repsText,
+      durationText: data.durationText.present
+          ? data.durationText.value
+          : this.durationText,
+      restText: data.restText.present ? data.restText.value : this.restText,
+      noteText: data.noteText.present ? data.noteText.value : this.noteText,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LocalWorkoutSetDraft(')
+          ..write('id: $id, ')
+          ..write('sessionId: $sessionId, ')
+          ..write('actionIndex: $actionIndex, ')
+          ..write('setIndex: $setIndex, ')
+          ..write('weightText: $weightText, ')
+          ..write('repsText: $repsText, ')
+          ..write('durationText: $durationText, ')
+          ..write('restText: $restText, ')
+          ..write('noteText: $noteText, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    sessionId,
+    actionIndex,
+    setIndex,
+    weightText,
+    repsText,
+    durationText,
+    restText,
+    noteText,
+    updatedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LocalWorkoutSetDraft &&
+          other.id == this.id &&
+          other.sessionId == this.sessionId &&
+          other.actionIndex == this.actionIndex &&
+          other.setIndex == this.setIndex &&
+          other.weightText == this.weightText &&
+          other.repsText == this.repsText &&
+          other.durationText == this.durationText &&
+          other.restText == this.restText &&
+          other.noteText == this.noteText &&
+          other.updatedAt == this.updatedAt);
+}
+
+class LocalWorkoutSetDraftsCompanion
+    extends UpdateCompanion<LocalWorkoutSetDraft> {
+  final Value<int> id;
+  final Value<int> sessionId;
+  final Value<int> actionIndex;
+  final Value<int> setIndex;
+  final Value<String> weightText;
+  final Value<String> repsText;
+  final Value<String> durationText;
+  final Value<String> restText;
+  final Value<String> noteText;
+  final Value<DateTime> updatedAt;
+  const LocalWorkoutSetDraftsCompanion({
+    this.id = const Value.absent(),
+    this.sessionId = const Value.absent(),
+    this.actionIndex = const Value.absent(),
+    this.setIndex = const Value.absent(),
+    this.weightText = const Value.absent(),
+    this.repsText = const Value.absent(),
+    this.durationText = const Value.absent(),
+    this.restText = const Value.absent(),
+    this.noteText = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  LocalWorkoutSetDraftsCompanion.insert({
+    this.id = const Value.absent(),
+    required int sessionId,
+    required int actionIndex,
+    required int setIndex,
+    this.weightText = const Value.absent(),
+    this.repsText = const Value.absent(),
+    this.durationText = const Value.absent(),
+    this.restText = const Value.absent(),
+    this.noteText = const Value.absent(),
+    required DateTime updatedAt,
+  }) : sessionId = Value(sessionId),
+       actionIndex = Value(actionIndex),
+       setIndex = Value(setIndex),
+       updatedAt = Value(updatedAt);
+  static Insertable<LocalWorkoutSetDraft> custom({
+    Expression<int>? id,
+    Expression<int>? sessionId,
+    Expression<int>? actionIndex,
+    Expression<int>? setIndex,
+    Expression<String>? weightText,
+    Expression<String>? repsText,
+    Expression<String>? durationText,
+    Expression<String>? restText,
+    Expression<String>? noteText,
+    Expression<DateTime>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (sessionId != null) 'session_id': sessionId,
+      if (actionIndex != null) 'action_index': actionIndex,
+      if (setIndex != null) 'set_index': setIndex,
+      if (weightText != null) 'weight_text': weightText,
+      if (repsText != null) 'reps_text': repsText,
+      if (durationText != null) 'duration_text': durationText,
+      if (restText != null) 'rest_text': restText,
+      if (noteText != null) 'note_text': noteText,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  LocalWorkoutSetDraftsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? sessionId,
+    Value<int>? actionIndex,
+    Value<int>? setIndex,
+    Value<String>? weightText,
+    Value<String>? repsText,
+    Value<String>? durationText,
+    Value<String>? restText,
+    Value<String>? noteText,
+    Value<DateTime>? updatedAt,
+  }) {
+    return LocalWorkoutSetDraftsCompanion(
+      id: id ?? this.id,
+      sessionId: sessionId ?? this.sessionId,
+      actionIndex: actionIndex ?? this.actionIndex,
+      setIndex: setIndex ?? this.setIndex,
+      weightText: weightText ?? this.weightText,
+      repsText: repsText ?? this.repsText,
+      durationText: durationText ?? this.durationText,
+      restText: restText ?? this.restText,
+      noteText: noteText ?? this.noteText,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (sessionId.present) {
+      map['session_id'] = Variable<int>(sessionId.value);
+    }
+    if (actionIndex.present) {
+      map['action_index'] = Variable<int>(actionIndex.value);
+    }
+    if (setIndex.present) {
+      map['set_index'] = Variable<int>(setIndex.value);
+    }
+    if (weightText.present) {
+      map['weight_text'] = Variable<String>(weightText.value);
+    }
+    if (repsText.present) {
+      map['reps_text'] = Variable<String>(repsText.value);
+    }
+    if (durationText.present) {
+      map['duration_text'] = Variable<String>(durationText.value);
+    }
+    if (restText.present) {
+      map['rest_text'] = Variable<String>(restText.value);
+    }
+    if (noteText.present) {
+      map['note_text'] = Variable<String>(noteText.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LocalWorkoutSetDraftsCompanion(')
+          ..write('id: $id, ')
+          ..write('sessionId: $sessionId, ')
+          ..write('actionIndex: $actionIndex, ')
+          ..write('setIndex: $setIndex, ')
+          ..write('weightText: $weightText, ')
+          ..write('repsText: $repsText, ')
+          ..write('durationText: $durationText, ')
+          ..write('restText: $restText, ')
+          ..write('noteText: $noteText, ')
+          ..write('updatedAt: $updatedAt')
           ..write(')'))
         .toString();
   }
@@ -4115,7 +5389,8 @@ class $LocalSyncQueueTable extends LocalSyncQueue
   }
 }
 
-class LocalSyncQueueData extends DataClass implements Insertable<LocalSyncQueueData> {
+class LocalSyncQueueData extends DataClass
+    implements Insertable<LocalSyncQueueData> {
   final int id;
   final String eventId;
   final String deviceId;
@@ -4176,7 +5451,9 @@ class LocalSyncQueueData extends DataClass implements Insertable<LocalSyncQueueD
       action: Value(action),
       payload: Value(payload),
       status: Value(status),
-      serverSeq: serverSeq == null && nullToAbsent ? const Value.absent() : Value(serverSeq),
+      serverSeq: serverSeq == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverSeq),
       attempts: Value(attempts),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
@@ -4258,9 +5535,13 @@ class LocalSyncQueueData extends DataClass implements Insertable<LocalSyncQueueD
       id: data.id.present ? data.id.value : this.id,
       eventId: data.eventId.present ? data.eventId.value : this.eventId,
       deviceId: data.deviceId.present ? data.deviceId.value : this.deviceId,
-      entityType: data.entityType.present ? data.entityType.value : this.entityType,
+      entityType: data.entityType.present
+          ? data.entityType.value
+          : this.entityType,
       entityId: data.entityId.present ? data.entityId.value : this.entityId,
-      entitySyncId: data.entitySyncId.present ? data.entitySyncId.value : this.entitySyncId,
+      entitySyncId: data.entitySyncId.present
+          ? data.entitySyncId.value
+          : this.entitySyncId,
       action: data.action.present ? data.action.value : this.action,
       payload: data.payload.present ? data.payload.value : this.payload,
       status: data.status.present ? data.status.value : this.status,
@@ -4506,17 +5787,22 @@ class LocalSyncQueueCompanion extends UpdateCompanion<LocalSyncQueueData> {
 
 abstract class _$LocalTrainingDatabase extends GeneratedDatabase {
   _$LocalTrainingDatabase(QueryExecutor e) : super(e);
-  $LocalTrainingDatabaseManager get managers => $LocalTrainingDatabaseManager(this);
+  $LocalTrainingDatabaseManager get managers =>
+      $LocalTrainingDatabaseManager(this);
   late final $LocalRoutinesTable localRoutines = $LocalRoutinesTable(this);
-  late final $LocalTrainingDaysTable localTrainingDays = $LocalTrainingDaysTable(this);
+  late final $LocalTrainingDaysTable localTrainingDays =
+      $LocalTrainingDaysTable(this);
   late final $LocalSlotsTable localSlots = $LocalSlotsTable(this);
   late final $LocalSlotEntriesTable localSlotEntries = $LocalSlotEntriesTable(
     this,
   );
-  late final $LocalWorkoutSessionsTable localWorkoutSessions = $LocalWorkoutSessionsTable(this);
+  late final $LocalWorkoutSessionsTable localWorkoutSessions =
+      $LocalWorkoutSessionsTable(this);
   late final $LocalWorkoutLogsTable localWorkoutLogs = $LocalWorkoutLogsTable(
     this,
   );
+  late final $LocalWorkoutSetDraftsTable localWorkoutSetDrafts =
+      $LocalWorkoutSetDraftsTable(this);
   late final $LocalSyncQueueTable localSyncQueue = $LocalSyncQueueTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
@@ -4529,6 +5815,7 @@ abstract class _$LocalTrainingDatabase extends GeneratedDatabase {
     localSlotEntries,
     localWorkoutSessions,
     localWorkoutLogs,
+    localWorkoutSetDrafts,
     localSyncQueue,
   ];
 }
@@ -4565,7 +5852,12 @@ typedef $$LocalRoutinesTableUpdateCompanionBuilder =
     });
 
 final class $$LocalRoutinesTableReferences
-    extends BaseReferences<_$LocalTrainingDatabase, $LocalRoutinesTable, LocalRoutine> {
+    extends
+        BaseReferences<
+          _$LocalTrainingDatabase,
+          $LocalRoutinesTable,
+          LocalRoutine
+        > {
   $$LocalRoutinesTableReferences(
     super.$_db,
     super.$_table,
@@ -4573,13 +5865,14 @@ final class $$LocalRoutinesTableReferences
   );
 
   static MultiTypedResultKey<$LocalTrainingDaysTable, List<LocalTrainingDay>>
-  _localTrainingDaysRefsTable(_$LocalTrainingDatabase db) => MultiTypedResultKey.fromTable(
-    db.localTrainingDays,
-    aliasName: $_aliasNameGenerator(
-      db.localRoutines.id,
-      db.localTrainingDays.routineId,
-    ),
-  );
+  _localTrainingDaysRefsTable(_$LocalTrainingDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.localTrainingDays,
+        aliasName: $_aliasNameGenerator(
+          db.localRoutines.id,
+          db.localTrainingDays.routineId,
+        ),
+      );
 
   $$LocalTrainingDaysTableProcessedTableManager get localTrainingDaysRefs {
     final manager = $$LocalTrainingDaysTableTableManager(
@@ -4595,16 +5888,21 @@ final class $$LocalRoutinesTableReferences
     );
   }
 
-  static MultiTypedResultKey<$LocalWorkoutSessionsTable, List<LocalWorkoutSession>>
-  _localWorkoutSessionsRefsTable(_$LocalTrainingDatabase db) => MultiTypedResultKey.fromTable(
-    db.localWorkoutSessions,
-    aliasName: $_aliasNameGenerator(
-      db.localRoutines.id,
-      db.localWorkoutSessions.routineId,
-    ),
-  );
+  static MultiTypedResultKey<
+    $LocalWorkoutSessionsTable,
+    List<LocalWorkoutSession>
+  >
+  _localWorkoutSessionsRefsTable(_$LocalTrainingDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.localWorkoutSessions,
+        aliasName: $_aliasNameGenerator(
+          db.localRoutines.id,
+          db.localWorkoutSessions.routineId,
+        ),
+      );
 
-  $$LocalWorkoutSessionsTableProcessedTableManager get localWorkoutSessionsRefs {
+  $$LocalWorkoutSessionsTableProcessedTableManager
+  get localWorkoutSessionsRefs {
     final manager = $$LocalWorkoutSessionsTableTableManager(
       $_db,
       $_db.localWorkoutSessions,
@@ -4619,13 +5917,14 @@ final class $$LocalRoutinesTableReferences
   }
 
   static MultiTypedResultKey<$LocalWorkoutLogsTable, List<LocalWorkoutLog>>
-  _localWorkoutLogsRefsTable(_$LocalTrainingDatabase db) => MultiTypedResultKey.fromTable(
-    db.localWorkoutLogs,
-    aliasName: $_aliasNameGenerator(
-      db.localRoutines.id,
-      db.localWorkoutLogs.routineId,
-    ),
-  );
+  _localWorkoutLogsRefsTable(_$LocalTrainingDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.localWorkoutLogs,
+        aliasName: $_aliasNameGenerator(
+          db.localRoutines.id,
+          db.localWorkoutLogs.routineId,
+        ),
+      );
 
   $$LocalWorkoutLogsTableProcessedTableManager get localWorkoutLogsRefs {
     final manager = $$LocalWorkoutLogsTableTableManager(
@@ -4729,7 +6028,8 @@ class $$LocalRoutinesTableFilterComposer
             $table: $db.localTrainingDays,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return f(composer);
@@ -4753,7 +6053,8 @@ class $$LocalRoutinesTableFilterComposer
             $table: $db.localWorkoutSessions,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return f(composer);
@@ -4777,7 +6078,8 @@ class $$LocalRoutinesTableFilterComposer
             $table: $db.localWorkoutLogs,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return f(composer);
@@ -4863,7 +6165,8 @@ class $$LocalRoutinesTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<int> get id => $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
 
   GeneratedColumn<String> get syncId =>
       $composableBuilder(column: $table.syncId, builder: (column) => column);
@@ -4909,48 +6212,52 @@ class $$LocalRoutinesTableAnnotationComposer
   Expression<T> localTrainingDaysRefs<T extends Object>(
     Expression<T> Function($$LocalTrainingDaysTableAnnotationComposer a) f,
   ) {
-    final $$LocalTrainingDaysTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.id,
-      referencedTable: $db.localTrainingDays,
-      getReferencedColumn: (t) => t.routineId,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$LocalTrainingDaysTableAnnotationComposer(
-            $db: $db,
-            $table: $db.localTrainingDays,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
-          ),
-    );
+    final $$LocalTrainingDaysTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.localTrainingDays,
+          getReferencedColumn: (t) => t.routineId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$LocalTrainingDaysTableAnnotationComposer(
+                $db: $db,
+                $table: $db.localTrainingDays,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
     return f(composer);
   }
 
   Expression<T> localWorkoutSessionsRefs<T extends Object>(
     Expression<T> Function($$LocalWorkoutSessionsTableAnnotationComposer a) f,
   ) {
-    final $$LocalWorkoutSessionsTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.id,
-      referencedTable: $db.localWorkoutSessions,
-      getReferencedColumn: (t) => t.routineId,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$LocalWorkoutSessionsTableAnnotationComposer(
-            $db: $db,
-            $table: $db.localWorkoutSessions,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
-          ),
-    );
+    final $$LocalWorkoutSessionsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.localWorkoutSessions,
+          getReferencedColumn: (t) => t.routineId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$LocalWorkoutSessionsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.localWorkoutSessions,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
     return f(composer);
   }
 
@@ -4972,7 +6279,8 @@ class $$LocalRoutinesTableAnnotationComposer
             $table: $db.localWorkoutLogs,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return f(composer);
@@ -5005,7 +6313,8 @@ class $$LocalRoutinesTableTableManager
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer: () => $$LocalRoutinesTableFilterComposer($db: db, $table: table),
+          createFilteringComposer: () =>
+              $$LocalRoutinesTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
               $$LocalRoutinesTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
@@ -5099,13 +6408,14 @@ class $$LocalRoutinesTableTableManager
                           currentTable: table,
                           referencedTable: $$LocalRoutinesTableReferences
                               ._localTrainingDaysRefsTable(db),
-                          managerFromTypedResult: (p0) => $$LocalRoutinesTableReferences(
-                            db,
-                            table,
-                            p0,
-                          ).localTrainingDaysRefs,
-                          referencedItemsForCurrentItem: (item, referencedItems) =>
-                              referencedItems.where(
+                          managerFromTypedResult: (p0) =>
+                              $$LocalRoutinesTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).localTrainingDaysRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
                                 (e) => e.routineId == item.id,
                               ),
                           typedResults: items,
@@ -5119,13 +6429,14 @@ class $$LocalRoutinesTableTableManager
                           currentTable: table,
                           referencedTable: $$LocalRoutinesTableReferences
                               ._localWorkoutSessionsRefsTable(db),
-                          managerFromTypedResult: (p0) => $$LocalRoutinesTableReferences(
-                            db,
-                            table,
-                            p0,
-                          ).localWorkoutSessionsRefs,
-                          referencedItemsForCurrentItem: (item, referencedItems) =>
-                              referencedItems.where(
+                          managerFromTypedResult: (p0) =>
+                              $$LocalRoutinesTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).localWorkoutSessionsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
                                 (e) => e.routineId == item.id,
                               ),
                           typedResults: items,
@@ -5139,13 +6450,14 @@ class $$LocalRoutinesTableTableManager
                           currentTable: table,
                           referencedTable: $$LocalRoutinesTableReferences
                               ._localWorkoutLogsRefsTable(db),
-                          managerFromTypedResult: (p0) => $$LocalRoutinesTableReferences(
-                            db,
-                            table,
-                            p0,
-                          ).localWorkoutLogsRefs,
-                          referencedItemsForCurrentItem: (item, referencedItems) =>
-                              referencedItems.where(
+                          managerFromTypedResult: (p0) =>
+                              $$LocalRoutinesTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).localWorkoutLogsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
                                 (e) => e.routineId == item.id,
                               ),
                           typedResults: items,
@@ -5204,7 +6516,12 @@ typedef $$LocalTrainingDaysTableUpdateCompanionBuilder =
     });
 
 final class $$LocalTrainingDaysTableReferences
-    extends BaseReferences<_$LocalTrainingDatabase, $LocalTrainingDaysTable, LocalTrainingDay> {
+    extends
+        BaseReferences<
+          _$LocalTrainingDatabase,
+          $LocalTrainingDaysTable,
+          LocalTrainingDay
+        > {
   $$LocalTrainingDaysTableReferences(
     super.$_db,
     super.$_table,
@@ -5233,15 +6550,15 @@ final class $$LocalTrainingDaysTableReferences
     );
   }
 
-  static MultiTypedResultKey<$LocalSlotsTable, List<LocalSlot>> _localSlotsRefsTable(
-    _$LocalTrainingDatabase db,
-  ) => MultiTypedResultKey.fromTable(
-    db.localSlots,
-    aliasName: $_aliasNameGenerator(
-      db.localTrainingDays.id,
-      db.localSlots.dayId,
-    ),
-  );
+  static MultiTypedResultKey<$LocalSlotsTable, List<LocalSlot>>
+  _localSlotsRefsTable(_$LocalTrainingDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.localSlots,
+        aliasName: $_aliasNameGenerator(
+          db.localTrainingDays.id,
+          db.localSlots.dayId,
+        ),
+      );
 
   $$LocalSlotsTableProcessedTableManager get localSlotsRefs {
     final manager = $$LocalSlotsTableTableManager(
@@ -5255,16 +6572,21 @@ final class $$LocalTrainingDaysTableReferences
     );
   }
 
-  static MultiTypedResultKey<$LocalWorkoutSessionsTable, List<LocalWorkoutSession>>
-  _localWorkoutSessionsRefsTable(_$LocalTrainingDatabase db) => MultiTypedResultKey.fromTable(
-    db.localWorkoutSessions,
-    aliasName: $_aliasNameGenerator(
-      db.localTrainingDays.id,
-      db.localWorkoutSessions.dayId,
-    ),
-  );
+  static MultiTypedResultKey<
+    $LocalWorkoutSessionsTable,
+    List<LocalWorkoutSession>
+  >
+  _localWorkoutSessionsRefsTable(_$LocalTrainingDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.localWorkoutSessions,
+        aliasName: $_aliasNameGenerator(
+          db.localTrainingDays.id,
+          db.localWorkoutSessions.dayId,
+        ),
+      );
 
-  $$LocalWorkoutSessionsTableProcessedTableManager get localWorkoutSessionsRefs {
+  $$LocalWorkoutSessionsTableProcessedTableManager
+  get localWorkoutSessionsRefs {
     final manager = $$LocalWorkoutSessionsTableTableManager(
       $_db,
       $_db.localWorkoutSessions,
@@ -5279,13 +6601,14 @@ final class $$LocalTrainingDaysTableReferences
   }
 
   static MultiTypedResultKey<$LocalWorkoutLogsTable, List<LocalWorkoutLog>>
-  _localWorkoutLogsRefsTable(_$LocalTrainingDatabase db) => MultiTypedResultKey.fromTable(
-    db.localWorkoutLogs,
-    aliasName: $_aliasNameGenerator(
-      db.localTrainingDays.id,
-      db.localWorkoutLogs.dayId,
-    ),
-  );
+  _localWorkoutLogsRefsTable(_$LocalTrainingDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.localWorkoutLogs,
+        aliasName: $_aliasNameGenerator(
+          db.localTrainingDays.id,
+          db.localWorkoutLogs.dayId,
+        ),
+      );
 
   $$LocalWorkoutLogsTableProcessedTableManager get localWorkoutLogsRefs {
     final manager = $$LocalWorkoutLogsTableTableManager(
@@ -5372,7 +6695,8 @@ class $$LocalTrainingDaysTableFilterComposer
             $table: $db.localRoutines,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
@@ -5396,7 +6720,8 @@ class $$LocalTrainingDaysTableFilterComposer
             $table: $db.localSlots,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return f(composer);
@@ -5420,7 +6745,8 @@ class $$LocalTrainingDaysTableFilterComposer
             $table: $db.localWorkoutSessions,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return f(composer);
@@ -5444,7 +6770,8 @@ class $$LocalTrainingDaysTableFilterComposer
             $table: $db.localWorkoutLogs,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return f(composer);
@@ -5521,7 +6848,8 @@ class $$LocalTrainingDaysTableOrderingComposer
             $table: $db.localRoutines,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
@@ -5537,7 +6865,8 @@ class $$LocalTrainingDaysTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<int> get id => $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
 
   GeneratedColumn<String> get syncId =>
       $composableBuilder(column: $table.syncId, builder: (column) => column);
@@ -5583,7 +6912,8 @@ class $$LocalTrainingDaysTableAnnotationComposer
             $table: $db.localRoutines,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
@@ -5607,7 +6937,8 @@ class $$LocalTrainingDaysTableAnnotationComposer
             $table: $db.localSlots,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return f(composer);
@@ -5616,24 +6947,26 @@ class $$LocalTrainingDaysTableAnnotationComposer
   Expression<T> localWorkoutSessionsRefs<T extends Object>(
     Expression<T> Function($$LocalWorkoutSessionsTableAnnotationComposer a) f,
   ) {
-    final $$LocalWorkoutSessionsTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.id,
-      referencedTable: $db.localWorkoutSessions,
-      getReferencedColumn: (t) => t.dayId,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$LocalWorkoutSessionsTableAnnotationComposer(
-            $db: $db,
-            $table: $db.localWorkoutSessions,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
-          ),
-    );
+    final $$LocalWorkoutSessionsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.localWorkoutSessions,
+          getReferencedColumn: (t) => t.dayId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$LocalWorkoutSessionsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.localWorkoutSessions,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
     return f(composer);
   }
 
@@ -5655,7 +6988,8 @@ class $$LocalTrainingDaysTableAnnotationComposer
             $table: $db.localWorkoutLogs,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return f(composer);
@@ -5693,10 +7027,11 @@ class $$LocalTrainingDaysTableTableManager
               $$LocalTrainingDaysTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
               $$LocalTrainingDaysTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () => $$LocalTrainingDaysTableAnnotationComposer(
-            $db: db,
-            $table: table,
-          ),
+          createComputedFieldComposer: () =>
+              $$LocalTrainingDaysTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
           updateCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
@@ -5788,11 +7123,13 @@ class $$LocalTrainingDaysTableTableManager
                               state.withJoin(
                                     currentTable: table,
                                     currentColumn: table.routineId,
-                                    referencedTable: $$LocalTrainingDaysTableReferences
-                                        ._routineIdTable(db),
-                                    referencedColumn: $$LocalTrainingDaysTableReferences
-                                        ._routineIdTable(db)
-                                        .id,
+                                    referencedTable:
+                                        $$LocalTrainingDaysTableReferences
+                                            ._routineIdTable(db),
+                                    referencedColumn:
+                                        $$LocalTrainingDaysTableReferences
+                                            ._routineIdTable(db)
+                                            .id,
                                   )
                                   as T;
                         }
@@ -5808,16 +7145,16 @@ class $$LocalTrainingDaysTableTableManager
                           LocalSlot
                         >(
                           currentTable: table,
-                          referencedTable: $$LocalTrainingDaysTableReferences._localSlotsRefsTable(
-                            db,
-                          ),
-                          managerFromTypedResult: (p0) => $$LocalTrainingDaysTableReferences(
-                            db,
-                            table,
-                            p0,
-                          ).localSlotsRefs,
-                          referencedItemsForCurrentItem: (item, referencedItems) =>
-                              referencedItems.where(
+                          referencedTable: $$LocalTrainingDaysTableReferences
+                              ._localSlotsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$LocalTrainingDaysTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).localSlotsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
                                 (e) => e.dayId == item.id,
                               ),
                           typedResults: items,
@@ -5831,13 +7168,14 @@ class $$LocalTrainingDaysTableTableManager
                           currentTable: table,
                           referencedTable: $$LocalTrainingDaysTableReferences
                               ._localWorkoutSessionsRefsTable(db),
-                          managerFromTypedResult: (p0) => $$LocalTrainingDaysTableReferences(
-                            db,
-                            table,
-                            p0,
-                          ).localWorkoutSessionsRefs,
-                          referencedItemsForCurrentItem: (item, referencedItems) =>
-                              referencedItems.where(
+                          managerFromTypedResult: (p0) =>
+                              $$LocalTrainingDaysTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).localWorkoutSessionsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
                                 (e) => e.dayId == item.id,
                               ),
                           typedResults: items,
@@ -5851,13 +7189,14 @@ class $$LocalTrainingDaysTableTableManager
                           currentTable: table,
                           referencedTable: $$LocalTrainingDaysTableReferences
                               ._localWorkoutLogsRefsTable(db),
-                          managerFromTypedResult: (p0) => $$LocalTrainingDaysTableReferences(
-                            db,
-                            table,
-                            p0,
-                          ).localWorkoutLogsRefs,
-                          referencedItemsForCurrentItem: (item, referencedItems) =>
-                              referencedItems.where(
+                          managerFromTypedResult: (p0) =>
+                              $$LocalTrainingDaysTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).localWorkoutLogsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
                                 (e) => e.dayId == item.id,
                               ),
                           typedResults: items,
@@ -5909,7 +7248,8 @@ typedef $$LocalSlotsTableUpdateCompanionBuilder =
     });
 
 final class $$LocalSlotsTableReferences
-    extends BaseReferences<_$LocalTrainingDatabase, $LocalSlotsTable, LocalSlot> {
+    extends
+        BaseReferences<_$LocalTrainingDatabase, $LocalSlotsTable, LocalSlot> {
   $$LocalSlotsTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
   static $LocalTrainingDaysTable _dayIdTable(_$LocalTrainingDatabase db) =>
@@ -5932,13 +7272,14 @@ final class $$LocalSlotsTableReferences
   }
 
   static MultiTypedResultKey<$LocalSlotEntriesTable, List<LocalSlotEntry>>
-  _localSlotEntriesRefsTable(_$LocalTrainingDatabase db) => MultiTypedResultKey.fromTable(
-    db.localSlotEntries,
-    aliasName: $_aliasNameGenerator(
-      db.localSlots.id,
-      db.localSlotEntries.slotId,
-    ),
-  );
+  _localSlotEntriesRefsTable(_$LocalTrainingDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.localSlotEntries,
+        aliasName: $_aliasNameGenerator(
+          db.localSlots.id,
+          db.localSlotEntries.slotId,
+        ),
+      );
 
   $$LocalSlotEntriesTableProcessedTableManager get localSlotEntriesRefs {
     final manager = $$LocalSlotEntriesTableTableManager(
@@ -5955,7 +7296,8 @@ final class $$LocalSlotsTableReferences
   }
 }
 
-class $$LocalSlotsTableFilterComposer extends Composer<_$LocalTrainingDatabase, $LocalSlotsTable> {
+class $$LocalSlotsTableFilterComposer
+    extends Composer<_$LocalTrainingDatabase, $LocalSlotsTable> {
   $$LocalSlotsTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -6004,7 +7346,8 @@ class $$LocalSlotsTableFilterComposer extends Composer<_$LocalTrainingDatabase, 
             $table: $db.localTrainingDays,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
@@ -6028,7 +7371,8 @@ class $$LocalSlotsTableFilterComposer extends Composer<_$LocalTrainingDatabase, 
             $table: $db.localSlotEntries,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return f(composer);
@@ -6085,7 +7429,8 @@ class $$LocalSlotsTableOrderingComposer
             $table: $db.localTrainingDays,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
@@ -6101,7 +7446,8 @@ class $$LocalSlotsTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<int> get id => $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
 
   GeneratedColumn<String> get syncId =>
       $composableBuilder(column: $table.syncId, builder: (column) => column);
@@ -6118,24 +7464,26 @@ class $$LocalSlotsTableAnnotationComposer
   );
 
   $$LocalTrainingDaysTableAnnotationComposer get dayId {
-    final $$LocalTrainingDaysTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.dayId,
-      referencedTable: $db.localTrainingDays,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$LocalTrainingDaysTableAnnotationComposer(
-            $db: $db,
-            $table: $db.localTrainingDays,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
-          ),
-    );
+    final $$LocalTrainingDaysTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.dayId,
+          referencedTable: $db.localTrainingDays,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$LocalTrainingDaysTableAnnotationComposer(
+                $db: $db,
+                $table: $db.localTrainingDays,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
     return composer;
   }
 
@@ -6157,7 +7505,8 @@ class $$LocalSlotsTableAnnotationComposer
             $table: $db.localSlotEntries,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return f(composer);
@@ -6186,8 +7535,10 @@ class $$LocalSlotsTableTableManager
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer: () => $$LocalSlotsTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () => $$LocalSlotsTableOrderingComposer($db: db, $table: table),
+          createFilteringComposer: () =>
+              $$LocalSlotsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$LocalSlotsTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$LocalSlotsTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
@@ -6230,62 +7581,73 @@ class $$LocalSlotsTableTableManager
                 ),
               )
               .toList(),
-          prefetchHooksCallback: ({dayId = false, localSlotEntriesRefs = false}) {
-            return PrefetchHooks(
-              db: db,
-              explicitlyWatchedTables: [
-                if (localSlotEntriesRefs) db.localSlotEntries,
-              ],
-              addJoins:
-                  <
-                    T extends TableManagerState<
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic
-                    >
-                  >(state) {
-                    if (dayId) {
-                      state =
-                          state.withJoin(
-                                currentTable: table,
-                                currentColumn: table.dayId,
-                                referencedTable: $$LocalSlotsTableReferences._dayIdTable(db),
-                                referencedColumn: $$LocalSlotsTableReferences._dayIdTable(db).id,
-                              )
-                              as T;
-                    }
+          prefetchHooksCallback:
+              ({dayId = false, localSlotEntriesRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (localSlotEntriesRefs) db.localSlotEntries,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (dayId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.dayId,
+                                    referencedTable: $$LocalSlotsTableReferences
+                                        ._dayIdTable(db),
+                                    referencedColumn:
+                                        $$LocalSlotsTableReferences
+                                            ._dayIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
 
-                    return state;
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (localSlotEntriesRefs)
+                        await $_getPrefetchedData<
+                          LocalSlot,
+                          $LocalSlotsTable,
+                          LocalSlotEntry
+                        >(
+                          currentTable: table,
+                          referencedTable: $$LocalSlotsTableReferences
+                              ._localSlotEntriesRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$LocalSlotsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).localSlotEntriesRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.slotId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
                   },
-              getPrefetchedDataCallback: (items) async {
-                return [
-                  if (localSlotEntriesRefs)
-                    await $_getPrefetchedData<LocalSlot, $LocalSlotsTable, LocalSlotEntry>(
-                      currentTable: table,
-                      referencedTable: $$LocalSlotsTableReferences._localSlotEntriesRefsTable(db),
-                      managerFromTypedResult: (p0) => $$LocalSlotsTableReferences(
-                        db,
-                        table,
-                        p0,
-                      ).localSlotEntriesRefs,
-                      referencedItemsForCurrentItem: (item, referencedItems) =>
-                          referencedItems.where(
-                            (e) => e.slotId == item.id,
-                          ),
-                      typedResults: items,
-                    ),
-                ];
+                );
               },
-            );
-          },
         ),
       );
 }
@@ -6334,16 +7696,22 @@ typedef $$LocalSlotEntriesTableUpdateCompanionBuilder =
     });
 
 final class $$LocalSlotEntriesTableReferences
-    extends BaseReferences<_$LocalTrainingDatabase, $LocalSlotEntriesTable, LocalSlotEntry> {
+    extends
+        BaseReferences<
+          _$LocalTrainingDatabase,
+          $LocalSlotEntriesTable,
+          LocalSlotEntry
+        > {
   $$LocalSlotEntriesTableReferences(
     super.$_db,
     super.$_table,
     super.$_typedResult,
   );
 
-  static $LocalSlotsTable _slotIdTable(_$LocalTrainingDatabase db) => db.localSlots.createAlias(
-    $_aliasNameGenerator(db.localSlotEntries.slotId, db.localSlots.id),
-  );
+  static $LocalSlotsTable _slotIdTable(_$LocalTrainingDatabase db) =>
+      db.localSlots.createAlias(
+        $_aliasNameGenerator(db.localSlotEntries.slotId, db.localSlots.id),
+      );
 
   $$LocalSlotsTableProcessedTableManager get slotId {
     final $_column = $_itemColumn<int>('slot_id')!;
@@ -6435,7 +7803,8 @@ class $$LocalSlotEntriesTableFilterComposer
             $table: $db.localSlots,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
@@ -6517,7 +7886,8 @@ class $$LocalSlotEntriesTableOrderingComposer
             $table: $db.localSlots,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
@@ -6533,7 +7903,8 @@ class $$LocalSlotEntriesTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<int> get id => $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
 
   GeneratedColumn<String> get syncId =>
       $composableBuilder(column: $table.syncId, builder: (column) => column);
@@ -6592,7 +7963,8 @@ class $$LocalSlotEntriesTableAnnotationComposer
             $table: $db.localSlots,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
@@ -6712,10 +8084,13 @@ class $$LocalSlotEntriesTableTableManager
                           state.withJoin(
                                 currentTable: table,
                                 currentColumn: table.slotId,
-                                referencedTable: $$LocalSlotEntriesTableReferences._slotIdTable(db),
-                                referencedColumn: $$LocalSlotEntriesTableReferences
-                                    ._slotIdTable(db)
-                                    .id,
+                                referencedTable:
+                                    $$LocalSlotEntriesTableReferences
+                                        ._slotIdTable(db),
+                                referencedColumn:
+                                    $$LocalSlotEntriesTableReferences
+                                        ._slotIdTable(db)
+                                        .id,
                               )
                               as T;
                     }
@@ -6752,6 +8127,12 @@ typedef $$LocalWorkoutSessionsTableCreateCompanionBuilder =
       Value<int?> remoteId,
       required int routineId,
       Value<int?> dayId,
+      Value<String> routineNameSnapshot,
+      Value<String> routineSyncIdSnapshot,
+      Value<String> dayNameSnapshot,
+      Value<int?> dayWeekSnapshot,
+      Value<int?> dayIndexSnapshot,
+      Value<String> daySyncIdSnapshot,
       required DateTime startedAt,
       Value<DateTime?> endedAt,
       Value<String> note,
@@ -6765,6 +8146,12 @@ typedef $$LocalWorkoutSessionsTableUpdateCompanionBuilder =
       Value<int?> remoteId,
       Value<int> routineId,
       Value<int?> dayId,
+      Value<String> routineNameSnapshot,
+      Value<String> routineSyncIdSnapshot,
+      Value<String> dayNameSnapshot,
+      Value<int?> dayWeekSnapshot,
+      Value<int?> dayIndexSnapshot,
+      Value<String> daySyncIdSnapshot,
       Value<DateTime> startedAt,
       Value<DateTime?> endedAt,
       Value<String> note,
@@ -6774,7 +8161,11 @@ typedef $$LocalWorkoutSessionsTableUpdateCompanionBuilder =
 
 final class $$LocalWorkoutSessionsTableReferences
     extends
-        BaseReferences<_$LocalTrainingDatabase, $LocalWorkoutSessionsTable, LocalWorkoutSession> {
+        BaseReferences<
+          _$LocalTrainingDatabase,
+          $LocalWorkoutSessionsTable,
+          LocalWorkoutSession
+        > {
   $$LocalWorkoutSessionsTableReferences(
     super.$_db,
     super.$_table,
@@ -6826,13 +8217,14 @@ final class $$LocalWorkoutSessionsTableReferences
   }
 
   static MultiTypedResultKey<$LocalWorkoutLogsTable, List<LocalWorkoutLog>>
-  _localWorkoutLogsRefsTable(_$LocalTrainingDatabase db) => MultiTypedResultKey.fromTable(
-    db.localWorkoutLogs,
-    aliasName: $_aliasNameGenerator(
-      db.localWorkoutSessions.id,
-      db.localWorkoutLogs.sessionId,
-    ),
-  );
+  _localWorkoutLogsRefsTable(_$LocalTrainingDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.localWorkoutLogs,
+        aliasName: $_aliasNameGenerator(
+          db.localWorkoutSessions.id,
+          db.localWorkoutLogs.sessionId,
+        ),
+      );
 
   $$LocalWorkoutLogsTableProcessedTableManager get localWorkoutLogsRefs {
     final manager = $$LocalWorkoutLogsTableTableManager(
@@ -6842,6 +8234,34 @@ final class $$LocalWorkoutSessionsTableReferences
 
     final cache = $_typedResult.readTableOrNull(
       _localWorkoutLogsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<
+    $LocalWorkoutSetDraftsTable,
+    List<LocalWorkoutSetDraft>
+  >
+  _localWorkoutSetDraftsRefsTable(_$LocalTrainingDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.localWorkoutSetDrafts,
+        aliasName: $_aliasNameGenerator(
+          db.localWorkoutSessions.id,
+          db.localWorkoutSetDrafts.sessionId,
+        ),
+      );
+
+  $$LocalWorkoutSetDraftsTableProcessedTableManager
+  get localWorkoutSetDraftsRefs {
+    final manager = $$LocalWorkoutSetDraftsTableTableManager(
+      $_db,
+      $_db.localWorkoutSetDrafts,
+    ).filter((f) => f.sessionId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _localWorkoutSetDraftsRefsTable($_db),
     );
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
@@ -6870,6 +8290,36 @@ class $$LocalWorkoutSessionsTableFilterComposer
 
   ColumnFilters<int> get remoteId => $composableBuilder(
     column: $table.remoteId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get routineNameSnapshot => $composableBuilder(
+    column: $table.routineNameSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get routineSyncIdSnapshot => $composableBuilder(
+    column: $table.routineSyncIdSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get dayNameSnapshot => $composableBuilder(
+    column: $table.dayNameSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get dayWeekSnapshot => $composableBuilder(
+    column: $table.dayWeekSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get dayIndexSnapshot => $composableBuilder(
+    column: $table.dayIndexSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get daySyncIdSnapshot => $composableBuilder(
+    column: $table.daySyncIdSnapshot,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -6914,7 +8364,8 @@ class $$LocalWorkoutSessionsTableFilterComposer
             $table: $db.localRoutines,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
@@ -6936,7 +8387,8 @@ class $$LocalWorkoutSessionsTableFilterComposer
             $table: $db.localTrainingDays,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
@@ -6960,9 +8412,36 @@ class $$LocalWorkoutSessionsTableFilterComposer
             $table: $db.localWorkoutLogs,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
+    return f(composer);
+  }
+
+  Expression<bool> localWorkoutSetDraftsRefs(
+    Expression<bool> Function($$LocalWorkoutSetDraftsTableFilterComposer f) f,
+  ) {
+    final $$LocalWorkoutSetDraftsTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.localWorkoutSetDrafts,
+          getReferencedColumn: (t) => t.sessionId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$LocalWorkoutSetDraftsTableFilterComposer(
+                $db: $db,
+                $table: $db.localWorkoutSetDrafts,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
     return f(composer);
   }
 }
@@ -6988,6 +8467,36 @@ class $$LocalWorkoutSessionsTableOrderingComposer
 
   ColumnOrderings<int> get remoteId => $composableBuilder(
     column: $table.remoteId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get routineNameSnapshot => $composableBuilder(
+    column: $table.routineNameSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get routineSyncIdSnapshot => $composableBuilder(
+    column: $table.routineSyncIdSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get dayNameSnapshot => $composableBuilder(
+    column: $table.dayNameSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get dayWeekSnapshot => $composableBuilder(
+    column: $table.dayWeekSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get dayIndexSnapshot => $composableBuilder(
+    column: $table.dayIndexSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get daySyncIdSnapshot => $composableBuilder(
+    column: $table.daySyncIdSnapshot,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -7032,7 +8541,8 @@ class $$LocalWorkoutSessionsTableOrderingComposer
             $table: $db.localRoutines,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
@@ -7054,7 +8564,8 @@ class $$LocalWorkoutSessionsTableOrderingComposer
             $table: $db.localTrainingDays,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
@@ -7070,13 +8581,44 @@ class $$LocalWorkoutSessionsTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<int> get id => $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
 
   GeneratedColumn<String> get syncId =>
       $composableBuilder(column: $table.syncId, builder: (column) => column);
 
   GeneratedColumn<int> get remoteId =>
       $composableBuilder(column: $table.remoteId, builder: (column) => column);
+
+  GeneratedColumn<String> get routineNameSnapshot => $composableBuilder(
+    column: $table.routineNameSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get routineSyncIdSnapshot => $composableBuilder(
+    column: $table.routineSyncIdSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get dayNameSnapshot => $composableBuilder(
+    column: $table.dayNameSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get dayWeekSnapshot => $composableBuilder(
+    column: $table.dayWeekSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get dayIndexSnapshot => $composableBuilder(
+    column: $table.dayIndexSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get daySyncIdSnapshot => $composableBuilder(
+    column: $table.daySyncIdSnapshot,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<DateTime> get startedAt =>
       $composableBuilder(column: $table.startedAt, builder: (column) => column);
@@ -7111,31 +8653,34 @@ class $$LocalWorkoutSessionsTableAnnotationComposer
             $table: $db.localRoutines,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
   }
 
   $$LocalTrainingDaysTableAnnotationComposer get dayId {
-    final $$LocalTrainingDaysTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.dayId,
-      referencedTable: $db.localTrainingDays,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$LocalTrainingDaysTableAnnotationComposer(
-            $db: $db,
-            $table: $db.localTrainingDays,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
-          ),
-    );
+    final $$LocalTrainingDaysTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.dayId,
+          referencedTable: $db.localTrainingDays,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$LocalTrainingDaysTableAnnotationComposer(
+                $db: $db,
+                $table: $db.localTrainingDays,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
     return composer;
   }
 
@@ -7157,9 +8702,36 @@ class $$LocalWorkoutSessionsTableAnnotationComposer
             $table: $db.localWorkoutLogs,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
+    return f(composer);
+  }
+
+  Expression<T> localWorkoutSetDraftsRefs<T extends Object>(
+    Expression<T> Function($$LocalWorkoutSetDraftsTableAnnotationComposer a) f,
+  ) {
+    final $$LocalWorkoutSetDraftsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.localWorkoutSetDrafts,
+          getReferencedColumn: (t) => t.sessionId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$LocalWorkoutSetDraftsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.localWorkoutSetDrafts,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
     return f(composer);
   }
 }
@@ -7181,6 +8753,7 @@ class $$LocalWorkoutSessionsTableTableManager
             bool routineId,
             bool dayId,
             bool localWorkoutLogsRefs,
+            bool localWorkoutSetDraftsRefs,
           })
         > {
   $$LocalWorkoutSessionsTableTableManager(
@@ -7192,14 +8765,16 @@ class $$LocalWorkoutSessionsTableTableManager
           table: table,
           createFilteringComposer: () =>
               $$LocalWorkoutSessionsTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () => $$LocalWorkoutSessionsTableOrderingComposer(
-            $db: db,
-            $table: table,
-          ),
-          createComputedFieldComposer: () => $$LocalWorkoutSessionsTableAnnotationComposer(
-            $db: db,
-            $table: table,
-          ),
+          createOrderingComposer: () =>
+              $$LocalWorkoutSessionsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$LocalWorkoutSessionsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
           updateCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
@@ -7207,6 +8782,12 @@ class $$LocalWorkoutSessionsTableTableManager
                 Value<int?> remoteId = const Value.absent(),
                 Value<int> routineId = const Value.absent(),
                 Value<int?> dayId = const Value.absent(),
+                Value<String> routineNameSnapshot = const Value.absent(),
+                Value<String> routineSyncIdSnapshot = const Value.absent(),
+                Value<String> dayNameSnapshot = const Value.absent(),
+                Value<int?> dayWeekSnapshot = const Value.absent(),
+                Value<int?> dayIndexSnapshot = const Value.absent(),
+                Value<String> daySyncIdSnapshot = const Value.absent(),
                 Value<DateTime> startedAt = const Value.absent(),
                 Value<DateTime?> endedAt = const Value.absent(),
                 Value<String> note = const Value.absent(),
@@ -7218,6 +8799,12 @@ class $$LocalWorkoutSessionsTableTableManager
                 remoteId: remoteId,
                 routineId: routineId,
                 dayId: dayId,
+                routineNameSnapshot: routineNameSnapshot,
+                routineSyncIdSnapshot: routineSyncIdSnapshot,
+                dayNameSnapshot: dayNameSnapshot,
+                dayWeekSnapshot: dayWeekSnapshot,
+                dayIndexSnapshot: dayIndexSnapshot,
+                daySyncIdSnapshot: daySyncIdSnapshot,
                 startedAt: startedAt,
                 endedAt: endedAt,
                 note: note,
@@ -7231,6 +8818,12 @@ class $$LocalWorkoutSessionsTableTableManager
                 Value<int?> remoteId = const Value.absent(),
                 required int routineId,
                 Value<int?> dayId = const Value.absent(),
+                Value<String> routineNameSnapshot = const Value.absent(),
+                Value<String> routineSyncIdSnapshot = const Value.absent(),
+                Value<String> dayNameSnapshot = const Value.absent(),
+                Value<int?> dayWeekSnapshot = const Value.absent(),
+                Value<int?> dayIndexSnapshot = const Value.absent(),
+                Value<String> daySyncIdSnapshot = const Value.absent(),
                 required DateTime startedAt,
                 Value<DateTime?> endedAt = const Value.absent(),
                 Value<String> note = const Value.absent(),
@@ -7242,6 +8835,12 @@ class $$LocalWorkoutSessionsTableTableManager
                 remoteId: remoteId,
                 routineId: routineId,
                 dayId: dayId,
+                routineNameSnapshot: routineNameSnapshot,
+                routineSyncIdSnapshot: routineSyncIdSnapshot,
+                dayNameSnapshot: dayNameSnapshot,
+                dayWeekSnapshot: dayWeekSnapshot,
+                dayIndexSnapshot: dayIndexSnapshot,
+                daySyncIdSnapshot: daySyncIdSnapshot,
                 startedAt: startedAt,
                 endedAt: endedAt,
                 note: note,
@@ -7261,11 +8860,13 @@ class $$LocalWorkoutSessionsTableTableManager
                 routineId = false,
                 dayId = false,
                 localWorkoutLogsRefs = false,
+                localWorkoutSetDraftsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
                     if (localWorkoutLogsRefs) db.localWorkoutLogs,
+                    if (localWorkoutSetDraftsRefs) db.localWorkoutSetDrafts,
                   ],
                   addJoins:
                       <
@@ -7288,11 +8889,13 @@ class $$LocalWorkoutSessionsTableTableManager
                               state.withJoin(
                                     currentTable: table,
                                     currentColumn: table.routineId,
-                                    referencedTable: $$LocalWorkoutSessionsTableReferences
-                                        ._routineIdTable(db),
-                                    referencedColumn: $$LocalWorkoutSessionsTableReferences
-                                        ._routineIdTable(db)
-                                        .id,
+                                    referencedTable:
+                                        $$LocalWorkoutSessionsTableReferences
+                                            ._routineIdTable(db),
+                                    referencedColumn:
+                                        $$LocalWorkoutSessionsTableReferences
+                                            ._routineIdTable(db)
+                                            .id,
                                   )
                                   as T;
                         }
@@ -7301,11 +8904,13 @@ class $$LocalWorkoutSessionsTableTableManager
                               state.withJoin(
                                     currentTable: table,
                                     currentColumn: table.dayId,
-                                    referencedTable: $$LocalWorkoutSessionsTableReferences
-                                        ._dayIdTable(db),
-                                    referencedColumn: $$LocalWorkoutSessionsTableReferences
-                                        ._dayIdTable(db)
-                                        .id,
+                                    referencedTable:
+                                        $$LocalWorkoutSessionsTableReferences
+                                            ._dayIdTable(db),
+                                    referencedColumn:
+                                        $$LocalWorkoutSessionsTableReferences
+                                            ._dayIdTable(db)
+                                            .id,
                                   )
                                   as T;
                         }
@@ -7323,13 +8928,35 @@ class $$LocalWorkoutSessionsTableTableManager
                           currentTable: table,
                           referencedTable: $$LocalWorkoutSessionsTableReferences
                               ._localWorkoutLogsRefsTable(db),
-                          managerFromTypedResult: (p0) => $$LocalWorkoutSessionsTableReferences(
-                            db,
-                            table,
-                            p0,
-                          ).localWorkoutLogsRefs,
-                          referencedItemsForCurrentItem: (item, referencedItems) =>
-                              referencedItems.where(
+                          managerFromTypedResult: (p0) =>
+                              $$LocalWorkoutSessionsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).localWorkoutLogsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.sessionId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (localWorkoutSetDraftsRefs)
+                        await $_getPrefetchedData<
+                          LocalWorkoutSession,
+                          $LocalWorkoutSessionsTable,
+                          LocalWorkoutSetDraft
+                        >(
+                          currentTable: table,
+                          referencedTable: $$LocalWorkoutSessionsTableReferences
+                              ._localWorkoutSetDraftsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$LocalWorkoutSessionsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).localWorkoutSetDraftsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
                                 (e) => e.sessionId == item.id,
                               ),
                           typedResults: items,
@@ -7358,6 +8985,7 @@ typedef $$LocalWorkoutSessionsTableProcessedTableManager =
         bool routineId,
         bool dayId,
         bool localWorkoutLogsRefs,
+        bool localWorkoutSetDraftsRefs,
       })
     >;
 typedef $$LocalWorkoutLogsTableCreateCompanionBuilder =
@@ -7374,6 +9002,11 @@ typedef $$LocalWorkoutLogsTableCreateCompanionBuilder =
       Value<int> reps,
       Value<double?> rir,
       Value<int> durationSeconds,
+      Value<double?> actualWeight,
+      Value<int?> actualReps,
+      Value<int?> actualDurationSeconds,
+      Value<int?> restSeconds,
+      Value<bool> hasActualValues,
       Value<String> recordMode,
       Value<String> note,
       Value<String> syncStatus,
@@ -7393,6 +9026,11 @@ typedef $$LocalWorkoutLogsTableUpdateCompanionBuilder =
       Value<int> reps,
       Value<double?> rir,
       Value<int> durationSeconds,
+      Value<double?> actualWeight,
+      Value<int?> actualReps,
+      Value<int?> actualDurationSeconds,
+      Value<int?> restSeconds,
+      Value<bool> hasActualValues,
       Value<String> recordMode,
       Value<String> note,
       Value<String> syncStatus,
@@ -7400,7 +9038,12 @@ typedef $$LocalWorkoutLogsTableUpdateCompanionBuilder =
     });
 
 final class $$LocalWorkoutLogsTableReferences
-    extends BaseReferences<_$LocalTrainingDatabase, $LocalWorkoutLogsTable, LocalWorkoutLog> {
+    extends
+        BaseReferences<
+          _$LocalTrainingDatabase,
+          $LocalWorkoutLogsTable,
+          LocalWorkoutLog
+        > {
   $$LocalWorkoutLogsTableReferences(
     super.$_db,
     super.$_table,
@@ -7529,6 +9172,31 @@ class $$LocalWorkoutLogsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<double> get actualWeight => $composableBuilder(
+    column: $table.actualWeight,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get actualReps => $composableBuilder(
+    column: $table.actualReps,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get actualDurationSeconds => $composableBuilder(
+    column: $table.actualDurationSeconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get restSeconds => $composableBuilder(
+    column: $table.restSeconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get hasActualValues => $composableBuilder(
+    column: $table.hasActualValues,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get recordMode => $composableBuilder(
     column: $table.recordMode,
     builder: (column) => ColumnFilters(column),
@@ -7565,7 +9233,8 @@ class $$LocalWorkoutLogsTableFilterComposer
             $table: $db.localWorkoutSessions,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
@@ -7587,7 +9256,8 @@ class $$LocalWorkoutLogsTableFilterComposer
             $table: $db.localRoutines,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
@@ -7609,7 +9279,8 @@ class $$LocalWorkoutLogsTableFilterComposer
             $table: $db.localTrainingDays,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
@@ -7670,6 +9341,31 @@ class $$LocalWorkoutLogsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<double> get actualWeight => $composableBuilder(
+    column: $table.actualWeight,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get actualReps => $composableBuilder(
+    column: $table.actualReps,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get actualDurationSeconds => $composableBuilder(
+    column: $table.actualDurationSeconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get restSeconds => $composableBuilder(
+    column: $table.restSeconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get hasActualValues => $composableBuilder(
+    column: $table.hasActualValues,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get recordMode => $composableBuilder(
     column: $table.recordMode,
     builder: (column) => ColumnOrderings(column),
@@ -7691,24 +9387,26 @@ class $$LocalWorkoutLogsTableOrderingComposer
   );
 
   $$LocalWorkoutSessionsTableOrderingComposer get sessionId {
-    final $$LocalWorkoutSessionsTableOrderingComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.sessionId,
-      referencedTable: $db.localWorkoutSessions,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$LocalWorkoutSessionsTableOrderingComposer(
-            $db: $db,
-            $table: $db.localWorkoutSessions,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
-          ),
-    );
+    final $$LocalWorkoutSessionsTableOrderingComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.sessionId,
+          referencedTable: $db.localWorkoutSessions,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$LocalWorkoutSessionsTableOrderingComposer(
+                $db: $db,
+                $table: $db.localWorkoutSessions,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
     return composer;
   }
 
@@ -7728,7 +9426,8 @@ class $$LocalWorkoutLogsTableOrderingComposer
             $table: $db.localRoutines,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
@@ -7750,7 +9449,8 @@ class $$LocalWorkoutLogsTableOrderingComposer
             $table: $db.localTrainingDays,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
@@ -7766,7 +9466,8 @@ class $$LocalWorkoutLogsTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<int> get id => $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
 
   GeneratedColumn<String> get syncId =>
       $composableBuilder(column: $table.syncId, builder: (column) => column);
@@ -7796,6 +9497,31 @@ class $$LocalWorkoutLogsTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<double> get actualWeight => $composableBuilder(
+    column: $table.actualWeight,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get actualReps => $composableBuilder(
+    column: $table.actualReps,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get actualDurationSeconds => $composableBuilder(
+    column: $table.actualDurationSeconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get restSeconds => $composableBuilder(
+    column: $table.restSeconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get hasActualValues => $composableBuilder(
+    column: $table.hasActualValues,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<String> get recordMode => $composableBuilder(
     column: $table.recordMode,
     builder: (column) => column,
@@ -7813,24 +9539,26 @@ class $$LocalWorkoutLogsTableAnnotationComposer
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
   $$LocalWorkoutSessionsTableAnnotationComposer get sessionId {
-    final $$LocalWorkoutSessionsTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.sessionId,
-      referencedTable: $db.localWorkoutSessions,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$LocalWorkoutSessionsTableAnnotationComposer(
-            $db: $db,
-            $table: $db.localWorkoutSessions,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
-          ),
-    );
+    final $$LocalWorkoutSessionsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.sessionId,
+          referencedTable: $db.localWorkoutSessions,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$LocalWorkoutSessionsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.localWorkoutSessions,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
     return composer;
   }
 
@@ -7850,31 +9578,34 @@ class $$LocalWorkoutLogsTableAnnotationComposer
             $table: $db.localRoutines,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
   }
 
   $$LocalTrainingDaysTableAnnotationComposer get dayId {
-    final $$LocalTrainingDaysTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.dayId,
-      referencedTable: $db.localTrainingDays,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$LocalTrainingDaysTableAnnotationComposer(
-            $db: $db,
-            $table: $db.localTrainingDays,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
-          ),
-    );
+    final $$LocalTrainingDaysTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.dayId,
+          referencedTable: $db.localTrainingDays,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$LocalTrainingDaysTableAnnotationComposer(
+                $db: $db,
+                $table: $db.localTrainingDays,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
     return composer;
   }
 }
@@ -7921,6 +9652,11 @@ class $$LocalWorkoutLogsTableTableManager
                 Value<int> reps = const Value.absent(),
                 Value<double?> rir = const Value.absent(),
                 Value<int> durationSeconds = const Value.absent(),
+                Value<double?> actualWeight = const Value.absent(),
+                Value<int?> actualReps = const Value.absent(),
+                Value<int?> actualDurationSeconds = const Value.absent(),
+                Value<int?> restSeconds = const Value.absent(),
+                Value<bool> hasActualValues = const Value.absent(),
                 Value<String> recordMode = const Value.absent(),
                 Value<String> note = const Value.absent(),
                 Value<String> syncStatus = const Value.absent(),
@@ -7938,6 +9674,11 @@ class $$LocalWorkoutLogsTableTableManager
                 reps: reps,
                 rir: rir,
                 durationSeconds: durationSeconds,
+                actualWeight: actualWeight,
+                actualReps: actualReps,
+                actualDurationSeconds: actualDurationSeconds,
+                restSeconds: restSeconds,
+                hasActualValues: hasActualValues,
                 recordMode: recordMode,
                 note: note,
                 syncStatus: syncStatus,
@@ -7957,6 +9698,11 @@ class $$LocalWorkoutLogsTableTableManager
                 Value<int> reps = const Value.absent(),
                 Value<double?> rir = const Value.absent(),
                 Value<int> durationSeconds = const Value.absent(),
+                Value<double?> actualWeight = const Value.absent(),
+                Value<int?> actualReps = const Value.absent(),
+                Value<int?> actualDurationSeconds = const Value.absent(),
+                Value<int?> restSeconds = const Value.absent(),
+                Value<bool> hasActualValues = const Value.absent(),
                 Value<String> recordMode = const Value.absent(),
                 Value<String> note = const Value.absent(),
                 Value<String> syncStatus = const Value.absent(),
@@ -7974,6 +9720,11 @@ class $$LocalWorkoutLogsTableTableManager
                 reps: reps,
                 rir: rir,
                 durationSeconds: durationSeconds,
+                actualWeight: actualWeight,
+                actualReps: actualReps,
+                actualDurationSeconds: actualDurationSeconds,
+                restSeconds: restSeconds,
+                hasActualValues: hasActualValues,
                 recordMode: recordMode,
                 note: note,
                 syncStatus: syncStatus,
@@ -7987,7 +9738,480 @@ class $$LocalWorkoutLogsTableTableManager
                 ),
               )
               .toList(),
-          prefetchHooksCallback: ({sessionId = false, routineId = false, dayId = false}) {
+          prefetchHooksCallback:
+              ({sessionId = false, routineId = false, dayId = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (sessionId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.sessionId,
+                                    referencedTable:
+                                        $$LocalWorkoutLogsTableReferences
+                                            ._sessionIdTable(db),
+                                    referencedColumn:
+                                        $$LocalWorkoutLogsTableReferences
+                                            ._sessionIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+                        if (routineId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.routineId,
+                                    referencedTable:
+                                        $$LocalWorkoutLogsTableReferences
+                                            ._routineIdTable(db),
+                                    referencedColumn:
+                                        $$LocalWorkoutLogsTableReferences
+                                            ._routineIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+                        if (dayId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.dayId,
+                                    referencedTable:
+                                        $$LocalWorkoutLogsTableReferences
+                                            ._dayIdTable(db),
+                                    referencedColumn:
+                                        $$LocalWorkoutLogsTableReferences
+                                            ._dayIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$LocalWorkoutLogsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$LocalTrainingDatabase,
+      $LocalWorkoutLogsTable,
+      LocalWorkoutLog,
+      $$LocalWorkoutLogsTableFilterComposer,
+      $$LocalWorkoutLogsTableOrderingComposer,
+      $$LocalWorkoutLogsTableAnnotationComposer,
+      $$LocalWorkoutLogsTableCreateCompanionBuilder,
+      $$LocalWorkoutLogsTableUpdateCompanionBuilder,
+      (LocalWorkoutLog, $$LocalWorkoutLogsTableReferences),
+      LocalWorkoutLog,
+      PrefetchHooks Function({bool sessionId, bool routineId, bool dayId})
+    >;
+typedef $$LocalWorkoutSetDraftsTableCreateCompanionBuilder =
+    LocalWorkoutSetDraftsCompanion Function({
+      Value<int> id,
+      required int sessionId,
+      required int actionIndex,
+      required int setIndex,
+      Value<String> weightText,
+      Value<String> repsText,
+      Value<String> durationText,
+      Value<String> restText,
+      Value<String> noteText,
+      required DateTime updatedAt,
+    });
+typedef $$LocalWorkoutSetDraftsTableUpdateCompanionBuilder =
+    LocalWorkoutSetDraftsCompanion Function({
+      Value<int> id,
+      Value<int> sessionId,
+      Value<int> actionIndex,
+      Value<int> setIndex,
+      Value<String> weightText,
+      Value<String> repsText,
+      Value<String> durationText,
+      Value<String> restText,
+      Value<String> noteText,
+      Value<DateTime> updatedAt,
+    });
+
+final class $$LocalWorkoutSetDraftsTableReferences
+    extends
+        BaseReferences<
+          _$LocalTrainingDatabase,
+          $LocalWorkoutSetDraftsTable,
+          LocalWorkoutSetDraft
+        > {
+  $$LocalWorkoutSetDraftsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $LocalWorkoutSessionsTable _sessionIdTable(
+    _$LocalTrainingDatabase db,
+  ) => db.localWorkoutSessions.createAlias(
+    $_aliasNameGenerator(
+      db.localWorkoutSetDrafts.sessionId,
+      db.localWorkoutSessions.id,
+    ),
+  );
+
+  $$LocalWorkoutSessionsTableProcessedTableManager get sessionId {
+    final $_column = $_itemColumn<int>('session_id')!;
+
+    final manager = $$LocalWorkoutSessionsTableTableManager(
+      $_db,
+      $_db.localWorkoutSessions,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_sessionIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$LocalWorkoutSetDraftsTableFilterComposer
+    extends Composer<_$LocalTrainingDatabase, $LocalWorkoutSetDraftsTable> {
+  $$LocalWorkoutSetDraftsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get actionIndex => $composableBuilder(
+    column: $table.actionIndex,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get setIndex => $composableBuilder(
+    column: $table.setIndex,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get weightText => $composableBuilder(
+    column: $table.weightText,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get repsText => $composableBuilder(
+    column: $table.repsText,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get durationText => $composableBuilder(
+    column: $table.durationText,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get restText => $composableBuilder(
+    column: $table.restText,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get noteText => $composableBuilder(
+    column: $table.noteText,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$LocalWorkoutSessionsTableFilterComposer get sessionId {
+    final $$LocalWorkoutSessionsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.sessionId,
+      referencedTable: $db.localWorkoutSessions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$LocalWorkoutSessionsTableFilterComposer(
+            $db: $db,
+            $table: $db.localWorkoutSessions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$LocalWorkoutSetDraftsTableOrderingComposer
+    extends Composer<_$LocalTrainingDatabase, $LocalWorkoutSetDraftsTable> {
+  $$LocalWorkoutSetDraftsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get actionIndex => $composableBuilder(
+    column: $table.actionIndex,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get setIndex => $composableBuilder(
+    column: $table.setIndex,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get weightText => $composableBuilder(
+    column: $table.weightText,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get repsText => $composableBuilder(
+    column: $table.repsText,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get durationText => $composableBuilder(
+    column: $table.durationText,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get restText => $composableBuilder(
+    column: $table.restText,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get noteText => $composableBuilder(
+    column: $table.noteText,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$LocalWorkoutSessionsTableOrderingComposer get sessionId {
+    final $$LocalWorkoutSessionsTableOrderingComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.sessionId,
+          referencedTable: $db.localWorkoutSessions,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$LocalWorkoutSessionsTableOrderingComposer(
+                $db: $db,
+                $table: $db.localWorkoutSessions,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+}
+
+class $$LocalWorkoutSetDraftsTableAnnotationComposer
+    extends Composer<_$LocalTrainingDatabase, $LocalWorkoutSetDraftsTable> {
+  $$LocalWorkoutSetDraftsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get actionIndex => $composableBuilder(
+    column: $table.actionIndex,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get setIndex =>
+      $composableBuilder(column: $table.setIndex, builder: (column) => column);
+
+  GeneratedColumn<String> get weightText => $composableBuilder(
+    column: $table.weightText,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get repsText =>
+      $composableBuilder(column: $table.repsText, builder: (column) => column);
+
+  GeneratedColumn<String> get durationText => $composableBuilder(
+    column: $table.durationText,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get restText =>
+      $composableBuilder(column: $table.restText, builder: (column) => column);
+
+  GeneratedColumn<String> get noteText =>
+      $composableBuilder(column: $table.noteText, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  $$LocalWorkoutSessionsTableAnnotationComposer get sessionId {
+    final $$LocalWorkoutSessionsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.sessionId,
+          referencedTable: $db.localWorkoutSessions,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$LocalWorkoutSessionsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.localWorkoutSessions,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+}
+
+class $$LocalWorkoutSetDraftsTableTableManager
+    extends
+        RootTableManager<
+          _$LocalTrainingDatabase,
+          $LocalWorkoutSetDraftsTable,
+          LocalWorkoutSetDraft,
+          $$LocalWorkoutSetDraftsTableFilterComposer,
+          $$LocalWorkoutSetDraftsTableOrderingComposer,
+          $$LocalWorkoutSetDraftsTableAnnotationComposer,
+          $$LocalWorkoutSetDraftsTableCreateCompanionBuilder,
+          $$LocalWorkoutSetDraftsTableUpdateCompanionBuilder,
+          (LocalWorkoutSetDraft, $$LocalWorkoutSetDraftsTableReferences),
+          LocalWorkoutSetDraft,
+          PrefetchHooks Function({bool sessionId})
+        > {
+  $$LocalWorkoutSetDraftsTableTableManager(
+    _$LocalTrainingDatabase db,
+    $LocalWorkoutSetDraftsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$LocalWorkoutSetDraftsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$LocalWorkoutSetDraftsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$LocalWorkoutSetDraftsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> sessionId = const Value.absent(),
+                Value<int> actionIndex = const Value.absent(),
+                Value<int> setIndex = const Value.absent(),
+                Value<String> weightText = const Value.absent(),
+                Value<String> repsText = const Value.absent(),
+                Value<String> durationText = const Value.absent(),
+                Value<String> restText = const Value.absent(),
+                Value<String> noteText = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+              }) => LocalWorkoutSetDraftsCompanion(
+                id: id,
+                sessionId: sessionId,
+                actionIndex: actionIndex,
+                setIndex: setIndex,
+                weightText: weightText,
+                repsText: repsText,
+                durationText: durationText,
+                restText: restText,
+                noteText: noteText,
+                updatedAt: updatedAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int sessionId,
+                required int actionIndex,
+                required int setIndex,
+                Value<String> weightText = const Value.absent(),
+                Value<String> repsText = const Value.absent(),
+                Value<String> durationText = const Value.absent(),
+                Value<String> restText = const Value.absent(),
+                Value<String> noteText = const Value.absent(),
+                required DateTime updatedAt,
+              }) => LocalWorkoutSetDraftsCompanion.insert(
+                id: id,
+                sessionId: sessionId,
+                actionIndex: actionIndex,
+                setIndex: setIndex,
+                weightText: weightText,
+                repsText: repsText,
+                durationText: durationText,
+                restText: restText,
+                noteText: noteText,
+                updatedAt: updatedAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$LocalWorkoutSetDraftsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({sessionId = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [],
@@ -8012,38 +10236,13 @@ class $$LocalWorkoutLogsTableTableManager
                           state.withJoin(
                                 currentTable: table,
                                 currentColumn: table.sessionId,
-                                referencedTable: $$LocalWorkoutLogsTableReferences._sessionIdTable(
-                                  db,
-                                ),
-                                referencedColumn: $$LocalWorkoutLogsTableReferences
-                                    ._sessionIdTable(db)
-                                    .id,
-                              )
-                              as T;
-                    }
-                    if (routineId) {
-                      state =
-                          state.withJoin(
-                                currentTable: table,
-                                currentColumn: table.routineId,
-                                referencedTable: $$LocalWorkoutLogsTableReferences._routineIdTable(
-                                  db,
-                                ),
-                                referencedColumn: $$LocalWorkoutLogsTableReferences
-                                    ._routineIdTable(db)
-                                    .id,
-                              )
-                              as T;
-                    }
-                    if (dayId) {
-                      state =
-                          state.withJoin(
-                                currentTable: table,
-                                currentColumn: table.dayId,
-                                referencedTable: $$LocalWorkoutLogsTableReferences._dayIdTable(db),
-                                referencedColumn: $$LocalWorkoutLogsTableReferences
-                                    ._dayIdTable(db)
-                                    .id,
+                                referencedTable:
+                                    $$LocalWorkoutSetDraftsTableReferences
+                                        ._sessionIdTable(db),
+                                referencedColumn:
+                                    $$LocalWorkoutSetDraftsTableReferences
+                                        ._sessionIdTable(db)
+                                        .id,
                               )
                               as T;
                     }
@@ -8059,19 +10258,19 @@ class $$LocalWorkoutLogsTableTableManager
       );
 }
 
-typedef $$LocalWorkoutLogsTableProcessedTableManager =
+typedef $$LocalWorkoutSetDraftsTableProcessedTableManager =
     ProcessedTableManager<
       _$LocalTrainingDatabase,
-      $LocalWorkoutLogsTable,
-      LocalWorkoutLog,
-      $$LocalWorkoutLogsTableFilterComposer,
-      $$LocalWorkoutLogsTableOrderingComposer,
-      $$LocalWorkoutLogsTableAnnotationComposer,
-      $$LocalWorkoutLogsTableCreateCompanionBuilder,
-      $$LocalWorkoutLogsTableUpdateCompanionBuilder,
-      (LocalWorkoutLog, $$LocalWorkoutLogsTableReferences),
-      LocalWorkoutLog,
-      PrefetchHooks Function({bool sessionId, bool routineId, bool dayId})
+      $LocalWorkoutSetDraftsTable,
+      LocalWorkoutSetDraft,
+      $$LocalWorkoutSetDraftsTableFilterComposer,
+      $$LocalWorkoutSetDraftsTableOrderingComposer,
+      $$LocalWorkoutSetDraftsTableAnnotationComposer,
+      $$LocalWorkoutSetDraftsTableCreateCompanionBuilder,
+      $$LocalWorkoutSetDraftsTableUpdateCompanionBuilder,
+      (LocalWorkoutSetDraft, $$LocalWorkoutSetDraftsTableReferences),
+      LocalWorkoutSetDraft,
+      PrefetchHooks Function({bool sessionId})
     >;
 typedef $$LocalSyncQueueTableCreateCompanionBuilder =
     LocalSyncQueueCompanion Function({
@@ -8265,7 +10464,8 @@ class $$LocalSyncQueueTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<int> get id => $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
 
   GeneratedColumn<String> get eventId =>
       $composableBuilder(column: $table.eventId, builder: (column) => column);
@@ -8321,7 +10521,11 @@ class $$LocalSyncQueueTableTableManager
           $$LocalSyncQueueTableUpdateCompanionBuilder,
           (
             LocalSyncQueueData,
-            BaseReferences<_$LocalTrainingDatabase, $LocalSyncQueueTable, LocalSyncQueueData>,
+            BaseReferences<
+              _$LocalTrainingDatabase,
+              $LocalSyncQueueTable,
+              LocalSyncQueueData
+            >,
           ),
           LocalSyncQueueData,
           PrefetchHooks Function()
@@ -8399,8 +10603,9 @@ class $$LocalSyncQueueTableTableManager
                 createdAt: createdAt,
                 updatedAt: updatedAt,
               ),
-          withReferenceMapper: (p0) =>
-              p0.map((e) => (e.readTable(table), BaseReferences(db, table, e))).toList(),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
           prefetchHooksCallback: null,
         ),
       );
@@ -8418,7 +10623,11 @@ typedef $$LocalSyncQueueTableProcessedTableManager =
       $$LocalSyncQueueTableUpdateCompanionBuilder,
       (
         LocalSyncQueueData,
-        BaseReferences<_$LocalTrainingDatabase, $LocalSyncQueueTable, LocalSyncQueueData>,
+        BaseReferences<
+          _$LocalTrainingDatabase,
+          $LocalSyncQueueTable,
+          LocalSyncQueueData
+        >,
       ),
       LocalSyncQueueData,
       PrefetchHooks Function()
@@ -8439,6 +10648,8 @@ class $LocalTrainingDatabaseManager {
       $$LocalWorkoutSessionsTableTableManager(_db, _db.localWorkoutSessions);
   $$LocalWorkoutLogsTableTableManager get localWorkoutLogs =>
       $$LocalWorkoutLogsTableTableManager(_db, _db.localWorkoutLogs);
+  $$LocalWorkoutSetDraftsTableTableManager get localWorkoutSetDrafts =>
+      $$LocalWorkoutSetDraftsTableTableManager(_db, _db.localWorkoutSetDrafts);
   $$LocalSyncQueueTableTableManager get localSyncQueue =>
       $$LocalSyncQueueTableTableManager(_db, _db.localSyncQueue);
 }

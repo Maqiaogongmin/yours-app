@@ -13,6 +13,10 @@ import 'package:yours/redesign/data/sync_identity.dart';
 part 'local_training_repository/training_seed_service.dart';
 part 'local_training_repository/training_plan_store.dart';
 part 'local_training_repository/workout_record_store.dart';
+part 'local_training_repository/workout_session_write_store.dart';
+part 'local_training_repository/workout_record_query_store.dart';
+part 'local_training_repository/workout_record_edit_store.dart';
+part 'local_training_repository/workout_record_helpers.dart';
 part 'local_training_repository/training_stats_reader.dart';
 
 class LocalTrainingRepository {
@@ -88,6 +92,11 @@ class LocalTrainingRepository {
     required int reps,
     double? rir,
     required int durationSeconds,
+    double? actualWeight,
+    int? actualReps,
+    int? actualDurationSeconds,
+    int? restSeconds,
+    bool hasActualValues = false,
     String note = '',
     String recordMode = localRecordModeStandard,
   }) async {
@@ -101,6 +110,11 @@ class LocalTrainingRepository {
       reps: reps,
       rir: rir,
       durationSeconds: durationSeconds,
+      actualWeight: actualWeight,
+      actualReps: actualReps,
+      actualDurationSeconds: actualDurationSeconds,
+      restSeconds: restSeconds,
+      hasActualValues: hasActualValues,
       note: note,
       recordMode: recordMode,
     );
@@ -141,6 +155,11 @@ class LocalTrainingRepository {
     required int reps,
     required String note,
     required int durationSeconds,
+    double? actualWeight,
+    int? actualReps,
+    int? actualDurationSeconds,
+    int? restSeconds,
+    bool hasActualValues = false,
   }) async {
     await _workouts.updateWorkoutLog(
       logId: logId,
@@ -149,8 +168,31 @@ class LocalTrainingRepository {
       reps: reps,
       note: note,
       durationSeconds: durationSeconds,
+      actualWeight: actualWeight,
+      actualReps: actualReps,
+      actualDurationSeconds: actualDurationSeconds,
+      restSeconds: restSeconds,
+      hasActualValues: hasActualValues,
     );
   }
+
+  Future<void> saveWorkoutInputDraft({
+    required int sessionId,
+    required LocalWorkoutInputDraft draft,
+  }) => _workouts.saveWorkoutInputDraft(sessionId: sessionId, draft: draft);
+
+  Future<void> deleteWorkoutInputDraft({
+    required int sessionId,
+    required int actionIndex,
+    required int setIndex,
+  }) => _workouts.deleteWorkoutInputDraft(
+    sessionId: sessionId,
+    actionIndex: actionIndex,
+    setIndex: setIndex,
+  );
+
+  Future<void> deleteWorkoutInputDraftsForSession(int sessionId) =>
+      _workouts.deleteWorkoutInputDraftsForSession(sessionId);
 
   Future<void> updateWorkoutSession({
     required int sessionId,

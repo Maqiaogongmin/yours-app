@@ -11,6 +11,14 @@ String normalizeLocalRecordMode(Object? value) {
   return value == localRecordModeFree ? localRecordModeFree : localRecordModeStandard;
 }
 
+int defaultTargetSetsForRecordMode(Object? recordMode) {
+  return normalizeLocalRecordMode(recordMode) == localRecordModeFree ? 1 : 3;
+}
+
+int normalizeTargetSetsForRecordMode(Object? recordMode, int? targetSets) {
+  return (targetSets ?? defaultTargetSetsForRecordMode(recordMode)).clamp(1, 20);
+}
+
 class LocalTrainingActionModel {
   String? syncId;
   String name;
@@ -25,14 +33,15 @@ class LocalTrainingActionModel {
   LocalTrainingActionModel({
     this.syncId,
     required this.name,
-    this.targetSets = 3,
+    int? targetSets,
     this.targetReps = 8,
     this.targetWeight,
     this.targetRestSeconds,
     this.targetDurationSeconds,
-    this.recordMode = localRecordModeStandard,
+    String recordMode = localRecordModeStandard,
     this.note = '',
-  });
+  }) : targetSets = normalizeTargetSetsForRecordMode(recordMode, targetSets),
+       recordMode = normalizeLocalRecordMode(recordMode);
 
   LocalTrainingActionModel copyWith({
     String? syncId,
@@ -48,10 +57,11 @@ class LocalTrainingActionModel {
     String? recordMode,
     String? note,
   }) {
+    final normalizedRecordMode = normalizeLocalRecordMode(recordMode ?? this.recordMode);
     return LocalTrainingActionModel(
       syncId: syncId ?? this.syncId,
       name: name ?? this.name,
-      targetSets: targetSets ?? this.targetSets,
+      targetSets: targetSets ?? (recordMode == null ? this.targetSets : null),
       targetReps: targetReps ?? this.targetReps,
       targetWeight: clearTargetWeight ? null : targetWeight ?? this.targetWeight,
       targetRestSeconds: clearTargetRestSeconds
@@ -60,7 +70,7 @@ class LocalTrainingActionModel {
       targetDurationSeconds: clearTargetDurationSeconds
           ? null
           : targetDurationSeconds ?? this.targetDurationSeconds,
-      recordMode: normalizeLocalRecordMode(recordMode ?? this.recordMode),
+      recordMode: normalizedRecordMode,
       note: note ?? this.note,
     );
   }
@@ -85,15 +95,16 @@ class LocalTrainingActionModel {
       return LocalTrainingActionModel(name: json);
     }
     if (json is Map) {
+      final recordMode = normalizeLocalRecordMode(json['recordMode']);
       return LocalTrainingActionModel(
         syncId: json['syncId'] as String?,
         name: json['name'] as String? ?? '未命名动作',
-        targetSets: (json['targetSets'] as num?)?.toInt() ?? 3,
+        targetSets: (json['targetSets'] as num?)?.toInt(),
         targetReps: (json['targetReps'] as num?)?.toInt() ?? 8,
         targetWeight: (json['targetWeight'] as num?)?.toDouble(),
         targetRestSeconds: (json['targetRestSeconds'] as num?)?.toInt(),
         targetDurationSeconds: (json['targetDurationSeconds'] as num?)?.toInt(),
-        recordMode: normalizeLocalRecordMode(json['recordMode']),
+        recordMode: recordMode,
         note: json['note'] as String? ?? '',
       );
     }
@@ -259,6 +270,11 @@ class LocalWorkoutLogEditModel {
   final String note;
   final String recordMode;
   final int durationSeconds;
+  final double? actualWeight;
+  final int? actualReps;
+  final int? actualDurationSeconds;
+  final int? restSeconds;
+  final bool hasActualValues;
   final DateTime createdAt;
 
   const LocalWorkoutLogEditModel({
@@ -271,8 +287,55 @@ class LocalWorkoutLogEditModel {
     required this.note,
     this.recordMode = localRecordModeStandard,
     this.durationSeconds = 0,
+    this.actualWeight,
+    this.actualReps,
+    this.actualDurationSeconds,
+    this.restSeconds,
+    this.hasActualValues = false,
     required this.createdAt,
   });
+
+  double? get recordedWeight => hasActualValues ? actualWeight : weight;
+  int? get recordedReps => hasActualValues ? actualReps : reps;
+  int? get recordedDurationSeconds => hasActualValues ? actualDurationSeconds : durationSeconds;
+}
+
+class LocalWorkoutInputDraft {
+  final int actionIndex;
+  final int setIndex;
+  final String weightText;
+  final String repsText;
+  final String durationText;
+  final String restText;
+  final String noteText;
+
+  const LocalWorkoutInputDraft({
+    required this.actionIndex,
+    required this.setIndex,
+    this.weightText = '',
+    this.repsText = '',
+    this.durationText = '',
+    this.restText = '',
+    this.noteText = '',
+  });
+
+  LocalWorkoutInputDraft copyWith({
+    String? weightText,
+    String? repsText,
+    String? durationText,
+    String? restText,
+    String? noteText,
+  }) {
+    return LocalWorkoutInputDraft(
+      actionIndex: actionIndex,
+      setIndex: setIndex,
+      weightText: weightText ?? this.weightText,
+      repsText: repsText ?? this.repsText,
+      durationText: durationText ?? this.durationText,
+      restText: restText ?? this.restText,
+      noteText: noteText ?? this.noteText,
+    );
+  }
 }
 
 class LocalWorkoutSessionEditModel {
@@ -280,7 +343,12 @@ class LocalWorkoutSessionEditModel {
   final DateTime startedAt;
   final DateTime? endedAt;
   final int? dayId;
+  final String routineName;
+  final String routineSyncId;
   final String dayName;
+  final int? dayWeek;
+  final int? dayIndex;
+  final String daySyncId;
   final String note;
   final List<LocalWorkoutLogEditModel> logs;
 
@@ -289,7 +357,12 @@ class LocalWorkoutSessionEditModel {
     required this.startedAt,
     required this.endedAt,
     this.dayId,
+    this.routineName = '',
+    this.routineSyncId = '',
     this.dayName = '',
+    this.dayWeek,
+    this.dayIndex,
+    this.daySyncId = '',
     required this.note,
     required this.logs,
   });
@@ -299,10 +372,12 @@ class LocalWorkoutSessionResumeModel {
   final int sessionId;
   final DateTime startedAt;
   final List<LocalWorkoutLogEditModel> logs;
+  final List<LocalWorkoutInputDraft> drafts;
 
   const LocalWorkoutSessionResumeModel({
     required this.sessionId,
     required this.startedAt,
     required this.logs,
+    this.drafts = const [],
   });
 }

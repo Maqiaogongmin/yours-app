@@ -2,24 +2,16 @@ part of '../profile_page.dart';
 
 extension _ProfilePageServerActions on _ProfilePageActions {
   Future<void> showServerBackupSettingsSheet() async {
-    final urlController = TextEditingController(text: state._serverBackupSettings.baseUrl);
-    final tokenController = TextEditingController(text: state._serverBackupSettings.apiToken);
     final saved = await showModalBottomSheet<ServerBackupSettings>(
       context: state.context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (ctx) {
-        return Padding(
-          padding: EdgeInsets.only(bottom: MediaQuery.of(ctx).viewInsets.bottom),
-          child: _ServerBackupSettingsSheet(
-            urlController: urlController,
-            tokenController: tokenController,
-          ),
+      builder: (_) {
+        return _ServerBackupSettingsSheet(
+          initialSettings: state._serverBackupSettings,
         );
       },
     );
-    urlController.dispose();
-    tokenController.dispose();
     if (saved == null || !state.mounted) {
       return;
     }

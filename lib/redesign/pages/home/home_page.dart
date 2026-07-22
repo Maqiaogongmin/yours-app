@@ -10,6 +10,7 @@ import 'package:yours/redesign/data/local_training_repository.dart';
 import 'package:yours/redesign/localization/localization.dart';
 import 'package:yours/redesign/localization/localized_error.dart';
 import 'package:yours/redesign/data/redesign_data_refresh.dart';
+import 'package:yours/redesign/data/yours_exception.dart';
 import 'package:yours/redesign/localization/built_in_exercise_localizations.dart';
 import 'package:yours/redesign/pages/plan/local_gym_session_controller.dart';
 import 'package:yours/redesign/pages/plan/exercise_picker_page.dart';

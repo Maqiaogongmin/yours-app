@@ -49,7 +49,8 @@ class CustomExerciseModel {
     return reference == null ? null : builtInExerciseKeyForReference(reference);
   }
 
-  String get exerciseReference => builtInExerciseReferenceForRemoteId(remoteId) ?? displayName;
+  String get exerciseReference =>
+      isCustom ? displayName : builtInExerciseReferenceForRemoteId(remoteId) ?? displayName;
 
   String get abbr {
     final source = chineseName.trim().isNotEmpty ? chineseName.trim() : bodyPart.trim();

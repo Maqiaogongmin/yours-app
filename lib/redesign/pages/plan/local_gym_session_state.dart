@@ -1,0 +1,66 @@
+part of 'local_gym_session_controller.dart';
+
+mixin _LocalGymSessionState {
+  LocalTrainingRepository get _repository;
+  BackupService get _backupService;
+  Stopwatch get _stopwatch;
+  Duration get _elapsedOffset;
+  set _elapsedOffset(Duration value);
+  Timer? get _ticker;
+  set _ticker(Timer? value);
+  Timer? get _restTicker;
+  set _restTicker(Timer? value);
+  LocalTrainingPlanModel? get _plan;
+  set _plan(LocalTrainingPlanModel? value);
+  LocalTrainingDayModel? get _day;
+  set _day(LocalTrainingDayModel? value);
+  List<LocalTrainingActionModel> get _actions;
+  set _actions(List<LocalTrainingActionModel> value);
+  List<_CompletedSetSnapshot> get _history;
+  Map<String, String> get _setNoteDrafts;
+  Map<String, LocalWorkoutInputDraft> get _inputDrafts;
+  Future<void> get _draftWriteQueue;
+  set _draftWriteQueue(Future<void> value);
+  int? get _sessionId;
+  set _sessionId(int? value);
+  DateTime get _actionStartedAt;
+  set _actionStartedAt(DateTime value);
+  Map<int, DateTime> get _actionStartedAtByIndex;
+  int get _exerciseIndex;
+  set _exerciseIndex(int value);
+  int get _setIndex;
+  set _setIndex(int value);
+  set _restEndsAt(DateTime? value);
+  int? get _restNextExerciseIndex;
+  set _restNextExerciseIndex(int? value);
+  int? get _restNextSetIndex;
+  set _restNextSetIndex(int? value);
+  bool get _saving;
+  set _saving(bool value);
+  bool get _finished;
+  set _finished(bool value);
+  bool get _active;
+  set _active(bool value);
+
+  String get _currentSetKey;
+  int get _currentSetSnapshotIndex;
+  LocalTrainingActionModel get currentAction;
+  String get currentExercise;
+  String get currentSetNote;
+  int get currentTargetSets;
+  bool get isCurrentFreeRecord;
+  bool get isRestComplete;
+  bool get isResting;
+  bool get canPreviewNextSet;
+  bool get canPreviewPreviousSet;
+
+  Future<void> flushInputDrafts();
+  Future<void> _clearCurrentInputDraft();
+  void advanceAfterRest();
+  void _moveToNextSet();
+  void _startRest(int seconds);
+  void _clearRest();
+  void _markActionStartedIfNeeded(int actionIndex);
+  void _finishWorkoutState();
+  void _ensureTicker();
+}

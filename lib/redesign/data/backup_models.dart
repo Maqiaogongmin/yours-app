@@ -222,13 +222,38 @@ class ServerEventPullResult {
   final int appliedCount;
   final int failedCount;
   final int latestCursor;
+  final ServerEventFailureDetail? firstFailure;
 
   const ServerEventPullResult({
     required this.downloadedCount,
     required this.appliedCount,
     required this.failedCount,
     required this.latestCursor,
+    this.firstFailure,
   });
+}
+
+class ServerEventFailureDetail {
+  final int? serverSeq;
+  final String entityType;
+  final String action;
+  final String entitySyncId;
+  final String reason;
+
+  const ServerEventFailureDetail({
+    required this.serverSeq,
+    required this.entityType,
+    required this.action,
+    required this.entitySyncId,
+    required this.reason,
+  });
+
+  @override
+  String toString() {
+    final cursorText = serverSeq == null ? 'unknown' : '$serverSeq';
+    final target = entitySyncId.isEmpty ? entityType : entitySyncId;
+    return 'serverSeq=$cursorText, entity=$target, action=$action, reason=$reason';
+  }
 }
 
 class BackupManifestFile {

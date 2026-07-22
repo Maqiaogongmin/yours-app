@@ -215,6 +215,79 @@ void main() {
     expect(tombstone.entitySyncId, 'workout_session:$sessionSyncId');
   });
 
+  test('server sync event applier tolerates duplicate local session sync ids', () async {
+    await locator.reset();
+    final db = LocalTrainingDatabase.inMemory(NativeDatabase.memory());
+    locator.registerSingleton<LocalTrainingDatabase>(db);
+    addTearDown(() async {
+      await locator.reset();
+      await db.close();
+    });
+    final applier = ServerSyncEventApplier(preferences: BackupPreferencesStore());
+    const routineSyncId = 'duplicate-session-routine-sync-id';
+    const sessionSyncId = 'duplicate-session-sync-id';
+    final localTime = DateTime(2026, 6, 2, 10);
+    final remoteTime = localTime.add(const Duration(hours: 1));
+
+    final routineId = await db
+        .into(db.localRoutines)
+        .insert(
+          LocalRoutinesCompanion.insert(
+            syncId: const Value(routineSyncId),
+            name: '重复同步 ID 测试计划',
+            syncStatus: const Value(localSyncSynced),
+            createdAt: localTime,
+            updatedAt: localTime,
+          ),
+        );
+    final olderSessionId = await db
+        .into(db.localWorkoutSessions)
+        .insert(
+          LocalWorkoutSessionsCompanion.insert(
+            syncId: const Value(sessionSyncId),
+            routineId: routineId,
+            startedAt: localTime,
+            note: const Value('旧重复记录'),
+            syncStatus: const Value(localSyncSynced),
+            updatedAt: localTime,
+          ),
+        );
+    final newerSessionId = await db
+        .into(db.localWorkoutSessions)
+        .insert(
+          LocalWorkoutSessionsCompanion.insert(
+            syncId: const Value(sessionSyncId),
+            routineId: routineId,
+            startedAt: localTime.add(const Duration(minutes: 1)),
+            note: const Value('新重复记录'),
+            syncStatus: const Value(localSyncSynced),
+            updatedAt: localTime.add(const Duration(minutes: 1)),
+          ),
+        );
+
+    final applied = await applier.applyRemoteEvent({
+      'entityType': 'workout_session',
+      'entitySyncId': 'workout_session:$sessionSyncId',
+      'action': 'create',
+      'snapshot': {
+        'syncId': sessionSyncId,
+        'routineSyncId': routineSyncId,
+        'startedAt': remoteTime.toIso8601String(),
+        'note': '远端恢复记录',
+        'updatedAt': remoteTime.toIso8601String(),
+        'logs': <Object?>[],
+      },
+    });
+
+    expect(applied, isTrue);
+    final sessions = await (db.select(
+      db.localWorkoutSessions,
+    )..where((row) => row.syncId.equals(sessionSyncId))).get();
+    expect(sessions, hasLength(2));
+    expect(sessions.singleWhere((session) => session.id == olderSessionId).note, '旧重复记录');
+    expect(sessions.singleWhere((session) => session.id == newerSessionId).note, '远端恢复记录');
+  });
+
   test(
     'server sync event applier does not overwrite newer local routine session or exercise',
     () async {

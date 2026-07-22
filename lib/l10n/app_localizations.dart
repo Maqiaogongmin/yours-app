@@ -559,7 +559,7 @@ abstract class AppLocalizations {
   /// No description provided for @workoutEndIncomplete.
   ///
   /// In zh, this message translates to:
-  /// **'当前训练计划还没有完成。已记录的训练数据会保留，并自动备注“未完成训练计划”。'**
+  /// **'已记录的训练数据会保留。你可以补充本次训练备注。'**
   String get workoutEndIncomplete;
 
   /// No description provided for @workoutEndEmpty.
@@ -627,6 +627,30 @@ abstract class AppLocalizations {
   /// In zh, this message translates to:
   /// **'休息时间 s'**
   String get workoutRestSeconds;
+
+  /// No description provided for @workoutRest.
+  ///
+  /// In zh, this message translates to:
+  /// **'休息时间'**
+  String get workoutRest;
+
+  /// No description provided for @workoutWeight.
+  ///
+  /// In zh, this message translates to:
+  /// **'重量'**
+  String get workoutWeight;
+
+  /// No description provided for @workoutUnitKg.
+  ///
+  /// In zh, this message translates to:
+  /// **'kg'**
+  String get workoutUnitKg;
+
+  /// No description provided for @workoutUnitSeconds.
+  ///
+  /// In zh, this message translates to:
+  /// **'s'**
+  String get workoutUnitSeconds;
 
   /// No description provided for @workoutSaveSet.
   ///
@@ -747,12 +771,6 @@ abstract class AppLocalizations {
   /// In zh, this message translates to:
   /// **'撤销当前组，返回记录页'**
   String get workoutUndoReturnLog;
-
-  /// No description provided for @workoutRestHint.
-  ///
-  /// In zh, this message translates to:
-  /// **'倒计时结束后会停在这里；滑动只浏览，不会写入或撤销记录。'**
-  String get workoutRestHint;
 
   /// No description provided for @workoutCompletedSummary.
   ///
@@ -1246,6 +1264,12 @@ abstract class AppLocalizations {
   /// **'创建并导出'**
   String get profileCreateExport;
 
+  /// No description provided for @profileCreateBackup.
+  ///
+  /// In zh, this message translates to:
+  /// **'创建备份'**
+  String get profileCreateBackup;
+
   /// No description provided for @profileRestoreFromFile.
   ///
   /// In zh, this message translates to:
@@ -1365,12 +1389,6 @@ abstract class AppLocalizations {
   /// In zh, this message translates to:
   /// **'最近快照：{date}'**
   String profileRecentSnapshot(String date);
-
-  /// No description provided for @profileServerDetail.
-  ///
-  /// In zh, this message translates to:
-  /// **'{backup}，事件 {events} 条，游标 {cursor}'**
-  String profileServerDetail(String backup, int events, int cursor);
 
   /// No description provided for @profileCheckingICloud.
   ///
@@ -1621,7 +1639,7 @@ abstract class AppLocalizations {
   /// No description provided for @profileRecentVaultExport.
   ///
   /// In zh, this message translates to:
-  /// **'最近已导出 Vault：{name}'**
+  /// **'上次导出 Vault：{name}'**
   String profileRecentVaultExport(String name);
 
   /// No description provided for @profileVaultExportSummary.
@@ -1666,6 +1684,24 @@ abstract class AppLocalizations {
   /// **'Yours Vault 导入失败：{error}'**
   String profileVaultImportFailed(String error);
 
+  /// No description provided for @profileVaultImportArchiveFailed.
+  ///
+  /// In zh, this message translates to:
+  /// **'{count} 个已导入文件未能归档，可能会再次显示'**
+  String profileVaultImportArchiveFailed(int count);
+
+  /// No description provided for @profileVaultImportNoFiles.
+  ///
+  /// In zh, this message translates to:
+  /// **'未在 {sources} 找到可导入的 inbox 文件。'**
+  String profileVaultImportNoFiles(String sources);
+
+  /// No description provided for @profileVaultImportSourcesUnavailable.
+  ///
+  /// In zh, this message translates to:
+  /// **'无法访问：{sources}。'**
+  String profileVaultImportSourcesUnavailable(String sources);
+
   /// No description provided for @profileBackupCreated.
   ///
   /// In zh, this message translates to:
@@ -1678,10 +1714,16 @@ abstract class AppLocalizations {
   /// **'备份失败：{error}'**
   String profileBackupFailed(String error);
 
+  /// No description provided for @profileBackupShareTimedOut.
+  ///
+  /// In zh, this message translates to:
+  /// **'备份已创建；请确认所选位置已有文件。'**
+  String get profileBackupShareTimedOut;
+
   /// No description provided for @profileRecentBackupExport.
   ///
   /// In zh, this message translates to:
-  /// **'最近已导出备份：{name}'**
+  /// **'上次导出备份：{name}'**
   String profileRecentBackupExport(String name);
 
   /// No description provided for @profileBackupExportedICloud.
@@ -1855,7 +1897,7 @@ abstract class AppLocalizations {
   /// No description provided for @profileServerAvailable.
   ///
   /// In zh, this message translates to:
-  /// **'服务器同步可用：协议 v{version}，事件 {events} 条。'**
+  /// **'服务器同步可用。'**
   String profileServerAvailable(int version, int events);
 
   /// No description provided for @profileServerTestFailed.
@@ -2182,6 +2224,12 @@ abstract class AppLocalizations {
   /// **'有 {count} 条服务器变化暂时无法应用，建议从服务器备份恢复本机。'**
   String errorUnappliedServerChanges(int count);
 
+  /// No description provided for @errorWorkoutEmptySessionActionRequired.
+  ///
+  /// In zh, this message translates to:
+  /// **'请先添加动作'**
+  String get errorWorkoutEmptySessionActionRequired;
+
   /// No description provided for @backupShareTitle.
   ///
   /// In zh, this message translates to:
@@ -2223,6 +2271,204 @@ abstract class AppLocalizations {
   /// In zh, this message translates to:
   /// **'Yours Vault'**
   String get yoursVaultName;
+
+  /// No description provided for @workoutRestHint.
+  ///
+  /// In zh, this message translates to:
+  /// **'倒计时结束后会停在这里；滑动只浏览，不会写入或撤销记录。'**
+  String get workoutRestHint;
+
+  /// No description provided for @profileServerDetail.
+  ///
+  /// In zh, this message translates to:
+  /// **'{backup}，事件 {events} 条，游标 {cursor}'**
+  String profileServerDetail(String backup, int events, int cursor);
+
+  /// No description provided for @exerciseCopyAsCustom.
+  ///
+  /// In zh, this message translates to:
+  /// **'复制为自定义动作'**
+  String get exerciseCopyAsCustom;
+
+  /// No description provided for @exerciseCopyTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'复制内置动作'**
+  String get exerciseCopyTitle;
+
+  /// No description provided for @exerciseSaveCustomCopy.
+  ///
+  /// In zh, this message translates to:
+  /// **'保存为自定义动作'**
+  String get exerciseSaveCustomCopy;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In zh, this message translates to:
+  /// **'隐私政策'**
+  String get privacyPolicy;
+
+  /// No description provided for @privacyConsentTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'有思（Yours）隐私政策'**
+  String get privacyConsentTitle;
+
+  /// No description provided for @privacyConsentMessage.
+  ///
+  /// In zh, this message translates to:
+  /// **'有思采用本地优先的数据策略。训练数据默认保存在你的设备上。'**
+  String get privacyConsentMessage;
+
+  /// No description provided for @privacyPolicyUpdatedAt.
+  ///
+  /// In zh, this message translates to:
+  /// **'更新日期：2026-07-11'**
+  String get privacyPolicyUpdatedAt;
+
+  /// No description provided for @privacyPolicyDataTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'我们处理哪些信息'**
+  String get privacyPolicyDataTitle;
+
+  /// No description provided for @privacyPolicyDataBody.
+  ///
+  /// In zh, this message translates to:
+  /// **'有思默认不要求注册账号，也不主动收集姓名、手机号、邮箱、定位或通讯录。\n\n你在应用中填写的训练计划、动作、训练记录、重量、次数、时长和备注，仅用于提供训练记录与统计功能。'**
+  String get privacyPolicyDataBody;
+
+  /// No description provided for @privacyPolicyStorageTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'训练数据保存在哪里'**
+  String get privacyPolicyStorageTitle;
+
+  /// No description provided for @privacyPolicyStorageBody.
+  ///
+  /// In zh, this message translates to:
+  /// **'训练计划、动作、训练记录和应用设置默认保存在应用本地存储中。\n\n本机备份包同样保存在应用的本地目录中。你主动执行恢复时，可以通过系统文件选择器读取已有的有思备份包。'**
+  String get privacyPolicyStorageBody;
+
+  /// No description provided for @privacyPolicySyncTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'网络与同步'**
+  String get privacyPolicySyncTitle;
+
+  /// No description provided for @privacyPolicySyncBody.
+  ///
+  /// In zh, this message translates to:
+  /// **'有思不提供或运营用于接收、存储训练数据的服务器，也不会将训练数据发送给有思。\n\n只有在你主动配置并使用自托管同步服务器时，应用才会通过网络向该服务器上传或下载训练数据、同步事件和备份快照。服务器地址、访问令牌及服务器中的数据由你或服务器管理者负责保管。'**
+  String get privacyPolicySyncBody;
+
+  /// No description provided for @privacyPolicyPhotosTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'照片权限与分享海报'**
+  String get privacyPolicyPhotosTitle;
+
+  /// No description provided for @privacyPolicyPhotosBody.
+  ///
+  /// In zh, this message translates to:
+  /// **'只有在你主动保存训练分享海报时，有思才会请求系统照片写入权限。应用不会读取你的照片库，也不会在后台上传海报。'**
+  String get privacyPolicyPhotosBody;
+
+  /// No description provided for @privacyPolicyBackupTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'数据备份与恢复'**
+  String get privacyPolicyBackupTitle;
+
+  /// No description provided for @privacyPolicyBackupBody.
+  ///
+  /// In zh, this message translates to:
+  /// **'备份文件可能包含训练计划、动作、记录和备注。恢复前，应用会在本地创建安全快照，以降低误操作造成的数据损失风险。请妥善保管备份文件和自托管服务器凭据。'**
+  String get privacyPolicyBackupBody;
+
+  /// No description provided for @privacyPolicyDeletionTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'数据删除'**
+  String get privacyPolicyDeletionTitle;
+
+  /// No description provided for @privacyPolicyDeletionBody.
+  ///
+  /// In zh, this message translates to:
+  /// **'你可以通过以下方式删除有思中的数据：\n\n• 在应用内删除训练计划、训练记录或自定义动作。\n• 卸载有思应用，删除该应用保存在设备本地的数据。\n• 删除应用本地目录或其他位置中由你保管的备份文件。\n\n第三方位置中的备份，需要到对应位置删除。'**
+  String get privacyPolicyDeletionBody;
+
+  /// No description provided for @privacyPolicyChildrenTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'儿童隐私'**
+  String get privacyPolicyChildrenTitle;
+
+  /// No description provided for @privacyPolicyChildrenBody.
+  ///
+  /// In zh, this message translates to:
+  /// **'未成年人请在监护人指导下使用训练功能。'**
+  String get privacyPolicyChildrenBody;
+
+  /// No description provided for @privacyPolicyThirdPartyTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'第三方服务'**
+  String get privacyPolicyThirdPartyTitle;
+
+  /// No description provided for @privacyPolicyThirdPartyBody.
+  ///
+  /// In zh, this message translates to:
+  /// **'App Store、AppGallery、GitHub Releases、Cloudflare 等分发或托管平台会按照各自的隐私政策处理访问、下载或必要的服务日志。有思无法控制这些平台独立进行的处理。'**
+  String get privacyPolicyThirdPartyBody;
+
+  /// No description provided for @privacyPolicyContactTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'联系我们'**
+  String get privacyPolicyContactTitle;
+
+  /// No description provided for @privacyPolicyContactBody.
+  ///
+  /// In zh, this message translates to:
+  /// **'如对本政策或个人信息处理有疑问，请发送邮件至 mail@yours-app.uk。'**
+  String get privacyPolicyContactBody;
+
+  /// No description provided for @privacyPolicyUpdatesTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'政策更新'**
+  String get privacyPolicyUpdatesTitle;
+
+  /// No description provided for @privacyPolicyUpdatesBody.
+  ///
+  /// In zh, this message translates to:
+  /// **'当功能或数据处理方式发生变化时，我们会更新本政策及更新日期。需要重新取得同意时，应用会再次展示隐私政策确认页。'**
+  String get privacyPolicyUpdatesBody;
+
+  /// No description provided for @privacyConsentAgree.
+  ///
+  /// In zh, this message translates to:
+  /// **'同意并继续'**
+  String get privacyConsentAgree;
+
+  /// No description provided for @privacyConsentDecline.
+  ///
+  /// In zh, this message translates to:
+  /// **'不同意并退出'**
+  String get privacyConsentDecline;
+
+  /// No description provided for @privacyInitializationFailed.
+  ///
+  /// In zh, this message translates to:
+  /// **'应用初始化失败，请重试。'**
+  String get privacyInitializationFailed;
+
+  /// No description provided for @commonRetry.
+  ///
+  /// In zh, this message translates to:
+  /// **'重试'**
+  String get commonRetry;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

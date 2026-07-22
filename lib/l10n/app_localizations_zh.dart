@@ -260,7 +260,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get workoutEndTitle => '结束训练？';
 
   @override
-  String get workoutEndIncomplete => '当前训练计划还没有完成。已记录的训练数据会保留，并自动备注“未完成训练计划”。';
+  String get workoutEndIncomplete => '已记录的训练数据会保留。你可以补充本次训练备注。';
 
   @override
   String get workoutEndEmpty => '当前训练还没有保存任何组记录。确认后会直接关闭训练模式。';
@@ -294,6 +294,18 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get workoutRestSeconds => '休息时间 s';
+
+  @override
+  String get workoutRest => '休息时间';
+
+  @override
+  String get workoutWeight => '重量';
+
+  @override
+  String get workoutUnitKg => 'kg';
+
+  @override
+  String get workoutUnitSeconds => 's';
 
   @override
   String get workoutSaveSet => '保存本组并继续';
@@ -362,9 +374,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get workoutUndoReturnLog => '撤销当前组，返回记录页';
-
-  @override
-  String get workoutRestHint => '倒计时结束后会停在这里；滑动只浏览，不会写入或撤销记录。';
 
   @override
   String workoutCompletedSummary(int exercises, int sets) {
@@ -648,6 +657,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get profileCreateExport => '创建并导出';
 
   @override
+  String get profileCreateBackup => '创建备份';
+
+  @override
   String get profileRestoreFromFile => '从文件恢复';
 
   @override
@@ -711,11 +723,6 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String profileRecentSnapshot(String date) {
     return '最近快照：$date';
-  }
-
-  @override
-  String profileServerDetail(String backup, int events, int cursor) {
-    return '$backup，事件 $events 条，游标 $cursor';
   }
 
   @override
@@ -846,7 +853,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String profileRecentVaultExport(String name) {
-    return '最近已导出 Vault：$name';
+    return '上次导出 Vault：$name';
   }
 
   @override
@@ -885,6 +892,21 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String profileVaultImportArchiveFailed(int count) {
+    return '$count 个已导入文件未能归档，可能会再次显示';
+  }
+
+  @override
+  String profileVaultImportNoFiles(String sources) {
+    return '未在 $sources 找到可导入的 inbox 文件。';
+  }
+
+  @override
+  String profileVaultImportSourcesUnavailable(String sources) {
+    return '无法访问：$sources。';
+  }
+
+  @override
   String profileBackupCreated(String name) {
     return '备份包已创建：$name';
   }
@@ -895,8 +917,11 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get profileBackupShareTimedOut => '备份已创建；请确认所选位置已有文件。';
+
+  @override
   String profileRecentBackupExport(String name) {
-    return '最近已导出备份：$name';
+    return '上次导出备份：$name';
   }
 
   @override
@@ -1007,7 +1032,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String profileServerAvailable(int version, int events) {
-    return '服务器同步可用：协议 v$version，事件 $events 条。';
+    return '服务器同步可用。';
   }
 
   @override
@@ -1195,6 +1220,9 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get errorWorkoutEmptySessionActionRequired => '请先添加动作';
+
+  @override
   String get backupShareTitle => '导出有思备份包';
 
   @override
@@ -1214,4 +1242,111 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get yoursVaultName => 'Yours Vault';
+
+  @override
+  String get workoutRestHint => '倒计时结束后会停在这里；滑动只浏览，不会写入或撤销记录。';
+
+  @override
+  String profileServerDetail(String backup, int events, int cursor) {
+    return '$backup，事件 $events 条，游标 $cursor';
+  }
+
+  @override
+  String get exerciseCopyAsCustom => '复制为自定义动作';
+
+  @override
+  String get exerciseCopyTitle => '复制内置动作';
+
+  @override
+  String get exerciseSaveCustomCopy => '保存为自定义动作';
+
+  @override
+  String get privacyPolicy => '隐私政策';
+
+  @override
+  String get privacyConsentTitle => '有思（Yours）隐私政策';
+
+  @override
+  String get privacyConsentMessage => '有思采用本地优先的数据策略。训练数据默认保存在你的设备上。';
+
+  @override
+  String get privacyPolicyUpdatedAt => '更新日期：2026-07-11';
+
+  @override
+  String get privacyPolicyDataTitle => '我们处理哪些信息';
+
+  @override
+  String get privacyPolicyDataBody =>
+      '有思默认不要求注册账号，也不主动收集姓名、手机号、邮箱、定位或通讯录。\n\n你在应用中填写的训练计划、动作、训练记录、重量、次数、时长和备注，仅用于提供训练记录与统计功能。';
+
+  @override
+  String get privacyPolicyStorageTitle => '训练数据保存在哪里';
+
+  @override
+  String get privacyPolicyStorageBody =>
+      '训练计划、动作、训练记录和应用设置默认保存在应用本地存储中。\n\n本机备份包同样保存在应用的本地目录中。你主动执行恢复时，可以通过系统文件选择器读取已有的有思备份包。';
+
+  @override
+  String get privacyPolicySyncTitle => '网络与同步';
+
+  @override
+  String get privacyPolicySyncBody =>
+      '有思不提供或运营用于接收、存储训练数据的服务器，也不会将训练数据发送给有思。\n\n只有在你主动配置并使用自托管同步服务器时，应用才会通过网络向该服务器上传或下载训练数据、同步事件和备份快照。服务器地址、访问令牌及服务器中的数据由你或服务器管理者负责保管。';
+
+  @override
+  String get privacyPolicyPhotosTitle => '照片权限与分享海报';
+
+  @override
+  String get privacyPolicyPhotosBody => '只有在你主动保存训练分享海报时，有思才会请求系统照片写入权限。应用不会读取你的照片库，也不会在后台上传海报。';
+
+  @override
+  String get privacyPolicyBackupTitle => '数据备份与恢复';
+
+  @override
+  String get privacyPolicyBackupBody =>
+      '备份文件可能包含训练计划、动作、记录和备注。恢复前，应用会在本地创建安全快照，以降低误操作造成的数据损失风险。请妥善保管备份文件和自托管服务器凭据。';
+
+  @override
+  String get privacyPolicyDeletionTitle => '数据删除';
+
+  @override
+  String get privacyPolicyDeletionBody =>
+      '你可以通过以下方式删除有思中的数据：\n\n• 在应用内删除训练计划、训练记录或自定义动作。\n• 卸载有思应用，删除该应用保存在设备本地的数据。\n• 删除应用本地目录或其他位置中由你保管的备份文件。\n\n第三方位置中的备份，需要到对应位置删除。';
+
+  @override
+  String get privacyPolicyChildrenTitle => '儿童隐私';
+
+  @override
+  String get privacyPolicyChildrenBody => '未成年人请在监护人指导下使用训练功能。';
+
+  @override
+  String get privacyPolicyThirdPartyTitle => '第三方服务';
+
+  @override
+  String get privacyPolicyThirdPartyBody =>
+      'App Store、AppGallery、GitHub Releases、Cloudflare 等分发或托管平台会按照各自的隐私政策处理访问、下载或必要的服务日志。有思无法控制这些平台独立进行的处理。';
+
+  @override
+  String get privacyPolicyContactTitle => '联系我们';
+
+  @override
+  String get privacyPolicyContactBody => '如对本政策或个人信息处理有疑问，请发送邮件至 mail@yours-app.uk。';
+
+  @override
+  String get privacyPolicyUpdatesTitle => '政策更新';
+
+  @override
+  String get privacyPolicyUpdatesBody => '当功能或数据处理方式发生变化时，我们会更新本政策及更新日期。需要重新取得同意时，应用会再次展示隐私政策确认页。';
+
+  @override
+  String get privacyConsentAgree => '同意并继续';
+
+  @override
+  String get privacyConsentDecline => '不同意并退出';
+
+  @override
+  String get privacyInitializationFailed => '应用初始化失败，请重试。';
+
+  @override
+  String get commonRetry => '重试';
 }

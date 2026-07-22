@@ -23,6 +23,7 @@ class _SplitDurationFields extends StatelessWidget {
       minuteController: minuteController,
       secondController: secondController,
       onChanged: onChanged,
+      textRole: YoursTextRole.body,
     );
   }
 }

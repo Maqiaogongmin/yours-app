@@ -97,6 +97,11 @@ class _WorkoutRecordDetailPageState extends State<WorkoutRecordDetailPage> {
           reps: draft.reps,
           note: draft.note,
           durationSeconds: draft.durationSeconds,
+          actualWeight: draft.actualWeight,
+          actualReps: draft.actualReps,
+          actualDurationSeconds: draft.actualDurationSeconds,
+          restSeconds: draft.actualRestSeconds,
+          hasActualValues: true,
         );
       }
       RedesignDataRefresh.instance.notifyRestored();

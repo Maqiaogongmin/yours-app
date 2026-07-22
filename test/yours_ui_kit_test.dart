@@ -80,6 +80,83 @@ void main() {
     expect(minute.text, '09');
   });
 
+  testWidgets('YoursTimeValue supports body typography for form values', (tester) async {
+    final hour = TextEditingController(text: '00');
+    final minute = TextEditingController(text: '08');
+    addTearDown(hour.dispose);
+    addTearDown(minute.dispose);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: yoursLightTheme,
+        home: Scaffold(
+          body: YoursTimeValue(
+            keyPrefix: 'form-duration',
+            hourController: hour,
+            minuteController: minute,
+            onChanged: () {},
+            textRole: YoursTextRole.body,
+          ),
+        ),
+      ),
+    );
+
+    final editable = tester.widget<EditableText>(
+      find.descendant(
+        of: find.byKey(const ValueKey('form-duration-hours')),
+        matching: find.byType(EditableText),
+      ),
+    );
+    expect(editable.style.fontSize, 14);
+    expect(editable.style.fontFamily, 'Roboto');
+  });
+
+  testWidgets('YoursInlineFormValueSlot centers compact values in the shared value lane', (
+    tester,
+  ) async {
+    final hour = TextEditingController(text: '00');
+    final minute = TextEditingController(text: '08');
+    final second = TextEditingController(text: '30');
+    addTearDown(hour.dispose);
+    addTearDown(minute.dispose);
+    addTearDown(second.dispose);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: yoursLightTheme,
+        home: Scaffold(
+          body: Center(
+            child: SizedBox(
+              width: 1200,
+              child: YoursInlineFormRow(
+                label: '本项用时',
+                fieldWidthFactor: 0.5,
+                field: YoursInlineFormValueSlot(
+                  key: const ValueKey('duration-value-lane'),
+                  alignment: Alignment.center,
+                  child: YoursTimeValue(
+                    keyPrefix: 'wide-duration',
+                    hourController: hour,
+                    minuteController: minute,
+                    secondController: second,
+                    onChanged: () {},
+                    textRole: YoursTextRole.body,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    final hourCenter = tester.getCenter(find.byKey(const ValueKey('wide-duration-hours')));
+    final secondCenter = tester.getCenter(find.byKey(const ValueKey('wide-duration-seconds')));
+    final valueSlotRect = tester.getRect(find.byKey(const ValueKey('duration-value-lane')));
+    final expectedLaneCenter = valueSlotRect.right - (valueSlotRect.width * 0.74 / 2);
+    expect((hourCenter.dx + secondCenter.dx) / 2, closeTo(expectedLaneCenter, 1));
+  });
+
   testWidgets('Yours actions expose primary and danger states', (tester) async {
     var primaryTapped = false;
     var tonalTapped = false;

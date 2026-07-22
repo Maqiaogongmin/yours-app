@@ -56,6 +56,18 @@ class BackupDiagnosticsService {
       );
     }
     try {
+      final lastFailure = await _preferences.serverLastFailure();
+      if (lastFailure != null && lastFailure.trim().isNotEmpty) {
+        buffer.writeln(
+          'lastSyncFailure: ${_sanitizeDiagnosticText(lastFailure, apiToken: settings.apiToken)}',
+        );
+      }
+    } on Object catch (error) {
+      buffer.writeln(
+        'lastSyncFailureError: ${_sanitizeDiagnosticText(error, apiToken: settings.apiToken)}',
+      );
+    }
+    try {
       final pendingCount = locator.isRegistered<LocalTrainingDatabase>()
           ? await LocalSyncQueueRepository(locator<LocalTrainingDatabase>()).pendingCount()
           : 0;

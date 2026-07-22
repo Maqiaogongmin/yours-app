@@ -140,6 +140,7 @@
   "planSetSuffix": "sets",
   "planRepSuffix": "reps",
   "planRest": "Rest",
+  "planDuration": "Duration",
   "planWeight": "Weight",
   "planNoteHint": "Note, such as RIR 2, 6–8 reps, or slow eccentric",
   "planAddFromLibrary": "Add from Exercise Library",
@@ -155,7 +156,7 @@
   "planNoMatchingExercise": "No matching exercises. Add one in the Exercise Library first.",
   "planAdded": "Added",
   "workoutEndTitle": "End workout?",
-  "workoutEndIncomplete": "This training plan is not complete. Saved workout data will be kept and marked as an incomplete workout.",
+  "workoutEndIncomplete": "Saved workout data will be kept. You can add a note for this session.",
   "workoutEndEmpty": "No sets have been saved. Confirm to close workout mode.",
   "workoutPostNote": "Post-workout note",
   "workoutPostNoteHint": "For example: shoulder discomfort, skipped lateral raises",
@@ -218,7 +219,6 @@
     }
   },
   "workoutUndoReturnLog": "Undo current set and return to logging",
-  "workoutRestHint": "The timer will pause here when it ends. Swiping only previews sets; it will not write or undo records.",
   "workoutCompletedSummary": "Completed {exercises} exercises · {sets} sets",
   "@workoutCompletedSummary": {
     "placeholders": {
@@ -358,6 +358,44 @@
   "homeDashboardSettings": "Dashboard Settings",
   "homeCalendar": "Calendar",
   "commonDone": "Done",
+  "sharePosterCreate": "Create Poster",
+  "sharePosterTitle": "Create Poster",
+  "sharePosterSaveToPhotos": "Save to Photos",
+  "sharePosterSaving": "Saving",
+  "sharePosterSavedToPhotos": "Saved to Photos",
+  "sharePosterSaveFailed": "Save failed: {error}",
+  "@sharePosterSaveFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "sharePosterRenderFailed": "Could not render the workout poster.",
+  "sharePosterPhotoFailed": "Could not choose photo: {error}",
+  "@sharePosterPhotoFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "sharePosterBackground": "Background",
+  "sharePosterComponents": "Components",
+  "sharePosterUsePhoto": "Use Photo",
+  "sharePosterPhotoSelected": "Photo Background",
+  "sharePosterPresetDeepPurple": "Deep Purple",
+  "sharePosterPresetWarmPaper": "Warm Paper",
+  "sharePosterPresetEmber": "Ember",
+  "sharePosterPresetForest": "Forest",
+  "sharePosterWorkoutName": "Workout Name",
+  "sharePosterDate": "Date",
+  "sharePosterDuration": "Duration",
+  "sharePosterExerciseCount": "Exercises",
+  "sharePosterSetCount": "Sets",
+  "sharePosterTotalVolume": "Volume",
+  "sharePosterNote": "Training Note",
+  "sharePosterBrand": "Yours Mark",
   "exerciseLibrary": "Exercise Library",
   "profileTitle": "Profile",
   "dataManagement": "Data Management",
@@ -406,6 +444,7 @@
   },
   "profileProcessing": "Processing...",
   "profileCreateExport": "Create and Export",
+  "profileCreateBackup": "Create Backup",
   "profileRestoreFromFile": "Restore from File",
   "profileExportBackup": "Export Backup",
   "profileRestoreFromICloud": "Restore from iCloud",
@@ -444,20 +483,6 @@
     "placeholders": {
       "date": {
         "type": "String"
-      }
-    }
-  },
-  "profileServerDetail": "{backup}, {events} events, cursor {cursor}",
-  "@profileServerDetail": {
-    "placeholders": {
-      "backup": {
-        "type": "String"
-      },
-      "events": {
-        "type": "int"
-      },
-      "cursor": {
-        "type": "int"
       }
     }
   },
@@ -509,7 +534,7 @@
   "exerciseSaveLocal": "Save to Local Exercise Library",
   "exerciseNotFilled": "Not provided",
   "profileOpenLinkFailed": "Could not open the link.",
-  "profileRecentVaultExport": "Recently exported Vault: {name}",
+  "profileRecentVaultExport": "Last Vault export: {name}",
   "@profileRecentVaultExport": {
     "placeholders": {
       "name": {
@@ -591,6 +616,14 @@
       }
     }
   },
+  "profileVaultImportArchiveFailed": "{count} imported files could not be archived and may appear again",
+  "@profileVaultImportArchiveFailed": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "profileBackupCreated": "Backup package created: {name}",
   "@profileBackupCreated": {
     "placeholders": {
@@ -607,7 +640,7 @@
       }
     }
   },
-  "profileRecentBackupExport": "Recently exported backup: {name}",
+  "profileRecentBackupExport": "Last backup export: {name}",
   "@profileRecentBackupExport": {
     "placeholders": {
       "name": {
@@ -726,7 +759,7 @@
     }
   },
   "profileRestoreFromBackup": "Restore from backup",
-  "profileServerAvailable": "Server sync is available: protocol v{version}, {events} events.",
+  "profileServerAvailable": "Server sync is available.",
   "@profileServerAvailable": {
     "placeholders": {
       "version": {
@@ -783,9 +816,24 @@
   "planRecordModeStandard": "Standard",
   "planRecordModeFree": "Free",
   "workoutRecordMode": "Record Mode",
+  "workoutReplaceExercise": "Replace This Exercise",
+  "workoutChooseExercise": "Choose",
+  "workoutExerciseReplaced": "Replaced {from} with {to}",
+  "@workoutExerciseReplaced": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
   "workoutCompleteFreeRecord": "Complete Item",
   "workoutUndoFreeRecord": "Undo Item Record",
   "workoutActivityElapsed": "Item Time",
+  "workoutDurationSeconds": "Duration s",
+  "workoutSavedLocal": "Workout saved locally.",
   "workoutCompletedMixedSummary": "Completed {exercises} exercises · {sets} sets · {freeRecords} free items",
   "@workoutCompletedMixedSummary": {
     "placeholders": {
@@ -871,11 +919,58 @@
       }
     }
   },
+  "errorWorkoutEmptySessionActionRequired": "Add an exercise first",
   "backupShareTitle": "Export Yours Backup",
   "backupShareSubject": "Yours Backup",
   "backupShareText": "This is a Yours backup package. Save it to iCloud Drive, Files, or another location, then restore it from a file when needed.",
   "exerciseExampleName": "Example: Bench Press",
   "exerciseExampleCategory": "Example: Chest",
   "exerciseExampleEquipment": "Example: Barbell",
-  "yoursVaultName": "Yours Vault"
+  "yoursVaultName": "Yours Vault",
+  "workoutRestHint": "The timer will pause here when it ends. Swiping only previews sets; it will not write or undo records.",
+  "profileServerDetail": "{backup}, {events} events, cursor {cursor}",
+  "@profileServerDetail": {
+    "placeholders": {
+      "backup": {
+        "type": "String"
+      },
+      "events": {
+        "type": "int"
+      },
+      "cursor": {
+        "type": "int"
+      }
+    }
+  },
+  "exerciseCopyAsCustom": "Copy as Custom Exercise",
+  "exerciseCopyTitle": "Copy Built-in Exercise",
+  "exerciseSaveCustomCopy": "Save as Custom Exercise",
+  "privacyPolicy": "Privacy Policy",
+  "privacyConsentTitle": "Yours Privacy Policy",
+  "privacyConsentMessage": "Yours uses a local-first data strategy. Workout data is stored on your device by default.",
+  "privacyPolicyUpdatedAt": "Updated: July 11, 2026",
+  "privacyPolicyDataTitle": "Information we process",
+  "privacyPolicyDataBody": "Yours does not require an account by default and does not actively collect your name, phone number, email address, location, or contacts.\n\nWorkout plans, exercises, workout records, weights, repetitions, durations, and notes that you enter in the app are used only to provide workout logging and statistics.",
+  "privacyPolicyStorageTitle": "Where workout data is stored",
+  "privacyPolicyStorageBody": "Workout plans, exercises, workout records, and app settings are stored in the app's local storage by default.\n\nLocal backup packages are also stored in the app's local directory. When you choose to restore, the system file picker can read an existing Yours backup package.",
+  "privacyPolicySyncTitle": "Network and sync",
+  "privacyPolicySyncBody": "Yours does not provide or operate a server that receives or stores workout data, and it does not send workout data to Yours.\n\nOnly when you configure and use a self-hosted sync server will the app upload or download workout data, sync events, and backup snapshots to or from that server. You or the server administrator are responsible for safeguarding the server address, access token, and data on the server.",
+  "privacyPolicyPhotosTitle": "Photo permission and share posters",
+  "privacyPolicyPhotosBody": "Yours requests photo write permission only when you choose to save a workout share poster. The app does not read your photo library or upload posters in the background.",
+  "privacyPolicyBackupTitle": "Backup and restore",
+  "privacyPolicyBackupBody": "Backup files may contain workout plans, exercises, records, and notes. Before restoring, the app creates a local safety snapshot to reduce the risk of data loss from mistakes. Keep backup files and self-hosted server credentials secure.",
+  "privacyPolicyDeletionTitle": "Deleting data",
+  "privacyPolicyDeletionBody": "You can delete data from Yours in the following ways:\n\n• Delete workout plans, workout records, or custom exercises in the app.\n• Uninstall Yours to delete data stored by the app locally on the device.\n• Delete backup files that you keep in the app's local directory or elsewhere.\n\nBackups in third-party locations must be deleted from those locations.",
+  "privacyPolicyChildrenTitle": "Children's privacy",
+  "privacyPolicyChildrenBody": "Minors should use workout features with guidance from a parent or guardian.",
+  "privacyPolicyThirdPartyTitle": "Third-party services",
+  "privacyPolicyThirdPartyBody": "Distribution or hosting platforms such as the App Store, AppGallery, GitHub Releases, and Cloudflare process access, download, or necessary service logs under their own privacy policies. Yours does not control processing performed independently by these platforms.",
+  "privacyPolicyContactTitle": "Contact us",
+  "privacyPolicyContactBody": "For questions about this policy or personal information processing, email mail@yours-app.uk.",
+  "privacyPolicyUpdatesTitle": "Policy updates",
+  "privacyPolicyUpdatesBody": "When features or data processing change, we will update this policy and its update date. When renewed consent is required, the app will display the Privacy Policy confirmation again.",
+  "privacyConsentAgree": "Agree and Continue",
+  "privacyConsentDecline": "Decline and Exit",
+  "privacyInitializationFailed": "The app could not initialize. Try again.",
+  "commonRetry": "Retry"
 }

@@ -1,7 +1,8 @@
 app_name: Yours
 icloud_container_name: Yours
 camera_usage: Use the camera to capture photos for workout records.
-photo_library_usage: Choose a workout data backup file to restore.
+photo_library_usage: Choose a photo for the workout poster background.
+photo_library_add_usage: Save workout record posters to Photos.
 native_messages:
   icloud_signed_out: This device is not signed in to iCloud, or iCloud Drive is disabled.
   icloud_container_unavailable: No iCloud data directory is available. Check iCloud Drive and the App ID configuration.
@@ -11,3 +12,10 @@ native_messages:
   icloud_picker_busy: An iCloud Drive file picker is already open.
   icloud_picker_unavailable: Could not open the iCloud Drive file picker.
   invalid_backup_zip: Choose a Yours backup package in .zip format.
+  photo_picker_busy: A photo picker is already open.
+  photo_picker_unavailable: Could not open the photo picker.
+  photo_picker_unsupported: Choose an image for the poster background.
+  photo_picker_failed: Could not read the selected photo.
+  photo_save_bad_args: Missing workout poster image data.
+  photo_permission_denied: Permission to save to Photos was denied.
+  photo_save_failed: Could not save the workout poster.

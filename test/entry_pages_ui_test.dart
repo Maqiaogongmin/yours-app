@@ -102,6 +102,8 @@ void main() {
     await tester.pump();
     expect(find.text('当天还没有训练记录'), findsOneWidget);
     expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pump();
   });
 
   testWidgets('home labels free-only workout records as free items', (tester) async {
@@ -150,6 +152,58 @@ void main() {
     expect(find.text('自由项目'), findsOneWidget);
     expect(find.text('有效组'), findsNothing);
     expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pump();
+  });
+
+  testWidgets('home hides historical automatic incomplete marker', (tester) async {
+    final db = LocalTrainingDatabase.inMemory(NativeDatabase.memory());
+    addTearDown(db.close);
+    locator.registerSingleton<LocalTrainingDatabase>(db);
+    final repository = _NoSeedTrainingRepository(db);
+    final recordDate = DateTime(DateTime.now().year, DateTime.now().month, 13, 8);
+    final plan = LocalTrainingPlanModel(name: '历史未完成标记', totalWeeks: 1, daysPerWeek: 1);
+    plan.days['1-1'] = LocalTrainingDayModel(
+      week: 1,
+      day: 1,
+      name: 'D1',
+      actions: [LocalTrainingActionModel(name: '深蹲')],
+    );
+    await repository.savePlan(plan);
+    final savedPlan = (await repository.getPlans()).single;
+    final day = savedPlan.days.values.single;
+    final sessionId = await repository.startSession(savedPlan, day);
+    await repository.addLog(
+      sessionId: sessionId,
+      routineId: savedPlan.id!,
+      dayId: day.id,
+      exerciseName: '深蹲',
+      setIndex: 1,
+      weight: 80,
+      reps: 8,
+      durationSeconds: 0,
+    );
+    await repository.updateWorkoutSession(
+      sessionId: sessionId,
+      startedAt: recordDate,
+      endedAt: recordDate.add(const Duration(minutes: 45)),
+      note: '状态不佳，收工。\n未完成训练计划',
+    );
+
+    await tester.pumpWidget(_testApp(HomePage(repository: repository)));
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.byKey(ValueKey('home-day-${recordDate.year}-${recordDate.month}-${recordDate.day}')),
+    );
+    await tester.pump();
+
+    expect(find.text('已记录'), findsOneWidget);
+    expect(find.text('状态不佳，收工。'), findsOneWidget);
+    expect(find.text('未完成'), findsNothing);
+    expect(find.text('未完成训练计划'), findsNothing);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pump();
   });
 
   testWidgets('plan page preserves filters, cards, menus, and swipe actions', (tester) async {
@@ -171,7 +225,9 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byKey(ValueKey('plan-card-$activeId')), findsOneWidget);
-    expect(find.text('待同步'), findsOneWidget);
+    expect(find.text('待同步'), findsNothing);
+    expect(find.text('编排未完成'), findsNothing);
+    expect(find.text('编排完成'), findsNothing);
     expect(find.byKey(const ValueKey('plan-create')), findsOneWidget);
     expect(tester.takeException(), isNull);
 
@@ -204,10 +260,12 @@ void main() {
     final db = LocalTrainingDatabase.inMemory(NativeDatabase.memory());
     locator.registerSingleton<LocalTrainingDatabase>(db);
     addTearDown(() async {
-      await LocalGymSessionController.instance.finishSessionLocal(
-        note: 'widget smoke cleanup',
-        markIncomplete: true,
-      );
+      if (LocalGymSessionController.instance.isActive) {
+        await LocalGymSessionController.instance.finishSessionLocal(
+          note: 'widget smoke cleanup',
+          markIncomplete: true,
+        );
+      }
       await locator.reset();
       await db.close();
     });
@@ -225,25 +283,182 @@ void main() {
           targetReps: 8,
           targetWeight: 80,
           targetRestSeconds: 90,
+          note: '计划动作备注',
         ),
       ],
     );
     await repository.savePlan(plan);
     final savedPlan = (await repository.getPlans()).single;
     final day = savedPlan.days.values.single;
+    await LocalGymSessionController.instance.startOrResume(savedPlan, day);
 
     await tester.pumpWidget(_testApp(LocalGymModePage(plan: savedPlan, day: day)));
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump();
 
     expect(find.text('训练计时'), findsWidgets);
     expect(find.byType(TextField), findsWidgets);
     expect(find.text('保存本组并继续'), findsOneWidget);
-    expect(tester.takeException(), isNull);
+    Finder inputFinder(String label) => find.byWidgetPredicate(
+      (widget) => widget is TextField && widget.decoration?.labelText == label,
+    );
+    TextField inputWithLabel(String label) => tester.widget<TextField>(inputFinder(label));
+    expect(inputWithLabel('重量 kg').controller?.text, '80');
+    expect(inputWithLabel('次数').controller?.text, '8');
+    expect(inputWithLabel('休息时间 s').controller?.text, '90');
+    expect(inputWithLabel('备注').controller?.text, '计划动作备注');
+
+    await tester.enterText(inputFinder('重量 kg'), '82.5');
+    await tester.enterText(inputFinder('次数'), '7');
+    await tester.enterText(inputFinder('休息时间 s'), '0');
+    final saveButton = find.widgetWithText(TextButton, '保存本组并继续');
+    await tester.ensureVisible(saveButton);
+    await tester.pumpAndSettle();
+    tester.widget<TextButton>(saveButton).onPressed!.call();
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 250)),
+    );
+    await tester.pump();
+
+    final callbackError = tester.takeException();
+    final savedLogs = await db.select(db.localWorkoutLogs).get();
+    final drafts = await db.select(db.localWorkoutSetDrafts).get();
+    expect(
+      callbackError,
+      isNull,
+      reason: '保存按钮回调抛出了异常。',
+    );
+    expect(
+      savedLogs,
+      hasLength(1),
+      reason:
+          '保存按钮没有写入训练记录；isActive=${LocalGymSessionController.instance.isActive}, '
+          'isSaving=${LocalGymSessionController.instance.isSaving}, '
+          'isFinished=${LocalGymSessionController.instance.isFinished}, drafts=${drafts.length}',
+    );
+    final savedLog = savedLogs.single;
+    expect(savedLog.actualWeight, 82.5);
+    expect(savedLog.actualReps, 7);
+    expect(savedLog.restSeconds, 0);
+    expect(savedLog.note, '计划动作备注');
+    expect(savedLog.hasActualValues, isTrue);
 
     await LocalGymSessionController.instance.finishSessionLocal(
       note: 'widget smoke cleanup',
       markIncomplete: true,
     );
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pump();
+  });
+
+  testWidgets('local gym free record duration defaults to zero when no explicit duration', (
+    tester,
+  ) async {
+    final db = LocalTrainingDatabase.inMemory(NativeDatabase.memory());
+    locator.registerSingleton<LocalTrainingDatabase>(db);
+    addTearDown(() async {
+      if (LocalGymSessionController.instance.isActive) {
+        await LocalGymSessionController.instance.finishSessionLocal(note: 'free duration cleanup');
+      }
+      await locator.reset();
+      await db.close();
+    });
+
+    final repository = _NoSeedTrainingRepository(db);
+    final plan = LocalTrainingPlanModel(name: '平板支撑输入框测试', totalWeeks: 1, daysPerWeek: 1);
+    plan.days['1-1'] = LocalTrainingDayModel(
+      week: 1,
+      day: 1,
+      name: '腿A',
+      actions: [
+        LocalTrainingActionModel(
+          name: 'built_in:plank',
+          targetSets: 3,
+          targetReps: 45,
+          recordMode: localRecordModeFree,
+          note: '平板支撑｜45-60 秒',
+        ),
+        LocalTrainingActionModel(name: '深蹲', targetSets: 1, targetReps: 8),
+      ],
+    );
+    await repository.savePlan(plan);
+    final savedPlan = (await repository.getPlans()).single;
+    final day = savedPlan.days.values.single;
+    await LocalGymSessionController.instance.startOrResume(savedPlan, day);
+
+    await tester.pumpWidget(_testApp(LocalGymModePage(plan: savedPlan, day: day)));
+    await tester.pump();
+    await tester.pump();
+
+    TextField durationField() => tester.widget<TextField>(
+      find.byWidgetPredicate(
+        (widget) => widget is TextField && widget.decoration?.labelText == '持续时间 s',
+      ),
+    );
+
+    expect(durationField().controller?.text, '');
+    LocalGymSessionController.instance.previewNextSet();
+    await tester.pump();
+    LocalGymSessionController.instance.previewPreviousSet();
+    await tester.pump();
+    expect(durationField().controller?.text, '');
+    expect(tester.takeException(), isNull);
+
+    await LocalGymSessionController.instance.finishSessionLocal(note: 'free duration cleanup');
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pump();
+  });
+
+  testWidgets('local gym free record inputs default to explicit plan targets', (tester) async {
+    final db = LocalTrainingDatabase.inMemory(NativeDatabase.memory());
+    locator.registerSingleton<LocalTrainingDatabase>(db);
+    addTearDown(() async {
+      if (LocalGymSessionController.instance.isActive) {
+        await LocalGymSessionController.instance.finishSessionLocal(note: 'free targets cleanup');
+      }
+      await locator.reset();
+      await db.close();
+    });
+
+    final repository = _NoSeedTrainingRepository(db);
+    final plan = LocalTrainingPlanModel(name: '自由记录默认值测试', totalWeeks: 1, daysPerWeek: 1);
+    plan.days['1-1'] = LocalTrainingDayModel(
+      week: 1,
+      day: 1,
+      name: 'D1',
+      actions: [
+        LocalTrainingActionModel(
+          name: '跑步',
+          targetSets: 1,
+          targetWeight: 5,
+          targetRestSeconds: 60,
+          targetDurationSeconds: 900,
+          recordMode: localRecordModeFree,
+          note: '计划备注',
+        ),
+      ],
+    );
+    await repository.savePlan(plan);
+    final savedPlan = (await repository.getPlans()).single;
+    final day = savedPlan.days.values.single;
+    await LocalGymSessionController.instance.startOrResume(savedPlan, day);
+
+    await tester.pumpWidget(_testApp(LocalGymModePage(plan: savedPlan, day: day)));
+    await tester.pump();
+    await tester.pump();
+
+    TextField inputWithLabel(String label) => tester.widget<TextField>(
+      find.byWidgetPredicate(
+        (widget) => widget is TextField && widget.decoration?.labelText == label,
+      ),
+    );
+    expect(inputWithLabel('重量 kg').controller?.text, '5');
+    expect(inputWithLabel('持续时间 s').controller?.text, '900');
+    expect(inputWithLabel('休息时间 s').controller?.text, '60');
+    expect(inputWithLabel('备注').controller?.text, '计划备注');
+    expect(tester.takeException(), isNull);
+
+    await LocalGymSessionController.instance.finishSessionLocal(note: 'free targets cleanup');
     await tester.pumpWidget(const SizedBox.shrink());
     await tester.pump();
   });
@@ -393,6 +608,57 @@ void main() {
     expect(find.text('GitHub 仓库'), findsOneWidget);
   });
 
+  testWidgets('server settings sheet closes after editing fields without framework errors', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(393, 1500);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+      tester.view.resetViewInsets();
+    });
+
+    final db = LocalTrainingDatabase.inMemory(NativeDatabase.memory());
+    locator.registerSingleton<LocalTrainingDatabase>(db);
+    addTearDown(() async {
+      await locator.reset();
+      await db.close();
+    });
+
+    await tester.pumpWidget(_testApp(const ProfilePage()));
+    await tester.pump(const Duration(milliseconds: 300));
+
+    await tester.tap(find.byKey(const ValueKey('profile-data-entry')));
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.text('服务器同步'),
+      80,
+      scrollable: find.byType(Scrollable).last,
+    );
+    await tester.scrollUntilVisible(
+      find.text('设置').last,
+      80,
+      scrollable: find.byType(Scrollable).last,
+    );
+    await tester.tap(find.text('设置').last);
+    await tester.pump(const Duration(milliseconds: 300));
+
+    final fields = find.byType(TextField);
+    expect(fields, findsNWidgets(2));
+    await tester.enterText(fields.at(0), 'not-a-url');
+    await tester.enterText(fields.at(1), 'test-token');
+    await tester.pump();
+
+    expect(tester.takeException(), isNull);
+
+    await tester.binding.handlePopRoute();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(find.text('服务器备份设置'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('data management page renders server states and busy actions', (tester) async {
     tester.view.physicalSize = const Size(320, 1200);
     tester.view.devicePixelRatio = 1;
@@ -403,9 +669,14 @@ void main() {
       YoursDataManagementSnapshot(
         latestBackupName: 'yours-backup.zip',
         latestBackupUpdatedAt: DateTime(2026, 6, 19, 21, 37),
-        latestVaultPath: '/Users/ly/Documents/YoursVault',
+        latestVaultPath: '/Users/example/Documents/YoursVault',
         latestVaultExportedAt: DateTime(2026, 6, 19, 21, 36),
         serverConfigured: true,
+        iCloudStatus: const ICloudDriveStatus(
+          available: true,
+          state: 'available',
+          message: 'ok',
+        ),
         serverSyncStatus: ServerSyncStatus(
           available: true,
           serverVersion: '1.0.0',
@@ -414,7 +685,7 @@ void main() {
           eventCount: 12,
           latestCursor: 9,
           latestBackupBytes: 2048,
-          latestBackupAt: null,
+          latestBackupAt: DateTime(2026, 6, 19, 21, 38),
           message: 'ok',
         ),
         pendingSyncCount: 3,
@@ -449,7 +720,9 @@ void main() {
     expect(find.text('上次导出：06-19 21:36'), findsOneWidget);
     expect(find.text('上次备份：06-19 21:37'), findsOneWidget);
     expect(find.text('备份文件包含训练数据，请妥善保存，不要公开分享。'), findsOneWidget);
-    expect(find.textContaining('事件 12 条'), findsOneWidget);
+    expect(find.text('最近快照：06-19 21:38'), findsOneWidget);
+    expect(find.textContaining('事件 12 条'), findsNothing);
+    expect(find.textContaining('游标'), findsNothing);
     expect(find.text('3 条'), findsOneWidget);
     await tester.ensureVisible(find.text('导出 Vault'));
     await tester.pumpAndSettle();
@@ -528,22 +801,90 @@ void main() {
     final activity = YoursDataManagementActivity.recentVaultExportFailed(
       YoursDataManagementError.raw(Exception('boom')),
     );
+    const recentVaultExport = YoursDataManagementActivity.recentVaultExport('06-27 11:16');
+    const recentBackupExport = YoursDataManagementActivity.recentBackupExport('06-27 11:16');
 
     Widget activityText() {
       return Builder(
-        builder: (context) => Text(activity.localizedText(context)),
+        builder: (context) => Column(
+          children: [
+            Text(activity.localizedText(context)),
+            Text(recentVaultExport.localizedText(context)),
+            Text(recentBackupExport.localizedText(context)),
+          ],
+        ),
       );
     }
 
     await tester.pumpWidget(_testApp(activityText(), locale: const Locale('en')));
     await tester.pumpAndSettle();
     expect(find.textContaining('Recent Vault export failed: Unknown error'), findsOneWidget);
+    expect(find.text('Last Vault export: 06-27 11:16'), findsOneWidget);
+    expect(find.text('Last backup export: 06-27 11:16'), findsOneWidget);
     expect(find.textContaining('最近导出 Vault 失败'), findsNothing);
 
     await tester.pumpWidget(_testApp(activityText(), locale: const Locale('ja')));
     await tester.pumpAndSettle();
     expect(find.textContaining('最近の Vault エクスポートに失敗しました'), findsOneWidget);
+    expect(find.text('前回の Vault エクスポート：06-27 11:16'), findsOneWidget);
+    expect(find.text('前回のバックアップエクスポート: 06-27 11:16'), findsOneWidget);
     expect(find.textContaining('最近导出 Vault 失败'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('day edit keeps free duration after switching from standard reps', (tester) async {
+    LocalTrainingDayModel? saved;
+    final day = LocalTrainingDayModel(
+      week: 1,
+      day: 1,
+      name: '腿B',
+      actions: [
+        LocalTrainingActionModel(
+          name: '螃蟹走',
+          targetSets: 2,
+          targetReps: 12,
+          targetWeight: 12,
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(
+      _testApp(
+        Builder(
+          builder: (context) => TextButton(
+            onPressed: () async {
+              saved = await Navigator.of(context).push<LocalTrainingDayModel>(
+                MaterialPageRoute(
+                  builder: (_) => DayEditPage(editDay: day, week: 1, day: 1),
+                ),
+              );
+            },
+            child: const Text('open'),
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.text('open'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('自由记录'));
+    await tester.pumpAndSettle();
+    await tester.enterText(
+      find.byKey(const ValueKey('plan-day-1-1-action-0-free-weight')),
+      '',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey('plan-day-1-1-action-0-free-duration')),
+      '60',
+    );
+    await tester.tap(find.text('保存'));
+    await tester.pumpAndSettle();
+
+    final action = saved!.actions.single;
+    expect(action.recordMode, localRecordModeFree);
+    expect(action.targetSets, 1);
+    expect(action.targetWeight, isNull);
+    expect(action.targetDurationSeconds, 60);
     expect(tester.takeException(), isNull);
   });
 
@@ -610,6 +951,8 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('检查 Android APK 新版本'), findsOneWidget);
+    await tester.ensureVisible(find.text('检查更新'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('检查更新'));
     await tester.pump();
     expect(checkCalls, 1);
@@ -934,6 +1277,160 @@ void main() {
     expect(saved.single.description, '新说明');
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('built-in exercise edits in place without creating a custom copy', (tester) async {
+    final db = CustomExerciseDatabase.inMemory(NativeDatabase.memory());
+    addTearDown(db.close);
+    final repository = _NoSeedExerciseRepository(db);
+    await repository.saveExercise(
+      CustomExerciseModel(
+        remoteId: 458,
+        chineseName: '平板支撑',
+        englishName: 'Plank',
+        bodyPart: '核心',
+        equipment: '自重',
+        primaryMuscles: '核心',
+        description: '中文说明',
+        isCustom: false,
+      ),
+    );
+
+    await tester.pumpWidget(_testApp(ExerciseLibraryPage(repository: repository)));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('平板支撑').first);
+    await tester.pumpAndSettle();
+    expect(find.text('编辑'), findsOneWidget);
+    expect(find.text('复制为自定义动作'), findsNothing);
+
+    await tester.tap(find.text('编辑'));
+    await tester.pumpAndSettle();
+    expect(find.text('编辑动作'), findsOneWidget);
+    final fields = find.byType(TextField);
+    expect(tester.widget<TextField>(fields.at(1)).controller?.text, '平板支撑');
+    await tester.tap(find.text('保存到本地动作库'));
+    await tester.pumpAndSettle();
+
+    var saved = await repository.listExercises();
+    expect(saved, hasLength(1));
+    expect(saved.single.remoteId, 458);
+    expect(saved.single.chineseName, '平板支撑');
+    expect(saved.single.isCustom, isTrue);
+
+    await tester.tap(find.text('平板支撑').first);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('编辑'));
+    await tester.pumpAndSettle();
+    await tester.enterText(fields.at(1), '核心支撑');
+    await tester.tap(find.text('保存到本地动作库'));
+    await tester.pumpAndSettle();
+
+    saved = await repository.listExercises();
+    expect(saved, hasLength(1));
+    expect(saved.single.remoteId, 458);
+    expect(saved.single.chineseName, '核心支撑');
+    expect(saved.single.exerciseReference, '核心支撑');
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('built-in exercise editor starts with localized values', (tester) async {
+    final db = CustomExerciseDatabase.inMemory(NativeDatabase.memory());
+    addTearDown(db.close);
+    final repository = _NoSeedExerciseRepository(db);
+    await repository.saveExercise(
+      CustomExerciseModel(
+        remoteId: 458,
+        chineseName: '平板支撑',
+        englishName: 'Plank',
+        bodyPart: '核心',
+        equipment: '自重',
+        primaryMuscles: '核心',
+        description: '中文说明',
+        isCustom: false,
+      ),
+    );
+
+    await tester.pumpWidget(
+      _testApp(ExerciseLibraryPage(repository: repository), locale: const Locale('en')),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Plank').first);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Edit'));
+    await tester.pumpAndSettle();
+
+    final fields = find.byType(TextField);
+    expect(tester.widget<TextField>(fields.at(1)).controller?.text, 'Plank');
+    expect(tester.widget<TextField>(fields.at(2)).controller?.text, 'Core');
+    expect(tester.widget<TextField>(fields.at(3)).controller?.text, 'Bodyweight');
+    expect(
+      tester.widget<TextField>(fields.at(4)).controller?.text,
+      'Support yourself on your forearms, keep your body in a straight line, '
+      'and brace your core without letting your hips sag.',
+    );
+
+    await tester.tap(find.text('Save to Local Exercise Library'));
+    await tester.pumpAndSettle();
+
+    final saved = await repository.listExercises();
+    expect(saved, hasLength(1));
+    expect(saved.single.remoteId, 458);
+    expect(saved.single.chineseName, 'Plank');
+    expect(saved.single.bodyPart, 'Core');
+    expect(saved.single.equipment, 'Bodyweight');
+    expect(saved.single.isCustom, isTrue);
+    expect(tester.takeException(), isNull);
+  });
+
+  test('standard catalog seeding preserves user-managed built-in exercises', () async {
+    final db = CustomExerciseDatabase.inMemory(NativeDatabase.memory());
+    addTearDown(db.close);
+    final repository = CustomExerciseRepository(db);
+    await repository.saveExercise(
+      CustomExerciseModel(
+        remoteId: 458,
+        chineseName: '核心支撑',
+        englishName: 'Core Hold',
+        bodyPart: '核心',
+        equipment: '自重',
+        primaryMuscles: '核心',
+        description: '用户改过的说明',
+        isCustom: true,
+      ),
+    );
+
+    await repository.ensureSeedData();
+
+    var saved = await repository.listExercises();
+    final editedBuiltIns = saved.where((exercise) => exercise.remoteId == 458).toList();
+    expect(editedBuiltIns, hasLength(1));
+    expect(editedBuiltIns.single.chineseName, '核心支撑');
+    expect(editedBuiltIns.single.isCustom, isTrue);
+
+    await repository.deleteExercise(editedBuiltIns.single);
+    await repository.ensureSeedData();
+
+    saved = await repository.listExercises();
+    expect(saved.where((exercise) => exercise.remoteId == 458), isEmpty);
+  });
+
+  testWidgets('plan editor localizes built-in action references', (tester) async {
+    final plan = LocalTrainingPlanModel(name: 'Localized plan', totalWeeks: 1, daysPerWeek: 1);
+    plan.days['1-1'] = LocalTrainingDayModel(
+      week: 1,
+      day: 1,
+      name: 'Core',
+      actions: [LocalTrainingActionModel(name: 'built_in:plank')],
+    );
+
+    await tester.pumpWidget(
+      _testApp(PlanEditPage(plan: plan), locale: const Locale('en')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Plank'), findsOneWidget);
+    expect(find.textContaining('built_in:'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
 }
 
 Widget _testApp(
@@ -946,10 +1443,14 @@ Widget _testApp(
     locale: locale,
     localizationsDelegates: AppLocalizations.localizationsDelegates,
     supportedLocales: AppLocalizations.supportedLocales,
-    theme: theme ?? yoursLightTheme,
-    home: MediaQuery(
-      data: MediaQueryData(textScaler: TextScaler.linear(textScale)),
-      child: Scaffold(body: home),
+    theme: theme ?? yoursLightTheme.copyWith(splashFactory: NoSplash.splashFactory),
+    home: Builder(
+      builder: (context) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(textScale)),
+          child: Scaffold(body: home),
+        );
+      },
     ),
   );
 }

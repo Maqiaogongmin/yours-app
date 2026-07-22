@@ -145,12 +145,17 @@ class _DayEditPageState extends State<DayEditPage> {
                       alignment: Alignment.centerLeft,
                       child: _recordModeSwitch(
                         action.recordMode,
-                        (mode) => _updateActionTarget(i, recordMode: mode),
+                        (mode) => _updateActionTarget(
+                          i,
+                          recordMode: mode,
+                          sets: defaultTargetSetsForRecordMode(mode),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 10),
                     if (action.recordMode == localRecordModeFree)
                       _freeTargetInputs(
+                        keyPrefix: 'plan-day-${widget.week}-${widget.day}-action-$i-free',
                         action: action,
                         onSetsChanged: (sets) => _updateActionTarget(i, sets: sets),
                         onWeightChanged: (weight) => _updateActionTarget(i, weight: weight),
@@ -163,6 +168,7 @@ class _DayEditPageState extends State<DayEditPage> {
                       )
                     else
                       _targetInputs(
+                        keyPrefix: 'plan-day-${widget.week}-${widget.day}-action-$i-standard',
                         action: action,
                         onSetsChanged: (sets) => _updateActionTarget(i, sets: sets),
                         onRepsChanged: (reps) => _updateActionTarget(i, reps: reps),
@@ -173,6 +179,7 @@ class _DayEditPageState extends State<DayEditPage> {
                       ),
                     const SizedBox(height: 10),
                     _actionNoteField(
+                      fieldKey: ValueKey('plan-day-${widget.week}-${widget.day}-action-$i-note'),
                       initialValue: action.note,
                       onChanged: (note) => _updateActionTarget(i, note: note),
                     ),
@@ -205,6 +212,7 @@ class _DayEditPageState extends State<DayEditPage> {
   }
 
   Widget _targetInputs({
+    required String keyPrefix,
     required LocalTrainingActionModel action,
     required ValueChanged<int> onSetsChanged,
     required ValueChanged<int> onRepsChanged,
@@ -221,22 +229,27 @@ class _DayEditPageState extends State<DayEditPage> {
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           _targetNumberField(
+            fieldKey: ValueKey('$keyPrefix-sets'),
             initialValue: action.targetSets,
             suffix: context.l10n.planSetSuffix,
             onChanged: onSetsChanged,
+            onCleared: () => onSetsChanged(defaultTargetSetsForRecordMode(action.recordMode)),
           ),
           Text('×', style: context.yoursText(YoursTextRole.label)),
           _targetNumberField(
+            fieldKey: ValueKey('$keyPrefix-reps'),
             initialValue: action.targetReps,
             suffix: context.l10n.planRepSuffix,
             onChanged: onRepsChanged,
           ),
           _targetWeightField(
+            fieldKey: ValueKey('$keyPrefix-weight'),
             initialValue: action.targetWeight,
             onChanged: onWeightChanged,
             onCleared: onWeightCleared,
           ),
           _targetOptionalIntField(
+            fieldKey: ValueKey('$keyPrefix-rest'),
             initialValue: action.targetRestSeconds,
             hint: context.l10n.planRest,
             suffix: 's',
@@ -250,6 +263,7 @@ class _DayEditPageState extends State<DayEditPage> {
   }
 
   Widget _freeTargetInputs({
+    required String keyPrefix,
     required LocalTrainingActionModel action,
     required ValueChanged<int> onSetsChanged,
     required ValueChanged<double> onWeightChanged,
@@ -267,16 +281,19 @@ class _DayEditPageState extends State<DayEditPage> {
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           _targetNumberField(
+            fieldKey: ValueKey('$keyPrefix-sets'),
             initialValue: action.targetSets,
             suffix: context.l10n.planSetSuffix,
             onChanged: onSetsChanged,
           ),
           _targetWeightField(
+            fieldKey: ValueKey('$keyPrefix-weight'),
             initialValue: action.targetWeight,
             onChanged: onWeightChanged,
             onCleared: onWeightCleared,
           ),
           _targetOptionalIntField(
+            fieldKey: ValueKey('$keyPrefix-duration'),
             initialValue: action.targetDurationSeconds,
             hint: context.l10n.planDuration,
             suffix: 's',
@@ -286,6 +303,7 @@ class _DayEditPageState extends State<DayEditPage> {
             onCleared: onDurationCleared,
           ),
           _targetOptionalIntField(
+            fieldKey: ValueKey('$keyPrefix-rest'),
             initialValue: action.targetRestSeconds,
             hint: context.l10n.planRest,
             suffix: 's',
@@ -299,13 +317,16 @@ class _DayEditPageState extends State<DayEditPage> {
   }
 
   Widget _targetNumberField({
+    required Key fieldKey,
     required int initialValue,
     required String suffix,
     required ValueChanged<int> onChanged,
+    VoidCallback? onCleared,
   }) {
     return SizedBox(
       width: 50,
       child: TextFormField(
+        key: fieldKey,
         initialValue: initialValue.toString(),
         textAlign: TextAlign.center,
         keyboardType: TextInputType.number,
@@ -320,6 +341,7 @@ class _DayEditPageState extends State<DayEditPage> {
         ),
         onChanged: (value) {
           if (value.trim().isEmpty) {
+            onCleared?.call();
             return;
           }
           final parsed = int.tryParse(value.trim());
@@ -332,6 +354,7 @@ class _DayEditPageState extends State<DayEditPage> {
   }
 
   Widget _targetOptionalIntField({
+    required Key fieldKey,
     required int? initialValue,
     required String hint,
     required String suffix,
@@ -343,6 +366,7 @@ class _DayEditPageState extends State<DayEditPage> {
     return SizedBox(
       width: width,
       child: TextFormField(
+        key: fieldKey,
         initialValue: initialValue?.toString() ?? '',
         textAlign: TextAlign.center,
         keyboardType: TextInputType.number,
@@ -372,6 +396,7 @@ class _DayEditPageState extends State<DayEditPage> {
   }
 
   Widget _targetWeightField({
+    required Key fieldKey,
     required double? initialValue,
     required ValueChanged<double> onChanged,
     required VoidCallback onCleared,
@@ -382,6 +407,7 @@ class _DayEditPageState extends State<DayEditPage> {
     return SizedBox(
       width: 62,
       child: TextFormField(
+        key: fieldKey,
         initialValue: text,
         textAlign: TextAlign.center,
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
@@ -411,10 +437,12 @@ class _DayEditPageState extends State<DayEditPage> {
   }
 
   Widget _actionNoteField({
+    required Key fieldKey,
     required String initialValue,
     required ValueChanged<String> onChanged,
   }) {
     return TextFormField(
+      key: fieldKey,
       initialValue: initialValue,
       minLines: 1,
       maxLines: 3,

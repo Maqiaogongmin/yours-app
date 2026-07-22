@@ -115,7 +115,7 @@ class _EditableSessionDraft {
         throw const FormatException('请填写结束时间');
       }
       if (exerciseName.trim().isEmpty) {
-        throw const FormatException('请填写动作名称');
+        throw const YoursException(YoursErrorCode.workoutEmptySessionActionRequired);
       }
       if (recordModeOrNull == null) {
         throw const FormatException('请选择记录方式');

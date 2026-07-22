@@ -10,6 +10,7 @@ extension _ProfilePageSettingsActions on _ProfilePageActions {
         valueListenable: state._appUpdateService.state,
         builder: (context, updateState, _) => YoursAboutSheet(
           officialWebsiteUrl: _officialWebsiteUrl,
+          privacyPolicyUrl: _privacyPolicyUrl,
           githubRepositoryUrl: _githubRepositoryUrl,
           showUpdateCheck: state._appUpdateService.supportsUpdateCheck,
           updateState: updateState,

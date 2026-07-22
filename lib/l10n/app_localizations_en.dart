@@ -263,7 +263,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get workoutEndIncomplete =>
-      'This training plan is not complete. Saved workout data will be kept and marked as an incomplete workout.';
+      'Saved workout data will be kept. You can add a note for this session.';
 
   @override
   String get workoutEndEmpty => 'No sets have been saved. Confirm to close workout mode.';
@@ -297,6 +297,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get workoutRestSeconds => 'Rest s';
+
+  @override
+  String get workoutRest => 'Rest';
+
+  @override
+  String get workoutWeight => 'Weight';
+
+  @override
+  String get workoutUnitKg => 'kg';
+
+  @override
+  String get workoutUnitSeconds => 's';
 
   @override
   String get workoutSaveSet => 'Save Set and Continue';
@@ -366,10 +378,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get workoutUndoReturnLog => 'Undo current set and return to logging';
-
-  @override
-  String get workoutRestHint =>
-      'The timer will pause here when it ends. Swiping only previews sets; it will not write or undo records.';
 
   @override
   String workoutCompletedSummary(int exercises, int sets) {
@@ -656,6 +664,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileCreateExport => 'Create and Export';
 
   @override
+  String get profileCreateBackup => 'Create Backup';
+
+  @override
   String get profileRestoreFromFile => 'Restore from File';
 
   @override
@@ -720,11 +731,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String profileRecentSnapshot(String date) {
     return 'Latest snapshot: $date';
-  }
-
-  @override
-  String profileServerDetail(String backup, int events, int cursor) {
-    return '$backup, $events events, cursor $cursor';
   }
 
   @override
@@ -857,7 +863,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String profileRecentVaultExport(String name) {
-    return 'Recently exported Vault: $name';
+    return 'Last Vault export: $name';
   }
 
   @override
@@ -896,6 +902,21 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String profileVaultImportArchiveFailed(int count) {
+    return '$count imported files could not be archived and may appear again';
+  }
+
+  @override
+  String profileVaultImportNoFiles(String sources) {
+    return 'No importable inbox files were found in $sources.';
+  }
+
+  @override
+  String profileVaultImportSourcesUnavailable(String sources) {
+    return 'Unavailable: $sources.';
+  }
+
+  @override
   String profileBackupCreated(String name) {
     return 'Backup package created: $name';
   }
@@ -906,8 +927,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get profileBackupShareTimedOut =>
+      'Backup created; please confirm the file exists in the selected location.';
+
+  @override
   String profileRecentBackupExport(String name) {
-    return 'Recently exported backup: $name';
+    return 'Last backup export: $name';
   }
 
   @override
@@ -1019,7 +1044,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String profileServerAvailable(int version, int events) {
-    return 'Server sync is available: protocol v$version, $events events.';
+    return 'Server sync is available.';
   }
 
   @override
@@ -1217,6 +1242,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get errorWorkoutEmptySessionActionRequired => 'Add an exercise first';
+
+  @override
   String get backupShareTitle => 'Export Yours Backup';
 
   @override
@@ -1237,4 +1265,117 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get yoursVaultName => 'Yours Vault';
+
+  @override
+  String get workoutRestHint =>
+      'The timer will pause here when it ends. Swiping only previews sets; it will not write or undo records.';
+
+  @override
+  String profileServerDetail(String backup, int events, int cursor) {
+    return '$backup, $events events, cursor $cursor';
+  }
+
+  @override
+  String get exerciseCopyAsCustom => 'Copy as Custom Exercise';
+
+  @override
+  String get exerciseCopyTitle => 'Copy Built-in Exercise';
+
+  @override
+  String get exerciseSaveCustomCopy => 'Save as Custom Exercise';
+
+  @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get privacyConsentTitle => 'Yours Privacy Policy';
+
+  @override
+  String get privacyConsentMessage =>
+      'Yours uses a local-first data strategy. Workout data is stored on your device by default.';
+
+  @override
+  String get privacyPolicyUpdatedAt => 'Updated: July 11, 2026';
+
+  @override
+  String get privacyPolicyDataTitle => 'Information we process';
+
+  @override
+  String get privacyPolicyDataBody =>
+      'Yours does not require an account by default and does not actively collect your name, phone number, email address, location, or contacts.\n\nWorkout plans, exercises, workout records, weights, repetitions, durations, and notes that you enter in the app are used only to provide workout logging and statistics.';
+
+  @override
+  String get privacyPolicyStorageTitle => 'Where workout data is stored';
+
+  @override
+  String get privacyPolicyStorageBody =>
+      'Workout plans, exercises, workout records, and app settings are stored in the app\'s local storage by default.\n\nLocal backup packages are also stored in the app\'s local directory. When you choose to restore, the system file picker can read an existing Yours backup package.';
+
+  @override
+  String get privacyPolicySyncTitle => 'Network and sync';
+
+  @override
+  String get privacyPolicySyncBody =>
+      'Yours does not provide or operate a server that receives or stores workout data, and it does not send workout data to Yours.\n\nOnly when you configure and use a self-hosted sync server will the app upload or download workout data, sync events, and backup snapshots to or from that server. You or the server administrator are responsible for safeguarding the server address, access token, and data on the server.';
+
+  @override
+  String get privacyPolicyPhotosTitle => 'Photo permission and share posters';
+
+  @override
+  String get privacyPolicyPhotosBody =>
+      'Yours requests photo write permission only when you choose to save a workout share poster. The app does not read your photo library or upload posters in the background.';
+
+  @override
+  String get privacyPolicyBackupTitle => 'Backup and restore';
+
+  @override
+  String get privacyPolicyBackupBody =>
+      'Backup files may contain workout plans, exercises, records, and notes. Before restoring, the app creates a local safety snapshot to reduce the risk of data loss from mistakes. Keep backup files and self-hosted server credentials secure.';
+
+  @override
+  String get privacyPolicyDeletionTitle => 'Deleting data';
+
+  @override
+  String get privacyPolicyDeletionBody =>
+      'You can delete data from Yours in the following ways:\n\n• Delete workout plans, workout records, or custom exercises in the app.\n• Uninstall Yours to delete data stored by the app locally on the device.\n• Delete backup files that you keep in the app\'s local directory or elsewhere.\n\nBackups in third-party locations must be deleted from those locations.';
+
+  @override
+  String get privacyPolicyChildrenTitle => 'Children\'s privacy';
+
+  @override
+  String get privacyPolicyChildrenBody =>
+      'Minors should use workout features with guidance from a parent or guardian.';
+
+  @override
+  String get privacyPolicyThirdPartyTitle => 'Third-party services';
+
+  @override
+  String get privacyPolicyThirdPartyBody =>
+      'Distribution or hosting platforms such as the App Store, AppGallery, GitHub Releases, and Cloudflare process access, download, or necessary service logs under their own privacy policies. Yours does not control processing performed independently by these platforms.';
+
+  @override
+  String get privacyPolicyContactTitle => 'Contact us';
+
+  @override
+  String get privacyPolicyContactBody =>
+      'For questions about this policy or personal information processing, email mail@yours-app.uk.';
+
+  @override
+  String get privacyPolicyUpdatesTitle => 'Policy updates';
+
+  @override
+  String get privacyPolicyUpdatesBody =>
+      'When features or data processing change, we will update this policy and its update date. When renewed consent is required, the app will display the Privacy Policy confirmation again.';
+
+  @override
+  String get privacyConsentAgree => 'Agree and Continue';
+
+  @override
+  String get privacyConsentDecline => 'Decline and Exit';
+
+  @override
+  String get privacyInitializationFailed => 'The app could not initialize. Try again.';
+
+  @override
+  String get commonRetry => 'Retry';
 }

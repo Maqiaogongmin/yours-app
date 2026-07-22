@@ -58,6 +58,9 @@ Record the following before claiming an Android release is complete:
 - Source commit and release tag.
 - APK path.
 - APK SHA-256.
+- Android emulator model/API/ABI and cold-start result.
+- USB device model/API/ABI and upgrade-install result, when a device is available.
+- Runtime log result and screenshots for Home, Plans, Exercises, Profile, and updated critical flows.
 - GitHub Release URL or other public download URL.
 - Source archive URL.
 
@@ -66,6 +69,19 @@ Use `--android-apk <path>` when a local APK should be hashed:
 ```sh
 dart run tool/check_release_ready.dart --version <version> --build <build> --tag <tag> --android-apk <path>
 ```
+
+### Android runtime acceptance
+
+Static APK metadata and signing checks are necessary but not sufficient. The exact APK that will be handed to a tester must pass runtime acceptance before it is described as a candidate:
+
+1. Run the release build without `--no-pub` so Flutter refreshes the release plugin registrant and excludes dev-only plugins correctly.
+2. Verify package name, versionCode, versionName, ABI contents, signature, and SHA-256.
+3. Install that exact APK on an Android emulator matching the APK ABI. Clear emulator app data, cold-start the launcher activity, confirm the process remains alive, and scan `logcat` for Java, Flutter, and native fatal errors.
+4. Visually verify Home, Plans, Exercises, Profile, and every critical flow changed by the release. Keep screenshots as evidence.
+5. Force-stop and cold-start the app a second time, then verify background/resume behavior.
+6. When a USB Android device is available, use `adb install -r` to preserve its app data and repeat cold start, navigation, background/resume, and fatal-log checks on the device.
+
+Do not hand off or publish an APK when only build, `aapt`, or `apksigner` checks have passed. A successful install without a successful cold start is a failed candidate.
 
 ## After publishing
 

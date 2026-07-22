@@ -75,12 +75,14 @@ class BackupService {
     return backup.existsSync() ? backup : null;
   }
 
-  Future<BackupResult> createBackup() async {
+  Future<BackupResult> createBackup({bool exportVisible = false}) async {
     final backupDir = await getBackupDirectory();
     final output = File(p.join(backupDir.path, _backupFileName));
     final result = await _archiveService.writeBackupFile(output);
     await _archiveService.deleteSiblingZipFiles(backupDir, keep: output);
-    await _platformBridge.syncBackupToVisibleDocuments(output);
+    if (exportVisible) {
+      await _platformBridge.syncBackupToVisibleDocuments(output);
+    }
     return result;
   }
 

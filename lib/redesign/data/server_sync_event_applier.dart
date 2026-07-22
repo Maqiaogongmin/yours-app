@@ -83,9 +83,17 @@ class ServerSyncEventApplier {
     if (syncId == null || syncId.trim().isEmpty) {
       return null;
     }
-    final row = await (db.select(
-      db.localRoutines,
-    )..where((item) => item.syncId.equals(syncId))).getSingleOrNull();
+    final row =
+        await (db.select(
+                db.localRoutines,
+              )
+              ..where((item) => item.syncId.equals(syncId))
+              ..orderBy([
+                (item) => OrderingTerm.desc(item.updatedAt),
+                (item) => OrderingTerm.desc(item.id),
+              ])
+              ..limit(1))
+            .getSingleOrNull();
     return row?.id;
   }
 
@@ -93,9 +101,17 @@ class ServerSyncEventApplier {
     if (syncId == null || syncId.trim().isEmpty) {
       return null;
     }
-    final row = await (db.select(
-      db.localTrainingDays,
-    )..where((item) => item.syncId.equals(syncId))).getSingleOrNull();
+    final row =
+        await (db.select(
+                db.localTrainingDays,
+              )
+              ..where((item) => item.syncId.equals(syncId))
+              ..orderBy([
+                (item) => OrderingTerm.desc(item.updatedAt),
+                (item) => OrderingTerm.desc(item.id),
+              ])
+              ..limit(1))
+            .getSingleOrNull();
     return row?.id;
   }
 
@@ -103,9 +119,17 @@ class ServerSyncEventApplier {
     if (syncId == null || syncId.trim().isEmpty) {
       return null;
     }
-    final row = await (db.select(
-      db.localWorkoutSessions,
-    )..where((item) => item.syncId.equals(syncId))).getSingleOrNull();
+    final row =
+        await (db.select(
+                db.localWorkoutSessions,
+              )
+              ..where((item) => item.syncId.equals(syncId))
+              ..orderBy([
+                (item) => OrderingTerm.desc(item.updatedAt),
+                (item) => OrderingTerm.desc(item.id),
+              ])
+              ..limit(1))
+            .getSingleOrNull();
     return row?.id;
   }
 
@@ -113,9 +137,17 @@ class ServerSyncEventApplier {
     if (syncId == null || syncId.trim().isEmpty) {
       return null;
     }
-    final row = await (db.select(
-      db.localWorkoutLogs,
-    )..where((item) => item.syncId.equals(syncId))).getSingleOrNull();
+    final row =
+        await (db.select(
+                db.localWorkoutLogs,
+              )
+              ..where((item) => item.syncId.equals(syncId))
+              ..orderBy([
+                (item) => OrderingTerm.desc(item.createdAt),
+                (item) => OrderingTerm.desc(item.id),
+              ])
+              ..limit(1))
+            .getSingleOrNull();
     return row?.id;
   }
 
@@ -123,9 +155,17 @@ class ServerSyncEventApplier {
     if (syncId == null || syncId.trim().isEmpty) {
       return null;
     }
-    final row = await (db.select(
-      db.customExercises,
-    )..where((item) => item.syncId.equals(syncId))).getSingleOrNull();
+    final row =
+        await (db.select(
+                db.customExercises,
+              )
+              ..where((item) => item.syncId.equals(syncId))
+              ..orderBy([
+                (item) => OrderingTerm.desc(item.updatedAt),
+                (item) => OrderingTerm.desc(item.id),
+              ])
+              ..limit(1))
+            .getSingleOrNull();
     return row?.id;
   }
 
@@ -245,6 +285,7 @@ class ServerSyncEventApplier {
               syncStatus: const Value(localSyncSynced),
             ),
           );
+      final recordMode = normalizeLocalRecordMode(action['recordMode']);
       await db
           .into(db.localSlotEntries)
           .insert(
@@ -254,10 +295,12 @@ class ServerSyncEventApplier {
               exerciseName: canonicalExerciseReference(
                 _asString(action['name'], fallback: '同步动作'),
               ),
-              targetSets: Value(_asInt(action['targetSets']) ?? 3),
+              targetSets: Value(
+                normalizeTargetSetsForRecordMode(recordMode, _asInt(action['targetSets'])),
+              ),
               targetReps: Value(_asInt(action['targetReps'])),
               targetWeight: Value(_asDouble(action['targetWeight'])),
-              recordMode: Value(normalizeLocalRecordMode(action['recordMode'])),
+              recordMode: Value(recordMode),
               syncStatus: const Value(localSyncSynced),
             ),
           );

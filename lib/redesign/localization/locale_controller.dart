@@ -6,6 +6,21 @@ import 'package:yours/redesign/localization/generated_language_registry.dart';
 
 const String yoursLocalePreferenceKey = 'yours_locale';
 
+Locale resolveYoursLocales(List<Locale>? preferredLocales, Iterable<Locale> supportedLocales) {
+  final supported = supportedLocales.toList(growable: false);
+  for (final preferred in preferredLocales ?? const <Locale>[]) {
+    for (final candidate in supported) {
+      if (candidate.languageCode == preferred.languageCode) {
+        return candidate;
+      }
+    }
+  }
+  return supported.firstWhere(
+    (locale) => locale.languageCode == 'en',
+    orElse: () => const Locale('en'),
+  );
+}
+
 typedef YoursLocaleReader = Future<String?> Function();
 typedef YoursLocaleWriter = Future<void> Function(String value);
 

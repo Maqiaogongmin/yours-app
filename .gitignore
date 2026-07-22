@@ -25,6 +25,8 @@
 **/ios/Flutter/.last_build_id
 **/ios/Flutter/ephemeral/
 .dart_tool/
+pubspec_overrides.yaml
+.codex-artifacts/
 .flutter-plugins
 .flutter-plugins-dependencies
 .packages
@@ -67,3 +69,4 @@ ios/Runner.app.dSYM.zip
 /android/key.properties
 *.jks
 *.keystore
+.agc_env

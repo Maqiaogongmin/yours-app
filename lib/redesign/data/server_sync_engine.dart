@@ -119,13 +119,18 @@ class ServerSyncEngine {
       skipEntitySyncIds: localChangedEntitySyncIds,
     );
     if (pull.failedCount > 0) {
+      await _preferences.setServerLastFailure(
+        _syncFailureText(pull.firstFailure, failedCount: pull.failedCount),
+      );
       throw YoursException(
         YoursErrorCode.unappliedServerChanges,
         count: pull.failedCount,
+        cause: pull.firstFailure,
       );
     }
     final backup = await _createBackup();
     final upload = await _uploadBackup(backup.file);
+    await _preferences.clearServerLastFailure();
     return ServerSnapshotSyncResult(
       uploadedCount: uploadedCount,
       downloadedEventCount: pull.downloadedCount,
@@ -135,6 +140,14 @@ class ServerSyncEngine {
       upload: upload,
       syncedAt: DateTime.now(),
     );
+  }
+
+  String _syncFailureText(ServerEventFailureDetail? failure, {required int failedCount}) {
+    final detail = failure?.toString().trim();
+    if (detail == null || detail.isEmpty) {
+      return 'failedCount=$failedCount';
+    }
+    return 'failedCount=$failedCount, $detail';
   }
 
   Future<ServerEventPullResult> pullAndApplyServerEvents({
@@ -148,6 +161,7 @@ class ServerSyncEngine {
     var appliedCount = 0;
     var failedCount = 0;
     var latestCursor = cursor;
+    ServerEventFailureDetail? firstFailure;
 
     while (true) {
       final pull = await _serverClient.downloadEvents(
@@ -182,11 +196,17 @@ class ServerSyncEngine {
             appliedCount += 1;
           } else {
             failedCount += 1;
+            firstFailure ??= _failureDetail(
+              record,
+              event,
+              reason: 'applyRemoteEvent returned false',
+            );
             pageFailed = true;
           }
-        } on Object {
+        } on Object catch (error) {
           // 单条旧事件不能阻断整次同步。下一次快照仍会兜底保留完整数据。
           failedCount += 1;
+          firstFailure ??= _failureDetail(record, event, reason: '$error');
           pageFailed = true;
         }
       }
@@ -208,6 +228,7 @@ class ServerSyncEngine {
       appliedCount: appliedCount,
       failedCount: failedCount,
       latestCursor: latestCursor,
+      firstFailure: firstFailure,
     );
   }
 
@@ -255,6 +276,33 @@ class ServerSyncEngine {
       return Map<String, dynamic>.from(event);
     }
     return record;
+  }
+
+  ServerEventFailureDetail _failureDetail(
+    Map<String, dynamic> record,
+    Map<String, dynamic> event, {
+    required String reason,
+  }) {
+    return ServerEventFailureDetail(
+      serverSeq: _asInt(record['serverSeq']),
+      entityType: _asString(event['entityType'], fallback: 'unknown'),
+      action: _asString(event['action'], fallback: 'unknown'),
+      entitySyncId: _entitySyncIdForEvent(event),
+      reason: reason,
+    );
+  }
+
+  int? _asInt(Object? value) {
+    if (value is int) {
+      return value;
+    }
+    if (value is num) {
+      return value.toInt();
+    }
+    if (value is String) {
+      return int.tryParse(value);
+    }
+    return null;
   }
 
   Map<String, dynamic>? _asMap(Object? value) {

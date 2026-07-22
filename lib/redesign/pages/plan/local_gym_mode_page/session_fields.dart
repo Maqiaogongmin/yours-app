@@ -5,11 +5,13 @@ class _LocalGymInput extends StatelessWidget {
     required this.label,
     required this.controller,
     this.decimal = false,
+    this.onChanged,
   });
 
   final String label;
   final TextEditingController controller;
   final bool decimal;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +19,7 @@ class _LocalGymInput extends StatelessWidget {
     return TextField(
       controller: controller,
       keyboardType: TextInputType.numberWithOptions(decimal: decimal),
+      onChanged: onChanged,
       cursorColor: palette.accent,
       style: context.yoursText(YoursTextRole.body).copyWith(color: palette.fg),
       decoration: InputDecoration(

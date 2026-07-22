@@ -24,9 +24,7 @@ class CustomExerciseRepository {
       : null;
 
   Future<void> ensureSeedData() async {
-    final existing = await (database.select(
-      database.customExercises,
-    )..where((exercise) => exercise.deleted.equals(false))).get();
+    final existing = await database.select(database.customExercises).get();
 
     if (existing.isEmpty) {
       await _insertSeedExercises();
@@ -111,7 +109,12 @@ class CustomExerciseRepository {
   Future<void> _ensureStandardCatalog() async {
     final rows = await database.select(database.customExercises).get();
     final knownKeys = <String, CustomExercise>{};
+    final knownRemoteIds = <int, CustomExercise>{};
     for (final row in rows) {
+      final remoteId = row.remoteId;
+      if (remoteId != null) {
+        knownRemoteIds[remoteId] = row;
+      }
       knownKeys[normalizeExerciseKey(row.chineseName)] = row;
       if (row.englishName.trim().isNotEmpty) {
         knownKeys[normalizeExerciseKey(row.englishName)] = row;
@@ -129,16 +132,16 @@ class CustomExerciseRepository {
     final now = DateTime.now();
     for (final exercise in standardExerciseCatalog) {
       final existing =
+          knownRemoteIds[exercise.remoteId] ??
           knownKeys[normalizeExerciseKey(exercise.chineseName)] ??
           knownKeys[normalizeExerciseKey(exercise.englishName)];
       if (existing != null) {
-        if (existing.remoteId != exercise.remoteId || existing.isCustom) {
+        if (existing.remoteId != exercise.remoteId) {
           await (database.update(
             database.customExercises,
           )..where((row) => row.id.equals(existing.id))).write(
             CustomExercisesCompanion(
               remoteId: Value(exercise.remoteId),
-              isCustom: const Value(false),
             ),
           );
         }

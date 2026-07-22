@@ -33,7 +33,7 @@ class YoursWorkoutRestPanel extends StatelessWidget {
     required this.onPrimary,
     required this.undoLabel,
     required this.onUndo,
-    required this.hint,
+    this.hint,
   });
 
   final String label;
@@ -43,7 +43,7 @@ class YoursWorkoutRestPanel extends StatelessWidget {
   final VoidCallback onPrimary;
   final String undoLabel;
   final VoidCallback onUndo;
-  final String hint;
+  final String? hint;
 
   @override
   Widget build(BuildContext context) {
@@ -83,12 +83,14 @@ class YoursWorkoutRestPanel extends StatelessWidget {
           YoursPrimaryAction(label: primaryLabel, onPressed: onPrimary),
           const SizedBox(height: 10),
           YoursDangerAction(label: undoLabel, onPressed: onUndo),
-          const SizedBox(height: 10),
-          Text(
-            hint,
-            textAlign: TextAlign.center,
-            style: context.yoursText(YoursTextRole.bodyMuted),
-          ),
+          if (hint != null && hint!.trim().isNotEmpty) ...[
+            const SizedBox(height: 10),
+            Text(
+              hint!,
+              textAlign: TextAlign.center,
+              style: context.yoursText(YoursTextRole.bodyMuted),
+            ),
+          ],
         ],
       ),
     );

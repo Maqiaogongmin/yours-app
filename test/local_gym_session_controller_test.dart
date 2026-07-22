@@ -165,6 +165,88 @@ void main() {
     expect(afterPreview, greaterThanOrEqualTo(beforePreview));
   });
 
+  test('free record target duration defaults to zero without explicit duration', () async {
+    final day = LocalTrainingDayModel(
+      week: 1,
+      day: 1,
+      name: '腿A',
+      actions: [
+        LocalTrainingActionModel(
+          name: 'built_in:plank',
+          targetReps: 45,
+          recordMode: localRecordModeFree,
+        ),
+      ],
+    );
+    final plan = LocalTrainingPlanModel(name: '平板支撑测试', totalWeeks: 1, daysPerWeek: 1)
+      ..days['1-1'] = day;
+
+    final session = LocalGymSessionController.instance;
+    await session.startOrResume(plan, day);
+
+    expect(session.currentExercise, 'built_in:plank');
+    expect(session.currentTargetSets, 1);
+    expect(session.currentFreeRecordTargetDurationSeconds, 0);
+    await session.finishSessionLocal(note: 'free duration default cleanup');
+  });
+
+  test('free record target duration uses explicit duration', () async {
+    final day = LocalTrainingDayModel(
+      week: 1,
+      day: 1,
+      name: '腿A',
+      actions: [
+        LocalTrainingActionModel(
+          name: '螃蟹走',
+          targetSets: 2,
+          targetReps: 12,
+          targetDurationSeconds: 60,
+          recordMode: localRecordModeFree,
+        ),
+      ],
+    );
+    final plan = LocalTrainingPlanModel(name: '自由记录时长测试', totalWeeks: 1, daysPerWeek: 1)
+      ..days['1-1'] = day;
+
+    final session = LocalGymSessionController.instance;
+    await session.startOrResume(plan, day);
+
+    expect(session.currentExercise, '螃蟹走');
+    expect(session.currentFreeRecordTargetDurationSeconds, 60);
+    await session.finishSessionLocal(note: 'free duration explicit cleanup');
+  });
+
+  test('early finish keeps user note without automatic incomplete marker', () async {
+    await locator.reset();
+    final db = LocalTrainingDatabase.inMemory(NativeDatabase.memory());
+    locator.registerSingleton<LocalTrainingDatabase>(db);
+    addTearDown(() async {
+      await locator.reset();
+      await db.close();
+    });
+
+    final repository = LocalTrainingRepository(db);
+    final plan = LocalTrainingPlanModel(name: '提前结束测试', totalWeeks: 1, daysPerWeek: 1);
+    plan.days['1-1'] = LocalTrainingDayModel(
+      week: 1,
+      day: 1,
+      name: 'D1',
+      actions: [LocalTrainingActionModel(name: '深蹲', targetSets: 2)],
+    );
+    await repository.savePlan(plan);
+    final savedPlan = (await repository.getPlans()).single;
+    final day = savedPlan.days.values.single;
+
+    final session = LocalGymSessionController.instance;
+    await session.startOrResume(savedPlan, day);
+    await session.saveSet(weight: 80, reps: 8, restSeconds: 0);
+    await session.finishSessionLocal(note: '状态不佳，收工。', markIncomplete: true);
+
+    final sessions = await repository.getWorkoutSessionsForDate(DateTime.now());
+    expect(sessions.single.note, '状态不佳，收工。');
+    expect(sessions.single.note, isNot(contains('未完成训练计划')));
+  });
+
   test('local gym replacement only affects the active session action', () async {
     final day = LocalTrainingDayModel(
       week: 1,
@@ -249,7 +331,11 @@ void main() {
       day: 1,
       name: 'D1',
       actions: [
-        LocalTrainingActionModel(name: '平板支撑', recordMode: localRecordModeFree),
+        LocalTrainingActionModel(
+          name: '平板支撑',
+          targetSets: 3,
+          recordMode: localRecordModeFree,
+        ),
       ],
     );
     await repository.savePlan(plan);
@@ -288,11 +374,57 @@ void main() {
     expect(logs.map((log) => log.setIndex), [1, 2, 3]);
     expect(logs.every((log) => log.weight == 10), isTrue);
     expect(logs.every((log) => log.durationSeconds == 45), isTrue);
+    expect(logs.every((log) => log.hasActualValues), isTrue);
+    expect(logs.every((log) => log.actualWeight == 10), isTrue);
+    expect(logs.every((log) => log.actualDurationSeconds == 45), isTrue);
+    expect(logs.every((log) => log.restSeconds == 0), isTrue);
 
     final records = await repository.getDailyRecordsForMonth(DateTime.now());
     final today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
     expect(records[today]?.setCount, 0);
     expect(records[today]?.freeRecordCount, 3);
+  });
+
+  test('local gym persists typed input as a draft without creating a workout log', () async {
+    await locator.reset();
+    final db = LocalTrainingDatabase.inMemory(NativeDatabase.memory());
+    locator.registerSingleton<LocalTrainingDatabase>(db);
+    addTearDown(() async {
+      await locator.reset();
+      await db.close();
+    });
+
+    final repository = LocalTrainingRepository(db);
+    final plan = LocalTrainingPlanModel(name: '草稿测试', totalWeeks: 1, daysPerWeek: 1);
+    plan.days['1-1'] = LocalTrainingDayModel(
+      week: 1,
+      day: 1,
+      name: 'D1',
+      actions: [LocalTrainingActionModel(name: '杠铃卧推', targetSets: 2)],
+    );
+    await repository.savePlan(plan);
+    final savedPlan = (await repository.getPlans()).single;
+    final day = savedPlan.days.values.single;
+    final session = LocalGymSessionController.instance;
+    await session.startOrResume(savedPlan, day);
+
+    await session.updateCurrentInputDraft(
+      weightText: '72.5',
+      repsText: '6',
+      restText: '',
+      noteText: '保留输入',
+    );
+    await session.flushInputDrafts();
+
+    expect(await db.select(db.localWorkoutLogs).get(), isEmpty);
+    expect((await db.select(db.localWorkoutSetDrafts).get()).single.weightText, '72.5');
+    expect(session.previewNextSet(), isTrue);
+    expect(session.previewPreviousSet(), isTrue);
+    expect(session.currentInputDraft?.weightText, '72.5');
+    expect(session.currentInputDraft?.noteText, '保留输入');
+
+    await session.finishSessionLocal(note: '结束草稿测试');
+    expect(await db.select(db.localWorkoutSetDrafts).get(), isEmpty);
   });
 
   test('undoing the final set resumes elapsed timer updates', () async {

@@ -1,10 +1,11 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter/services.dart';
 import 'package:yours/redesign/data/yours_exception.dart';
 import 'package:yours/redesign/localization/localization.dart';
 
 String localizedErrorDetail(BuildContext context, Object error) {
   if (error is YoursException) {
-    return switch (error.code) {
+    final detail = switch (error.code) {
       YoursErrorCode.backupMissing => context.l10n.errorBackupMissing,
       YoursErrorCode.backupEmpty => context.l10n.errorBackupEmpty,
       YoursErrorCode.invalidBackup => context.l10n.errorInvalidBackup,
@@ -31,10 +32,30 @@ String localizedErrorDetail(BuildContext context, Object error) {
       YoursErrorCode.unappliedServerChanges => context.l10n.errorUnappliedServerChanges(
         error.count ?? 0,
       ),
+      YoursErrorCode.workoutEmptySessionActionRequired =>
+        context.l10n.errorWorkoutEmptySessionActionRequired,
     };
+    final cause = error.cause?.toString().trim();
+    if (cause == null || cause.isEmpty) {
+      return detail;
+    }
+    return '$detail\n$cause';
   }
 
-  // Never infer a language from Unicode ranges. Unstructured diagnostics are
-  // not user-facing text; add a stable YoursErrorCode before exposing them.
+  if (error is PlatformException) {
+    final message = error.message?.trim();
+    if (message != null && message.isNotEmpty) {
+      return message;
+    }
+    return error.code;
+  }
+
+  if (error is String) {
+    final message = error.trim();
+    if (message.isNotEmpty) {
+      return message;
+    }
+  }
+
   return context.l10n.commonUnknownError;
 }

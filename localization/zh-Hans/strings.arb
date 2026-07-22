@@ -140,6 +140,7 @@
   "planSetSuffix": "组",
   "planRepSuffix": "次",
   "planRest": "休息",
+  "planDuration": "持续时间",
   "planWeight": "重量",
   "planNoteHint": "备注：例如 RIR 2；次数范围 6-8；动作节奏慢下放",
   "planAddFromLibrary": "从动作库添加",
@@ -155,7 +156,7 @@
   "planNoMatchingExercise": "没有找到匹配动作。可以先到动作库页面添加。",
   "planAdded": "已添加",
   "workoutEndTitle": "结束训练？",
-  "workoutEndIncomplete": "当前训练计划还没有完成。已记录的训练数据会保留，并自动备注“未完成训练计划”。",
+  "workoutEndIncomplete": "已记录的训练数据会保留。你可以补充本次训练备注。",
   "workoutEndEmpty": "当前训练还没有保存任何组记录。确认后会直接关闭训练模式。",
   "workoutPostNote": "练后备注",
   "workoutPostNoteHint": "例如：肩部不适，放弃侧平举",
@@ -218,7 +219,6 @@
     }
   },
   "workoutUndoReturnLog": "撤销当前组，返回记录页",
-  "workoutRestHint": "倒计时结束后会停在这里；滑动只浏览，不会写入或撤销记录。",
   "workoutCompletedSummary": "完成 {exercises} 个动作 · {sets} 组",
   "@workoutCompletedSummary": {
     "placeholders": {
@@ -358,6 +358,44 @@
   "homeDashboardSettings": "仪表盘设置",
   "homeCalendar": "日历",
   "commonDone": "完成",
+  "sharePosterCreate": "生成海报",
+  "sharePosterTitle": "生成海报",
+  "sharePosterSaveToPhotos": "保存到照片",
+  "sharePosterSaving": "正在保存",
+  "sharePosterSavedToPhotos": "已保存到照片",
+  "sharePosterSaveFailed": "保存失败：{error}",
+  "@sharePosterSaveFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "sharePosterRenderFailed": "无法生成训练海报图片。",
+  "sharePosterPhotoFailed": "选择照片失败：{error}",
+  "@sharePosterPhotoFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "sharePosterBackground": "背景",
+  "sharePosterComponents": "组件",
+  "sharePosterUsePhoto": "使用照片",
+  "sharePosterPhotoSelected": "照片背景",
+  "sharePosterPresetDeepPurple": "深紫黑",
+  "sharePosterPresetWarmPaper": "暖米",
+  "sharePosterPresetEmber": "Ember",
+  "sharePosterPresetForest": "Forest",
+  "sharePosterWorkoutName": "训练名称",
+  "sharePosterDate": "日期",
+  "sharePosterDuration": "总用时",
+  "sharePosterExerciseCount": "动作数",
+  "sharePosterSetCount": "总组数",
+  "sharePosterTotalVolume": "总容量",
+  "sharePosterNote": "训练备注",
+  "sharePosterBrand": "Yours 标识",
   "exerciseLibrary": "动作库",
   "profileTitle": "用户",
   "dataManagement": "数据管理",
@@ -406,6 +444,7 @@
   },
   "profileProcessing": "处理中...",
   "profileCreateExport": "创建并导出",
+  "profileCreateBackup": "创建备份",
   "profileRestoreFromFile": "从文件恢复",
   "profileExportBackup": "导出备份",
   "profileRestoreFromICloud": "从 iCloud 恢复",
@@ -444,20 +483,6 @@
     "placeholders": {
       "date": {
         "type": "String"
-      }
-    }
-  },
-  "profileServerDetail": "{backup}，事件 {events} 条，游标 {cursor}",
-  "@profileServerDetail": {
-    "placeholders": {
-      "backup": {
-        "type": "String"
-      },
-      "events": {
-        "type": "int"
-      },
-      "cursor": {
-        "type": "int"
       }
     }
   },
@@ -509,7 +534,7 @@
   "exerciseSaveLocal": "保存到本地动作库",
   "exerciseNotFilled": "未填写",
   "profileOpenLinkFailed": "无法打开链接。",
-  "profileRecentVaultExport": "最近已导出 Vault：{name}",
+  "profileRecentVaultExport": "上次导出 Vault：{name}",
   "@profileRecentVaultExport": {
     "placeholders": {
       "name": {
@@ -591,6 +616,14 @@
       }
     }
   },
+  "profileVaultImportArchiveFailed": "{count} 个已导入文件未能归档，可能会再次显示",
+  "@profileVaultImportArchiveFailed": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "profileBackupCreated": "备份包已创建：{name}",
   "@profileBackupCreated": {
     "placeholders": {
@@ -607,7 +640,7 @@
       }
     }
   },
-  "profileRecentBackupExport": "最近已导出备份：{name}",
+  "profileRecentBackupExport": "上次导出备份：{name}",
   "@profileRecentBackupExport": {
     "placeholders": {
       "name": {
@@ -726,7 +759,7 @@
     }
   },
   "profileRestoreFromBackup": "从备份恢复",
-  "profileServerAvailable": "服务器同步可用：协议 v{version}，事件 {events} 条。",
+  "profileServerAvailable": "服务器同步可用。",
   "@profileServerAvailable": {
     "placeholders": {
       "version": {
@@ -783,9 +816,24 @@
   "planRecordModeStandard": "标准记录",
   "planRecordModeFree": "自由记录",
   "workoutRecordMode": "记录方式",
+  "workoutReplaceExercise": "替换本次动作",
+  "workoutChooseExercise": "选择",
+  "workoutExerciseReplaced": "已将「{from}」替换为「{to}」",
+  "@workoutExerciseReplaced": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
   "workoutCompleteFreeRecord": "完成本项",
   "workoutUndoFreeRecord": "撤销本项记录",
   "workoutActivityElapsed": "本项用时",
+  "workoutDurationSeconds": "持续时间 s",
+  "workoutSavedLocal": "训练已保存到本地。",
   "workoutCompletedMixedSummary": "完成 {exercises} 个动作 · {sets} 组 · {freeRecords} 个自由项目",
   "@workoutCompletedMixedSummary": {
     "placeholders": {
@@ -871,11 +919,58 @@
       }
     }
   },
+  "errorWorkoutEmptySessionActionRequired": "请先添加动作",
   "backupShareTitle": "导出有思备份包",
   "backupShareSubject": "有思备份包",
   "backupShareText": "这是有思备份包。你可以将它保存到 iCloud Drive、文件 App 或其他位置，需要时再从文件恢复。",
   "exerciseExampleName": "例如：杠铃卧推",
   "exerciseExampleCategory": "例如：胸部",
   "exerciseExampleEquipment": "例如：杠铃",
-  "yoursVaultName": "Yours Vault"
+  "yoursVaultName": "Yours Vault",
+  "workoutRestHint": "倒计时结束后会停在这里；滑动只浏览，不会写入或撤销记录。",
+  "profileServerDetail": "{backup}，事件 {events} 条，游标 {cursor}",
+  "@profileServerDetail": {
+    "placeholders": {
+      "backup": {
+        "type": "String"
+      },
+      "events": {
+        "type": "int"
+      },
+      "cursor": {
+        "type": "int"
+      }
+    }
+  },
+  "exerciseCopyAsCustom": "复制为自定义动作",
+  "exerciseCopyTitle": "复制内置动作",
+  "exerciseSaveCustomCopy": "保存为自定义动作",
+  "privacyPolicy": "隐私政策",
+  "privacyConsentTitle": "有思（Yours）隐私政策",
+  "privacyConsentMessage": "有思采用本地优先的数据策略。训练数据默认保存在你的设备上。",
+  "privacyPolicyUpdatedAt": "更新日期：2026-07-11",
+  "privacyPolicyDataTitle": "我们处理哪些信息",
+  "privacyPolicyDataBody": "有思默认不要求注册账号，也不主动收集姓名、手机号、邮箱、定位或通讯录。\n\n你在应用中填写的训练计划、动作、训练记录、重量、次数、时长和备注，仅用于提供训练记录与统计功能。",
+  "privacyPolicyStorageTitle": "训练数据保存在哪里",
+  "privacyPolicyStorageBody": "训练计划、动作、训练记录和应用设置默认保存在应用本地存储中。\n\n本机备份包同样保存在应用的本地目录中。你主动执行恢复时，可以通过系统文件选择器读取已有的有思备份包。",
+  "privacyPolicySyncTitle": "网络与同步",
+  "privacyPolicySyncBody": "有思不提供或运营用于接收、存储训练数据的服务器，也不会将训练数据发送给有思。\n\n只有在你主动配置并使用自托管同步服务器时，应用才会通过网络向该服务器上传或下载训练数据、同步事件和备份快照。服务器地址、访问令牌及服务器中的数据由你或服务器管理者负责保管。",
+  "privacyPolicyPhotosTitle": "照片权限与分享海报",
+  "privacyPolicyPhotosBody": "只有在你主动保存训练分享海报时，有思才会请求系统照片写入权限。应用不会读取你的照片库，也不会在后台上传海报。",
+  "privacyPolicyBackupTitle": "数据备份与恢复",
+  "privacyPolicyBackupBody": "备份文件可能包含训练计划、动作、记录和备注。恢复前，应用会在本地创建安全快照，以降低误操作造成的数据损失风险。请妥善保管备份文件和自托管服务器凭据。",
+  "privacyPolicyDeletionTitle": "数据删除",
+  "privacyPolicyDeletionBody": "你可以通过以下方式删除有思中的数据：\n\n• 在应用内删除训练计划、训练记录或自定义动作。\n• 卸载有思应用，删除该应用保存在设备本地的数据。\n• 删除应用本地目录或其他位置中由你保管的备份文件。\n\n第三方位置中的备份，需要到对应位置删除。",
+  "privacyPolicyChildrenTitle": "儿童隐私",
+  "privacyPolicyChildrenBody": "未成年人请在监护人指导下使用训练功能。",
+  "privacyPolicyThirdPartyTitle": "第三方服务",
+  "privacyPolicyThirdPartyBody": "App Store、AppGallery、GitHub Releases、Cloudflare 等分发或托管平台会按照各自的隐私政策处理访问、下载或必要的服务日志。有思无法控制这些平台独立进行的处理。",
+  "privacyPolicyContactTitle": "联系我们",
+  "privacyPolicyContactBody": "如对本政策或个人信息处理有疑问，请发送邮件至 mail@yours-app.uk。",
+  "privacyPolicyUpdatesTitle": "政策更新",
+  "privacyPolicyUpdatesBody": "当功能或数据处理方式发生变化时，我们会更新本政策及更新日期。需要重新取得同意时，应用会再次展示隐私政策确认页。",
+  "privacyConsentAgree": "同意并继续",
+  "privacyConsentDecline": "不同意并退出",
+  "privacyInitializationFailed": "应用初始化失败，请重试。",
+  "commonRetry": "重试"
 }

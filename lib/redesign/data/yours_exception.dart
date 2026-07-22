@@ -20,6 +20,7 @@ enum YoursErrorCode {
   noServerBackup,
   serverOutdated,
   unappliedServerChanges,
+  workoutEmptySessionActionRequired,
 }
 
 final class YoursException implements Exception {

@@ -238,7 +238,12 @@ class _EditableWeekBlockState extends State<EditableWeekBlock> {
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                td.actions.isEmpty ? '—' : td.actionNames.take(2).join('、'),
+                                td.actions.isEmpty
+                                    ? '—'
+                                    : td.actionNames
+                                          .take(2)
+                                          .map((name) => localizedExerciseName(context, name))
+                                          .join('、'),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: context.yoursText(YoursTextRole.bodyMuted),

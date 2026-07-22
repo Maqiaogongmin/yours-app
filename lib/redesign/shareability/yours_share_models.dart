@@ -65,6 +65,7 @@ class YoursSharePosterOptions {
 class YoursWorkoutShareData {
   const YoursWorkoutShareData({
     required this.workoutName,
+    this.workoutSubtitle = '',
     required this.recordLabel,
     required this.date,
     required this.duration,
@@ -76,6 +77,7 @@ class YoursWorkoutShareData {
   });
 
   final String workoutName;
+  final String workoutSubtitle;
   final String recordLabel;
   final DateTime date;
   final Duration duration;
@@ -101,10 +103,12 @@ class YoursWorkoutShareData {
     }
     final recordName = record.name.trim();
     final recordLabel = fallbackName.trim().isEmpty ? recordName : fallbackName.trim();
-    final dayName = _firstSessionDayName(sessions);
+    final dayName = _sessionDayNames(sessions).join(' + ');
+    final workoutSubtitle = _sessionContextLabel(sessions);
     final note = _sessionNotes(sessions);
     return YoursWorkoutShareData(
       workoutName: dayName,
+      workoutSubtitle: workoutSubtitle,
       recordLabel: recordLabel.isEmpty ? recordName : recordLabel,
       date: record.date,
       duration: record.duration,
@@ -117,14 +121,57 @@ class YoursWorkoutShareData {
   }
 }
 
-String _firstSessionDayName(List<LocalWorkoutSessionEditModel> sessions) {
+List<String> _sessionDayNames(List<LocalWorkoutSessionEditModel> sessions) {
+  final names = <String>[];
   for (final session in sessions) {
     final dayName = session.dayName.trim();
-    if (dayName.isNotEmpty) {
-      return dayName;
+    if (dayName.isNotEmpty && !names.contains(dayName)) {
+      names.add(dayName);
     }
   }
-  return '';
+  return names;
+}
+
+String _sessionContextLabel(List<LocalWorkoutSessionEditModel> sessions) {
+  final positionsByRoutine = <String, List<String>>{};
+  final routineOrder = <String>[];
+  for (final session in sessions) {
+    final routineName = session.routineName.trim();
+    final dayLabel = _dayPositionLabel(session);
+    if (routineName.isEmpty && dayLabel.isEmpty) {
+      continue;
+    }
+    final routineKey = routineName.isEmpty ? '' : routineName;
+    if (!positionsByRoutine.containsKey(routineKey)) {
+      positionsByRoutine[routineKey] = <String>[];
+      routineOrder.add(routineKey);
+    }
+    if (dayLabel.isNotEmpty && !positionsByRoutine[routineKey]!.contains(dayLabel)) {
+      positionsByRoutine[routineKey]!.add(dayLabel);
+    }
+  }
+  final labels = <String>[];
+  for (final routineName in routineOrder) {
+    final positions = positionsByRoutine[routineName] ?? const <String>[];
+    final positionLabel = positions.join(' + ');
+    final label = [
+      if (routineName.isNotEmpty) routineName,
+      if (positionLabel.isNotEmpty) positionLabel,
+    ].join(' · ');
+    if (label.isNotEmpty) {
+      labels.add(label);
+    }
+  }
+  return labels.join(' + ');
+}
+
+String _dayPositionLabel(LocalWorkoutSessionEditModel session) {
+  final week = session.dayWeek;
+  final day = session.dayIndex;
+  if (week == null || day == null) {
+    return '';
+  }
+  return 'W$week D$day';
 }
 
 String _sessionNotes(List<LocalWorkoutSessionEditModel> sessions) {

@@ -1,6 +1,8 @@
 // Yours (有思) — 本地优先的个人训练记录 App
 // Copyright (c) 2026 Yours
 
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,8 +12,11 @@ import 'package:logging/logging.dart';
 import 'package:yours/l10n/app_localizations.dart';
 import 'package:yours/redesign/navigation/main_shell.dart';
 import 'package:yours/redesign/data/app_database.dart';
+import 'package:yours/redesign/data/harmony_sqlite.dart';
 import 'package:yours/redesign/localization/generated_language_registry.dart';
 import 'package:yours/redesign/localization/locale_controller.dart';
+import 'package:yours/redesign/localization/localization.dart';
+import 'package:yours/redesign/privacy/harmony_privacy_consent.dart';
 import 'package:yours/theme/theme.dart';
 import 'package:yours/redesign/theme/theme_mode_controller.dart';
 
@@ -25,28 +30,57 @@ void _setupLogging() {
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
+const bool _harmonySmokeMode = bool.fromEnvironment('YOURS_HARMONY_SMOKE');
+
+bool get _isHarmonyOS => isHarmonyOS;
+
 void main() async {
   // Needs to be called before runApp
   WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarDividerColor: Colors.transparent,
-      systemNavigationBarContrastEnforced: false,
-    ),
-  );
+  configureHarmonySqlite();
+  if (!_isHarmonyOS) {
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarDividerColor: Colors.transparent,
+        systemNavigationBarContrastEnforced: false,
+      ),
+    );
+  }
 
   // Logger
   _setupLogging();
 
   final logger = Logger('main');
 
-  // Locator to initialize exerciseDB
-  await configureDatabases();
-  await yoursThemeModeController.load();
-  await yoursLocaleController.load();
+  if (_harmonySmokeMode) {
+    logger.info('Starting HarmonyOS Flutter smoke UI');
+    runApp(const _HarmonySmokeApp());
+    return;
+  }
+
+  // HarmonyOS must not initialize user data before privacy consent.
+  if (!_isHarmonyOS) {
+    await configureDatabases();
+  }
+  try {
+    await yoursThemeModeController.load().timeout(const Duration(seconds: 3));
+  } on TimeoutException catch (error) {
+    logger.warning('Theme preference load timed out: $error');
+  } catch (error, stack) {
+    logger.warning('Theme preference load skipped: $error');
+    logger.fine('Theme preference stack: $stack');
+  }
+  try {
+    await yoursLocaleController.load().timeout(const Duration(seconds: 3));
+  } on TimeoutException catch (error) {
+    logger.warning('Locale preference load timed out: $error');
+  } catch (error, stack) {
+    logger.warning('Locale preference load skipped: $error');
+    logger.fine('Locale preference stack: $stack');
+  }
 
   // Redesign is local-first. Keep unexpected errors in logs instead of showing legacy dialogs.
   FlutterError.onError = (FlutterErrorDetails details) {
@@ -75,6 +109,31 @@ void main() async {
   runApp(const ProviderScope(child: MainApp()));
 }
 
+class _HarmonySmokeApp extends StatelessWidget {
+  const _HarmonySmokeApp();
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: ColoredBox(
+        color: Color(0xFF0B6B4F),
+        child: Center(
+          child: Text(
+            'Yours Flutter Smoke',
+            textDirection: TextDirection.ltr,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 36,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class MainApp extends StatelessWidget {
   const MainApp();
 
@@ -85,7 +144,7 @@ class MainApp extends StatelessWidget {
       child: AnimatedBuilder(
         animation: Listenable.merge([yoursThemeModeController, yoursLocaleController]),
         builder: (context, _) => MaterialApp(
-          title: 'Yours',
+          onGenerateTitle: (context) => context.l10n.appName,
           navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
           theme: yoursLightTheme,
@@ -93,7 +152,14 @@ class MainApp extends StatelessWidget {
           highContrastTheme: yoursLightThemeHc,
           highContrastDarkTheme: yoursDarkThemeHc,
           themeMode: yoursThemeModeController.mode,
-          home: const MainShell(),
+          home: _isHarmonyOS
+              ? HarmonyPrivacyConsentGate(
+                  repository: SharedPreferencesHarmonyPrivacyConsentRepository(),
+                  initializeApp: configureDatabases,
+                  onDecline: () => SystemNavigator.pop(),
+                  child: const MainShell(),
+                )
+              : const MainShell(),
           builder: (context, child) {
             final isDark = Theme.of(context).brightness == Brightness.dark;
             return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -110,6 +176,7 @@ class MainApp extends StatelessWidget {
             );
           },
           locale: yoursLocaleController.locale,
+          localeListResolutionCallback: resolveYoursLocales,
           localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,

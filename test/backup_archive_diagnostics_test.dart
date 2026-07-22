@@ -26,12 +26,14 @@ final class _FakeBackupPreferencesStore extends BackupPreferencesStore {
   _FakeBackupPreferencesStore({
     this.settings = const ServerBackupSettings(baseUrl: '', apiToken: ''),
     this.cursor = 0,
+    this.lastFailure,
     this.deviceIdFailure,
     this.cursorFailure,
   });
 
   final ServerBackupSettings settings;
   final int cursor;
+  final String? lastFailure;
   final Object? deviceIdFailure;
   final Object? cursorFailure;
   String? restoredAppSettingsText;
@@ -57,6 +59,9 @@ final class _FakeBackupPreferencesStore extends BackupPreferencesStore {
     }
     return cursor;
   }
+
+  @override
+  Future<String?> serverLastFailure() async => lastFailure;
 
   @override
   Future<Map<String, Object?>> readAppSettings() async {
@@ -404,6 +409,8 @@ void main() {
           apiToken: 'token',
         ),
         cursor: 11,
+        lastFailure:
+            'failedCount=1, serverSeq=1017, entity=workout_log:abc, action=upsert, reason=Bearer token',
       ),
       serverClient: client,
       supportedServerProtocolVersion: 2,
@@ -416,6 +423,8 @@ void main() {
     expect(text, contains('apiKeyConfigured: true'));
     expect(text, contains('serverTransportSecure: true'));
     expect(text, contains('localCursor: 11'));
+    expect(text, contains('lastSyncFailure: failedCount=1, serverSeq=1017'));
+    expect(text, contains('reason=Bearer [redacted]'));
     expect(text, contains('pendingEvents: 1'));
     expect(text, contains('serverAvailable: true'));
     expect(text, contains('serverVersion: YoursBackupServer/0.2'));
@@ -536,6 +545,33 @@ void main() {
     expect(syncSettings['identityMode'], 'syncId');
     expect(syncSettings['serverEventCursor'], 42);
     expect(await service.serverCursorFromBackup(output), 42);
+  });
+
+  test('backup archive cleanup keeps only the selected zip', () async {
+    final root = await Directory.systemTemp.createTemp('yours_backup_cleanup_');
+    addTearDown(() async {
+      if (root.existsSync()) {
+        await root.delete(recursive: true);
+      }
+    });
+    final service = BackupArchiveService(
+      preferences: _FakeBackupPreferencesStore(),
+      serverProtocolVersion: 2,
+    );
+
+    await service.deleteSiblingZipFiles(
+      Directory('${root.path}/missing'),
+      keep: File('${root.path}/missing/keep.zip'),
+    );
+    final keep = File('${root.path}/keep.zip')..writeAsStringSync('keep');
+    final obsolete = File('${root.path}/obsolete.zip')..writeAsStringSync('old');
+    final note = File('${root.path}/note.txt')..writeAsStringSync('note');
+
+    await service.deleteSiblingZipFiles(root, keep: keep);
+
+    expect(keep.existsSync(), isTrue);
+    expect(obsolete.existsSync(), isFalse);
+    expect(note.existsSync(), isTrue);
   });
 
   test('backup archive restore keeps validation errors and creates safety backup', () async {

@@ -140,6 +140,7 @@
   "planSetSuffix": "セット",
   "planRepSuffix": "回",
   "planRest": "休憩",
+  "planDuration": "継続時間",
   "planWeight": "重量",
   "planNoteHint": "RIR 2、6 ～ 8 レップ、またはスローエキセントリックなどの注意事項",
   "planAddFromLibrary": "エクササイズライブラリから追加",
@@ -155,7 +156,7 @@
   "planNoMatchingExercise": "一致するエクササイズがありません。先にライブラリへ追加してください。",
   "planAdded": "追加済み",
   "workoutEndTitle": "トレーニングを終了しますか?",
-  "workoutEndIncomplete": "このトレーニングプランは完了していません。保存済みのデータは保持され、未完了のトレーニングとして記録されます。",
+  "workoutEndIncomplete": "保存済みのトレーニングデータは保持されます。このセッションのメモを追加できます。",
   "workoutEndEmpty": "セットは保存されていません。ワークアウトモードを閉じることを確認します。",
   "workoutPostNote": "トレーニング後のメモ",
   "workoutPostNoteHint": "例: 肩の不快感、横上げのスキップ",
@@ -218,7 +219,6 @@
     }
   },
   "workoutUndoReturnLog": "現在の設定を元に戻してログ記録に戻ります",
-  "workoutRestHint": "タイマーが終了するとここで一時停止します。スワイプするとセットのプレビューのみが表示されます。レコードの書き込みや取り消しは行いません。",
   "workoutCompletedSummary": "{exercises} 種目完了 · {sets} セット",
   "@workoutCompletedSummary": {
     "placeholders": {
@@ -358,6 +358,44 @@
   "homeDashboardSettings": "ダッシュボードの設定",
   "homeCalendar": "カレンダー",
   "commonDone": "完了",
+  "sharePosterCreate": "ポスターを作成",
+  "sharePosterTitle": "ポスターを作成",
+  "sharePosterSaveToPhotos": "写真に保存",
+  "sharePosterSaving": "保存中",
+  "sharePosterSavedToPhotos": "写真に保存しました",
+  "sharePosterSaveFailed": "保存に失敗しました: {error}",
+  "@sharePosterSaveFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "sharePosterRenderFailed": "トレーニングポスターを生成できませんでした。",
+  "sharePosterPhotoFailed": "写真を選択できませんでした: {error}",
+  "@sharePosterPhotoFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "sharePosterBackground": "背景",
+  "sharePosterComponents": "コンポーネント",
+  "sharePosterUsePhoto": "写真を使う",
+  "sharePosterPhotoSelected": "写真背景",
+  "sharePosterPresetDeepPurple": "ディープパープル",
+  "sharePosterPresetWarmPaper": "ウォームペーパー",
+  "sharePosterPresetEmber": "Ember",
+  "sharePosterPresetForest": "Forest",
+  "sharePosterWorkoutName": "トレーニング名",
+  "sharePosterDate": "日付",
+  "sharePosterDuration": "合計時間",
+  "sharePosterExerciseCount": "種目数",
+  "sharePosterSetCount": "セット数",
+  "sharePosterTotalVolume": "総ボリューム",
+  "sharePosterNote": "トレーニングメモ",
+  "sharePosterBrand": "Yours 表示",
   "exerciseLibrary": "エクササイズ",
   "profileTitle": "プロフィール",
   "dataManagement": "データ管理",
@@ -406,6 +444,7 @@
   },
   "profileProcessing": "処理...",
   "profileCreateExport": "作成してエクスポート",
+  "profileCreateBackup": "バックアップを作成",
   "profileRestoreFromFile": "ファイルから復元",
   "profileExportBackup": "バックアップのエクスポート",
   "profileRestoreFromICloud": "iCloudから復元",
@@ -444,20 +483,6 @@
     "placeholders": {
       "date": {
         "type": "String"
-      }
-    }
-  },
-  "profileServerDetail": "{backup}、{events} イベント、カーソル {cursor}",
-  "@profileServerDetail": {
-    "placeholders": {
-      "backup": {
-        "type": "String"
-      },
-      "events": {
-        "type": "int"
-      },
-      "cursor": {
-        "type": "int"
       }
     }
   },
@@ -509,7 +534,7 @@
   "exerciseSaveLocal": "ローカルエクササイズライブラリに保存",
   "exerciseNotFilled": "未入力",
   "profileOpenLinkFailed": "リンクを開けませんでした。",
-  "profileRecentVaultExport": "最近エクスポートしたVault：{name}",
+  "profileRecentVaultExport": "前回の Vault エクスポート：{name}",
   "@profileRecentVaultExport": {
     "placeholders": {
       "name": {
@@ -591,6 +616,14 @@
       }
     }
   },
+  "profileVaultImportArchiveFailed": "インポート済みの {count} ファイルをアーカイブできなかったため、再度表示される場合があります",
+  "@profileVaultImportArchiveFailed": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "profileBackupCreated": "作成されたバックアップ パッケージ: {name}",
   "@profileBackupCreated": {
     "placeholders": {
@@ -607,7 +640,7 @@
       }
     }
   },
-  "profileRecentBackupExport": "最近エクスポートされたバックアップ: {name}",
+  "profileRecentBackupExport": "前回のバックアップエクスポート: {name}",
   "@profileRecentBackupExport": {
     "placeholders": {
       "name": {
@@ -726,7 +759,7 @@
     }
   },
   "profileRestoreFromBackup": "バックアップから復元する",
-  "profileServerAvailable": "サーバー同期が利用可能です: プロトコル v{version}、{events} イベント。",
+  "profileServerAvailable": "サーバー同期が利用可能です。",
   "@profileServerAvailable": {
     "placeholders": {
       "version": {
@@ -783,9 +816,24 @@
   "planRecordModeStandard": "標準",
   "planRecordModeFree": "フリー記録",
   "workoutRecordMode": "記録モード",
+  "workoutReplaceExercise": "この種目を置き換える",
+  "workoutChooseExercise": "選択",
+  "workoutExerciseReplaced": "「{from}」を「{to}」に置き換えました",
+  "@workoutExerciseReplaced": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
   "workoutCompleteFreeRecord": "この項目を完了",
   "workoutUndoFreeRecord": "項目の記録を取り消す",
   "workoutActivityElapsed": "項目の所要時間",
+  "workoutDurationSeconds": "継続時間 s",
+  "workoutSavedLocal": "ワークアウトをローカルに保存しました。",
   "workoutCompletedMixedSummary": "{exercises}種目 · {sets}セット · フリー項目{freeRecords}件を完了",
   "@workoutCompletedMixedSummary": {
     "placeholders": {
@@ -871,11 +919,58 @@
       }
     }
   },
+  "errorWorkoutEmptySessionActionRequired": "先に種目を追加してください",
   "backupShareTitle": "Yoursバックアップをエクスポート",
   "backupShareSubject": "Yoursバックアップ",
   "backupShareText": "これはYoursのバックアップパッケージです。iCloud Drive、ファイル、または別の場所に保存し、必要なときにファイルから復元できます。",
   "exerciseExampleName": "例: ベンチプレス",
   "exerciseExampleCategory": "例: 胸部",
   "exerciseExampleEquipment": "例: バーベル",
-  "yoursVaultName": "Yours Vault"
+  "yoursVaultName": "Yours Vault",
+  "workoutRestHint": "タイマーが終了するとここで一時停止します。スワイプするとセットのプレビューのみが表示されます。レコードの書き込みや取り消しは行いません。",
+  "profileServerDetail": "{backup}、{events} イベント、カーソル {cursor}",
+  "@profileServerDetail": {
+    "placeholders": {
+      "backup": {
+        "type": "String"
+      },
+      "events": {
+        "type": "int"
+      },
+      "cursor": {
+        "type": "int"
+      }
+    }
+  },
+  "exerciseCopyAsCustom": "カスタム種目として複製",
+  "exerciseCopyTitle": "内蔵種目を複製",
+  "exerciseSaveCustomCopy": "カスタム種目として保存",
+  "privacyPolicy": "プライバシーポリシー",
+  "privacyConsentTitle": "Yours プライバシーポリシー",
+  "privacyConsentMessage": "Yoursはローカルファーストのデータ方針を採用しています。トレーニングデータはデフォルトで端末に保存されます。",
+  "privacyPolicyUpdatedAt": "更新日：2026年7月11日",
+  "privacyPolicyDataTitle": "処理する情報",
+  "privacyPolicyDataBody": "Yoursはデフォルトでアカウント登録を必要とせず、氏名、電話番号、メールアドレス、位置情報、連絡先を積極的に収集しません。\n\nアプリに入力したトレーニング計画、種目、記録、重量、回数、時間、メモは、トレーニング記録と統計機能を提供するためにのみ使用されます。",
+  "privacyPolicyStorageTitle": "トレーニングデータの保存場所",
+  "privacyPolicyStorageBody": "トレーニング計画、種目、記録、アプリ設定は、デフォルトでアプリのローカルストレージに保存されます。\n\nローカルバックアップもアプリのローカルディレクトリに保存されます。復元を選択した場合、システムのファイル選択画面から既存のYoursバックアップを読み取れます。",
+  "privacyPolicySyncTitle": "ネットワークと同期",
+  "privacyPolicySyncBody": "Yoursはトレーニングデータを受信または保存するサーバーを提供・運営せず、トレーニングデータをYoursに送信することもありません。\n\nセルフホスト同期サーバーを自分で設定して使用した場合に限り、そのサーバーとの間でトレーニングデータ、同期イベント、バックアップスナップショットを送受信します。サーバーアドレス、アクセストークン、サーバー内のデータは、あなたまたはサーバー管理者が管理します。",
+  "privacyPolicyPhotosTitle": "写真権限と共有ポスター",
+  "privacyPolicyPhotosBody": "トレーニング共有ポスターの保存を選択した場合に限り、写真への書き込み権限を要求します。写真ライブラリを読み取ったり、バックグラウンドでポスターをアップロードしたりすることはありません。",
+  "privacyPolicyBackupTitle": "バックアップと復元",
+  "privacyPolicyBackupBody": "バックアップにはトレーニング計画、種目、記録、メモが含まれる場合があります。復元前にローカルの安全スナップショットを作成し、誤操作によるデータ損失のリスクを軽減します。バックアップとセルフホストサーバーの認証情報は安全に保管してください。",
+  "privacyPolicyDeletionTitle": "データの削除",
+  "privacyPolicyDeletionBody": "Yoursのデータは次の方法で削除できます。\n\n• アプリ内でトレーニング計画、記録、カスタム種目を削除する。\n• Yoursをアンインストールして、アプリが端末内に保存したデータを削除する。\n• アプリのローカルディレクトリまたはその他の場所で自分が保管するバックアップファイルを削除する。\n\n第三者の場所にあるバックアップは、その場所から削除する必要があります。",
+  "privacyPolicyChildrenTitle": "子どものプライバシー",
+  "privacyPolicyChildrenBody": "未成年者は保護者の指導のもとでトレーニング機能を使用してください。",
+  "privacyPolicyThirdPartyTitle": "第三者サービス",
+  "privacyPolicyThirdPartyBody": "App Store、AppGallery、GitHub Releases、Cloudflareなどの配布・ホスティングサービスは、各自のプライバシーポリシーに基づき、アクセス、ダウンロード、必要なサービスログを処理します。Yoursはこれらのサービスが独自に行う処理を管理できません。",
+  "privacyPolicyContactTitle": "お問い合わせ",
+  "privacyPolicyContactBody": "本ポリシーまたは個人情報の処理に関する質問は、mail@yours-app.ukまでメールでお問い合わせください。",
+  "privacyPolicyUpdatesTitle": "ポリシーの更新",
+  "privacyPolicyUpdatesBody": "機能またはデータ処理方法が変更された場合、本ポリシーと更新日を更新します。再度同意が必要な場合、アプリはプライバシーポリシー確認画面を再表示します。",
+  "privacyConsentAgree": "同意して続ける",
+  "privacyConsentDecline": "同意せず終了",
+  "privacyInitializationFailed": "アプリを初期化できませんでした。もう一度お試しください。",
+  "commonRetry": "再試行"
 }

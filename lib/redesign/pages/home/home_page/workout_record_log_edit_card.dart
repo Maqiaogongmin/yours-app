@@ -11,62 +11,64 @@ class _LogEditCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.yoursPalette;
     return YoursSurfaceCard(
       role: YoursSurfaceRole.panel,
       padding: const EdgeInsets.all(12),
-      child: draft.log.recordMode == localRecordModeFree
-          ? Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      context.l10n.workoutActivityElapsed,
-                      style: context
-                          .yoursText(YoursTextRole.body)
-                          .copyWith(
-                            fontSize: 12,
-                            color: palette.muted,
-                            fontWeight: FontWeight.w800,
-                          ),
-                    ),
-                    _SplitDurationFields(
-                      keyPrefix: 'log-duration-${draft.log.id}',
-                      hourController: draft._durationHourCtrl,
-                      minuteController: draft._durationMinuteCtrl,
-                      secondController: draft._durationSecondCtrl,
-                      onChanged: () => onDurationChanged(draft),
-                    ),
-                  ],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _formField(context.l10n.homeSets, draft._setCtrl),
+          if (draft.log.recordMode != localRecordModeFree) ...[
+            _formField(context.l10n.homeReps, draft._repsCtrl),
+          ],
+          _formField(
+            context.l10n.workoutWeight,
+            draft._weightCtrl,
+            decimal: true,
+            hintText: context.l10n.workoutUnitKg,
+          ),
+          if (draft.log.recordMode == localRecordModeFree) ...[
+            Padding(
+              padding: EdgeInsets.zero,
+              child: YoursInlineFormRow(
+                label: context.l10n.workoutActivityElapsed,
+                fieldWidthFactor: 0.5,
+                field: YoursInlineFormValueSlot(
+                  alignment: Alignment.center,
+                  minimumWidth: YoursTimeValue.compactThreePartMinimumWidth,
+                  child: _SplitDurationFields(
+                    keyPrefix: 'log-duration-${draft.log.id}',
+                    hourController: draft._durationHourCtrl,
+                    minuteController: draft._durationMinuteCtrl,
+                    secondController: draft._durationSecondCtrl,
+                    onChanged: () => onDurationChanged(draft),
+                  ),
                 ),
-                const SizedBox(height: 10),
-                _noteField(context),
-              ],
-            )
-          : Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(child: _miniField(context, context.l10n.homeSets, draft._setCtrl)),
-                    const SizedBox(width: 8),
-                    Expanded(child: _miniField(context, context.l10n.homeReps, draft._repsCtrl)),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: _miniField(
-                        context,
-                        context.l10n.homeWeightKg,
-                        draft._weightCtrl,
-                        decimal: true,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                _noteField(context),
-              ],
+              ),
             ),
+          ],
+          _formField(
+            context.l10n.workoutRest,
+            draft._restCtrl,
+            hintText: context.l10n.workoutUnitSeconds,
+          ),
+          _noteField(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _formField(
+    String label,
+    TextEditingController controller, {
+    bool decimal = false,
+    String? hintText,
+  }) {
+    return YoursInlineFormField(
+      label: label,
+      controller: controller,
+      keyboardType: TextInputType.numberWithOptions(decimal: decimal),
+      hintText: hintText,
     );
   }
 
@@ -81,6 +83,7 @@ class _LogEditCard extends StatelessWidget {
         style: context.yoursText(YoursTextRole.bodyMuted).copyWith(color: palette.fg),
         decoration: InputDecoration(
           hintText: context.l10n.workoutNote,
+          hintStyle: context.yoursText(YoursTextRole.bodyMuted),
           border: InputBorder.none,
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
@@ -89,50 +92,6 @@ class _LogEditCard extends StatelessWidget {
           contentPadding: EdgeInsets.zero,
         ),
       ),
-    );
-  }
-
-  Widget _miniField(
-    BuildContext context,
-    String label,
-    TextEditingController controller, {
-    bool decimal = false,
-  }) {
-    final palette = context.yoursPalette;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 5),
-          child: Text(
-            label,
-            style: context
-                .yoursText(YoursTextRole.body)
-                .copyWith(fontSize: 12, color: palette.muted, fontWeight: FontWeight.w700),
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            color: palette.panel,
-            border: Border.all(color: palette.border),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: TextField(
-            controller: controller,
-            keyboardType: TextInputType.numberWithOptions(decimal: decimal),
-            textAlign: TextAlign.center,
-            style: context
-                .yoursText(YoursTextRole.body)
-                .copyWith(color: palette.fg, fontWeight: FontWeight.w700),
-            cursorColor: palette.accent,
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              isDense: true,
-              contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

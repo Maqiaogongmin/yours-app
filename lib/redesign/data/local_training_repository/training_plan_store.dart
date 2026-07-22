@@ -324,6 +324,9 @@ class _LocalTrainingPlanStore {
         targetReps: entry.targetReps,
         targetWeight: entry.targetWeight,
         recordMode: normalizeLocalRecordMode(entry.recordMode),
+        targetDurationSeconds: actions[slot.order].targetDurationSeconds,
+        targetRestSeconds: actions[slot.order].targetRestSeconds,
+        note: actions[slot.order].note,
       );
     }
   }

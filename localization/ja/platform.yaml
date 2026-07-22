@@ -1,7 +1,8 @@
 app_name: Yours
 icloud_container_name: Yours
 camera_usage: トレーニング記録用の写真を撮影するためにカメラを使用します。
-photo_library_usage: トレーニングデータのバックアップファイルを選択して復元します。
+photo_library_usage: トレーニングポスターの背景に使う写真を選択します。
+photo_library_add_usage: トレーニング記録ポスターを写真に保存します。
 native_messages:
   icloud_signed_out: このデバイスはiCloudにサインインしていないか、iCloud Driveが無効になっています。
   icloud_container_unavailable: iCloudのデータフォルダを利用できません。iCloud DriveとApp IDの設定を確認してください。
@@ -11,3 +12,10 @@ native_messages:
   icloud_picker_busy: iCloud Driveのファイル選択画面はすでに開いています。
   icloud_picker_unavailable: iCloud Driveのファイル選択画面を開けませんでした。
   invalid_backup_zip: .zip形式のYoursバックアップを選択してください。
+  photo_picker_busy: 写真選択画面はすでに開いています。
+  photo_picker_unavailable: 写真選択画面を開けませんでした。
+  photo_picker_unsupported: ポスター背景に使う画像を選択してください。
+  photo_picker_failed: 選択した写真を読み取れませんでした。
+  photo_save_bad_args: トレーニングポスターの画像データがありません。
+  photo_permission_denied: 写真への保存権限がありません。
+  photo_save_failed: トレーニングポスターを保存できませんでした。

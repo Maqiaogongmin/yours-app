@@ -20,6 +20,7 @@ final class _FakeBackupPreferencesStore extends BackupPreferencesStore {
   int cursor;
   final String device = 'local-device';
   final cursorWrites = <int>[];
+  String? lastFailure;
 
   @override
   Future<ServerBackupSettings> loadServerBackupSettings() async {
@@ -39,6 +40,16 @@ final class _FakeBackupPreferencesStore extends BackupPreferencesStore {
   Future<void> setServerEventCursor(int value) async {
     cursor = value;
     cursorWrites.add(value);
+  }
+
+  @override
+  Future<void> setServerLastFailure(String message) async {
+    lastFailure = message;
+  }
+
+  @override
+  Future<void> clearServerLastFailure() async {
+    lastFailure = null;
   }
 }
 
@@ -358,6 +369,7 @@ void main() {
               'entitySyncId': 'routine:just-uploaded',
             },
             {
+              'serverSeq': 7,
               'deviceId': 'remote-device',
               'entityType': 'routine',
               'entityId': 2,
@@ -396,6 +408,7 @@ void main() {
         const ServerEventPage(
           events: [
             {
+              'serverSeq': 7,
               'deviceId': 'remote-device',
               'entityType': 'routine',
               'entityId': 2,
@@ -418,6 +431,9 @@ void main() {
     expect(result.downloadedCount, 1);
     expect(result.appliedCount, 0);
     expect(result.failedCount, 1);
+    expect(result.firstFailure?.serverSeq, 7);
+    expect(result.firstFailure?.entitySyncId, 'routine:remote-1');
+    expect(result.firstFailure?.reason, contains('returned false'));
     expect(preferences.cursor, 4);
     expect(preferences.cursorWrites, isEmpty);
   });
@@ -467,6 +483,7 @@ void main() {
       expect(result.backup.file.path, 'backup.zip');
       expect(result.upload.endpoint.toString(), 'https://sync.example/api/yours-backups/latest');
       expect(applied, ['routine:remote']);
+      expect(preferences.lastFailure, isNull);
     },
   );
 
@@ -478,6 +495,7 @@ void main() {
         const ServerEventPage(
           events: [
             {
+              'serverSeq': 7,
               'deviceId': 'remote-device',
               'entityType': 'routine',
               'entityId': 2,
@@ -500,15 +518,22 @@ void main() {
         applyRemoteEvent: (_) async => false,
       ).syncPendingChangesAndUploadSnapshot(),
       throwsA(
-        isA<YoursException>().having(
-          (error) => error.code,
-          'code',
-          YoursErrorCode.unappliedServerChanges,
-        ),
+        isA<YoursException>()
+            .having(
+              (error) => error.code,
+              'code',
+              YoursErrorCode.unappliedServerChanges,
+            )
+            .having(
+              (error) => error.cause.toString(),
+              'cause',
+              contains('serverSeq=7'),
+            ),
       ),
     );
 
     expect(archive.safetyBackupCount, 1);
+    expect(preferences.lastFailure, contains('serverSeq=7'));
     expect(preferences.cursor, 4);
   });
 }

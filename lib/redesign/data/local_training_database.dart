@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
-import 'package:drift_flutter/drift_flutter.dart';
 import 'package:logging/logging.dart';
+import 'package:yours/redesign/data/yours_drift_database.dart';
 
 part 'local_training_database.g.dart';
 
@@ -61,6 +61,12 @@ class LocalWorkoutSessions extends Table {
   IntColumn get remoteId => integer().nullable()();
   IntColumn get routineId => integer().references(LocalRoutines, #id)();
   IntColumn get dayId => integer().nullable().references(LocalTrainingDays, #id)();
+  TextColumn get routineNameSnapshot => text().withDefault(const Constant(''))();
+  TextColumn get routineSyncIdSnapshot => text().withDefault(const Constant(''))();
+  TextColumn get dayNameSnapshot => text().withDefault(const Constant(''))();
+  IntColumn get dayWeekSnapshot => integer().nullable()();
+  IntColumn get dayIndexSnapshot => integer().nullable()();
+  TextColumn get daySyncIdSnapshot => text().withDefault(const Constant(''))();
   DateTimeColumn get startedAt => dateTime()();
   DateTimeColumn get endedAt => dateTime().nullable()();
   TextColumn get note => text().withDefault(const Constant(''))();
@@ -81,10 +87,36 @@ class LocalWorkoutLogs extends Table {
   IntColumn get reps => integer().withDefault(const Constant(0))();
   RealColumn get rir => real().nullable()();
   IntColumn get durationSeconds => integer().withDefault(const Constant(0))();
+  // Legacy numeric columns stay populated for backwards compatibility. New
+  // records use the nullable actual fields so an intentionally blank value is
+  // distinct from an entered zero.
+  RealColumn get actualWeight => real().nullable()();
+  IntColumn get actualReps => integer().nullable()();
+  IntColumn get actualDurationSeconds => integer().nullable()();
+  IntColumn get restSeconds => integer().nullable()();
+  BoolColumn get hasActualValues => boolean().withDefault(const Constant(false))();
   TextColumn get recordMode => text().withDefault(const Constant('standard'))();
   TextColumn get note => text().withDefault(const Constant(''))();
   TextColumn get syncStatus => text().withDefault(const Constant('pending'))();
   DateTimeColumn get createdAt => dateTime()();
+}
+
+class LocalWorkoutSetDrafts extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get sessionId => integer().references(LocalWorkoutSessions, #id)();
+  IntColumn get actionIndex => integer()();
+  IntColumn get setIndex => integer()();
+  TextColumn get weightText => text().withDefault(const Constant(''))();
+  TextColumn get repsText => text().withDefault(const Constant(''))();
+  TextColumn get durationText => text().withDefault(const Constant(''))();
+  TextColumn get restText => text().withDefault(const Constant(''))();
+  TextColumn get noteText => text().withDefault(const Constant(''))();
+  DateTimeColumn get updatedAt => dateTime()();
+
+  @override
+  List<Set<Column<Object>>> get uniqueKeys => [
+    {sessionId, actionIndex, setIndex},
+  ];
 }
 
 class LocalSyncQueue extends Table {
@@ -111,6 +143,7 @@ class LocalSyncQueue extends Table {
     LocalSlotEntries,
     LocalWorkoutSessions,
     LocalWorkoutLogs,
+    LocalWorkoutSetDrafts,
     LocalSyncQueue,
   ],
 )
@@ -122,13 +155,16 @@ class LocalTrainingDatabase extends _$LocalTrainingDatabase {
   LocalTrainingDatabase.inMemory(super.e);
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 8;
 
   @override
   MigrationStrategy get migration {
     return MigrationStrategy(
       onCreate: (migrator) => migrator.createAll(),
       onUpgrade: (migrator, from, to) async {
+        if (!await _hasTable('local_workout_set_drafts')) {
+          await migrator.createTable(localWorkoutSetDrafts);
+        }
         if (!await _hasTable('local_sync_queue')) {
           await migrator.createTable(localSyncQueue);
         }
@@ -141,12 +177,31 @@ class LocalTrainingDatabase extends _$LocalTrainingDatabase {
         if (!await _hasColumn('local_workout_logs', 'record_mode')) {
           await migrator.addColumn(localWorkoutLogs, localWorkoutLogs.recordMode);
         }
+        if (!await _hasColumn('local_workout_logs', 'actual_weight')) {
+          await migrator.addColumn(localWorkoutLogs, localWorkoutLogs.actualWeight);
+        }
+        if (!await _hasColumn('local_workout_logs', 'actual_reps')) {
+          await migrator.addColumn(localWorkoutLogs, localWorkoutLogs.actualReps);
+        }
+        if (!await _hasColumn('local_workout_logs', 'actual_duration_seconds')) {
+          await migrator.addColumn(
+            localWorkoutLogs,
+            localWorkoutLogs.actualDurationSeconds,
+          );
+        }
+        if (!await _hasColumn('local_workout_logs', 'rest_seconds')) {
+          await migrator.addColumn(localWorkoutLogs, localWorkoutLogs.restSeconds);
+        }
+        if (!await _hasColumn('local_workout_logs', 'has_actual_values')) {
+          await migrator.addColumn(localWorkoutLogs, localWorkoutLogs.hasActualValues);
+        }
         if (!await _hasColumn('local_workout_sessions', 'note')) {
           await migrator.addColumn(localWorkoutSessions, localWorkoutSessions.note);
         }
         if (!await _hasColumn('local_workout_logs', 'note')) {
           await migrator.addColumn(localWorkoutLogs, localWorkoutLogs.note);
         }
+        await _ensureWorkoutSessionSnapshotColumns(migrator);
         if (!await _hasColumn('local_routines', 'archived')) {
           await migrator.addColumn(localRoutines, localRoutines.archived);
         }
@@ -159,6 +214,45 @@ class LocalTrainingDatabase extends _$LocalTrainingDatabase {
         await _backfillQueueV2Columns();
       },
     );
+  }
+
+  Future<void> _ensureWorkoutSessionSnapshotColumns(Migrator migrator) async {
+    if (!await _hasColumn('local_workout_sessions', 'routine_name_snapshot')) {
+      await migrator.addColumn(
+        localWorkoutSessions,
+        localWorkoutSessions.routineNameSnapshot,
+      );
+    }
+    if (!await _hasColumn('local_workout_sessions', 'routine_sync_id_snapshot')) {
+      await migrator.addColumn(
+        localWorkoutSessions,
+        localWorkoutSessions.routineSyncIdSnapshot,
+      );
+    }
+    if (!await _hasColumn('local_workout_sessions', 'day_name_snapshot')) {
+      await migrator.addColumn(
+        localWorkoutSessions,
+        localWorkoutSessions.dayNameSnapshot,
+      );
+    }
+    if (!await _hasColumn('local_workout_sessions', 'day_week_snapshot')) {
+      await migrator.addColumn(
+        localWorkoutSessions,
+        localWorkoutSessions.dayWeekSnapshot,
+      );
+    }
+    if (!await _hasColumn('local_workout_sessions', 'day_index_snapshot')) {
+      await migrator.addColumn(
+        localWorkoutSessions,
+        localWorkoutSessions.dayIndexSnapshot,
+      );
+    }
+    if (!await _hasColumn('local_workout_sessions', 'day_sync_id_snapshot')) {
+      await migrator.addColumn(
+        localWorkoutSessions,
+        localWorkoutSessions.daySyncIdSnapshot,
+      );
+    }
   }
 
   Future<void> _ensureSyncIdColumns(Migrator migrator) async {
@@ -281,5 +375,5 @@ class LocalTrainingDatabase extends _$LocalTrainingDatabase {
 }
 
 QueryExecutor _openConnection() {
-  return driftDatabase(name: 'local_training');
+  return openYoursDriftDatabase('local_training');
 }

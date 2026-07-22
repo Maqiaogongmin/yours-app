@@ -81,6 +81,8 @@ extension YoursDesignTokenContext on BuildContext {
         : const Color(0xFF101015);
   }
 
+  double yoursBrandMarkRadius(double size) => size * 0.2237;
+
   TextStyle yoursText(YoursTextRole role, {YoursTone? tone}) {
     final palette = yoursPalette;
     final color = tone == null

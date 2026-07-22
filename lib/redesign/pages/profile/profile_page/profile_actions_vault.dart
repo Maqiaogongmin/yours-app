@@ -11,9 +11,9 @@ extension _ProfilePageVaultActions on _ProfilePageActions {
       setState(() {
         state._latestVaultDirectory = result.directory;
         state._latestVaultExportedAt = result.exportedAt;
-        if (Platform.isIOS) {
+        if (Platform.isIOS || isHarmonyOS) {
           state._iCloudActivity = YoursDataManagementActivity.recentVaultExport(
-            fileName(result.directory.path),
+            _dataManagementDateText(result.exportedAt),
           );
         }
       });
@@ -36,7 +36,7 @@ extension _ProfilePageVaultActions on _ProfilePageActions {
       if (!state.mounted) {
         return;
       }
-      if (Platform.isIOS) {
+      if (Platform.isIOS || isHarmonyOS) {
         setState(
           () => state._iCloudActivity = YoursDataManagementActivity.recentVaultExportFailed(
             _dataManagementError(error),
@@ -56,13 +56,21 @@ extension _ProfilePageVaultActions on _ProfilePageActions {
     final l10n = state.context.l10n;
     setState(() => state._busy = true);
     try {
-      final result = await state._vaultService.importDefaultInbox();
+      final result = await state._vaultService.importAutomaticInbox();
       if (!state.mounted) {
         return;
       }
       if (result.importedPlans > 0 || result.importedExercises > 0) {
         RedesignDataRefresh.instance.notifyRestored();
         await state._loadPendingSyncCount();
+      }
+      if (result.importedPlans == 0 &&
+          result.importedExercises == 0 &&
+          result.skippedFiles.isEmpty) {
+        _showMessage(
+          l10n.profileVaultImportNoFiles(result.scannedSources.join('、')),
+        );
+        return;
       }
       final skippedText = result.skippedFiles.isEmpty
           ? ''
@@ -73,10 +81,16 @@ extension _ProfilePageVaultActions on _ProfilePageActions {
         skippedText,
       );
       final firstFailure = result.failedFiles.isEmpty ? null : result.failedFiles.first;
+      final archiveWarning = result.archiveFailures.isEmpty
+          ? ''
+          : ' ${l10n.profileVaultImportArchiveFailed(result.archiveFailures.length)}';
+      final sourceNotice = result.unavailableSources.isEmpty
+          ? ''
+          : ' ${l10n.profileVaultImportSourcesUnavailable(result.unavailableSources.join('、'))}';
       _showMessage(
         firstFailure == null
-            ? summary
-            : '$summary ${firstFailure.fileName}: ${firstFailure.message}',
+            ? '$summary$archiveWarning$sourceNotice'
+            : '$summary ${firstFailure.fileName}: ${firstFailure.message}$archiveWarning$sourceNotice',
       );
     } on Object catch (error) {
       if (!state.mounted) {

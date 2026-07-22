@@ -218,8 +218,8 @@ class _RecordCard extends StatelessWidget {
       preferInlineMetrics: true,
       status: hasRecord
           ? YoursStatusPill(
-              label: record.incomplete ? context.l10n.homeIncomplete : context.l10n.homeRecorded,
-              tone: record.incomplete ? YoursTone.danger : YoursTone.accent,
+              label: context.l10n.homeRecorded,
+              tone: YoursTone.accent,
             )
           : null,
       trailingAction: hasRecord && onShare != null
@@ -271,13 +271,16 @@ String _localizedWorkoutRecordName(BuildContext context, String name) {
 }
 
 String _localizedWorkoutRecordNote(BuildContext context, String note) {
-  final text = note.trim();
+  final text = note
+      .split('\n')
+      .map((line) => line.trim())
+      .where((line) => line.isNotEmpty && line != '未完成训练计划')
+      .join('\n')
+      .trim();
   if (text.isEmpty) {
     return context.l10n.homeEmptyRecordMessage;
   }
-  return text
-      .replaceAll('当天训练已保存到本地数据库。', context.l10n.homeDefaultSavedNote)
-      .replaceAll('未完成训练计划', context.l10n.homeIncompleteWorkoutMarker);
+  return text.replaceAll('当天训练已保存到本地数据库。', context.l10n.homeDefaultSavedNote);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════

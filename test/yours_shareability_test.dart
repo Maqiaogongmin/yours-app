@@ -97,6 +97,49 @@ void main() {
     expect(data.totalVolume, 8420);
   });
 
+  test('workout share name aggregates distinct session day snapshots', () {
+    final date = DateTime(2026, 6, 29);
+    final data = YoursWorkoutShareData.fromRecord(
+      record: LocalTrainingDailyRecord(
+        date: date,
+        name: '训练记录',
+        sessionCount: 2,
+        setCount: 2,
+        totalVolume: 1000,
+        duration: const Duration(minutes: 60),
+        note: '',
+      ),
+      sessions: [
+        LocalWorkoutSessionEditModel(
+          id: 1,
+          startedAt: date.add(const Duration(hours: 8)),
+          endedAt: date.add(const Duration(hours: 9)),
+          routineName: '两个月增肌PPL六练',
+          dayName: '推A',
+          dayWeek: 8,
+          dayIndex: 1,
+          note: '',
+          logs: const [],
+        ),
+        LocalWorkoutSessionEditModel(
+          id: 2,
+          startedAt: date.add(const Duration(hours: 15)),
+          endedAt: date.add(const Duration(hours: 16)),
+          routineName: '两个月增肌PPL六练',
+          dayName: '拉A',
+          dayWeek: 8,
+          dayIndex: 2,
+          note: '',
+          logs: const [],
+        ),
+      ],
+      fallbackName: '训练记录',
+    );
+
+    expect(data.workoutName, '推A + 拉A');
+    expect(data.workoutSubtitle, '两个月增肌PPL六练 · W8 D1 + W8 D2');
+  });
+
   test('workout share name does not fall back to daily record summary text', () {
     final date = DateTime(2026, 6, 16);
     final data = YoursWorkoutShareData.fromRecord(
@@ -203,7 +246,65 @@ void main() {
     },
   );
 
-  test('workout sessions recover stale day ids from the routine schedule', () async {
+  test('starting a session stores stable routine and day snapshots', () async {
+    final db = LocalTrainingDatabase.inMemory(NativeDatabase.memory());
+    addTearDown(db.close);
+    final repository = LocalTrainingRepository(db);
+    final now = DateTime(2026, 6, 29, 8);
+    final routineId = await db
+        .into(db.localRoutines)
+        .insert(
+          LocalRoutinesCompanion.insert(
+            syncId: const Value('routine-sync'),
+            name: '两个月增肌PPL六练',
+            totalWeeks: const Value(8),
+            daysPerWeek: const Value(7),
+            createdAt: now,
+            updatedAt: now,
+          ),
+        );
+    final dayId = await db
+        .into(db.localTrainingDays)
+        .insert(
+          LocalTrainingDaysCompanion.insert(
+            syncId: const Value('day-sync'),
+            routineId: routineId,
+            week: 8,
+            day: 1,
+            name: '推A',
+            updatedAt: now,
+          ),
+        );
+
+    final sessionId = await repository.startSession(
+      LocalTrainingPlanModel(
+        id: routineId,
+        syncId: 'routine-sync',
+        name: '两个月增肌PPL六练',
+        totalWeeks: 8,
+        daysPerWeek: 7,
+      ),
+      LocalTrainingDayModel(
+        id: dayId,
+        syncId: 'day-sync',
+        week: 8,
+        day: 1,
+        name: '推A',
+      ),
+    );
+    final session = await (db.select(
+      db.localWorkoutSessions,
+    )..where((row) => row.id.equals(sessionId))).getSingle();
+
+    expect(session.routineNameSnapshot, '两个月增肌PPL六练');
+    expect(session.routineSyncIdSnapshot, 'routine-sync');
+    expect(session.dayNameSnapshot, '推A');
+    expect(session.dayWeekSnapshot, 8);
+    expect(session.dayIndexSnapshot, 1);
+    expect(session.daySyncIdSnapshot, 'day-sync');
+  });
+
+  test('workout sessions do not infer stale missing day ids from the routine schedule', () async {
     final db = LocalTrainingDatabase.inMemory(NativeDatabase.memory());
     addTearDown(db.close);
     final repository = LocalTrainingRepository(db);
@@ -332,8 +433,8 @@ void main() {
     final day17 = await repository.getWorkoutSessionsForDate(base.add(const Duration(days: 1)));
     final day18 = await repository.getWorkoutSessionsForDate(base.add(const Duration(days: 2)));
 
-    expect(day16.single.dayName, '拉A');
-    expect(day17.single.dayName, '休息');
+    expect(day16.single.dayName, isEmpty);
+    expect(day17.single.dayName, isEmpty);
     expect(day18.single.dayName, '腿A');
   });
 

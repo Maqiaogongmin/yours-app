@@ -1,13 +1,17 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:yours/redesign/data/backup_models.dart';
+import 'package:yours/redesign/data/harmony_sqlite.dart';
 import 'package:yours/redesign/data/yours_exception.dart';
 
 class BackupPlatformBridge {
   static const _visibleFilesChannel = MethodChannel('yours/files');
+  static const _shareTimeout = Duration(seconds: 15);
 
   Future<ShareResult> shareBackup(
     File backup, {
@@ -19,15 +23,18 @@ class BackupPlatformBridge {
     if (!backup.existsSync()) {
       throw const YoursException(YoursErrorCode.backupMissing);
     }
-    return SharePlus.instance.share(
-      ShareParams(
-        title: title,
-        subject: subject,
-        text: text,
-        files: [XFile(backup.path, mimeType: 'application/zip')],
-        fileNameOverrides: const ['yours-backup.zip'],
-        sharePositionOrigin: sharePositionOrigin,
+    return waitForBackupShare(
+      SharePlus.instance.share(
+        ShareParams(
+          title: title,
+          subject: subject,
+          text: text,
+          files: [XFile(backup.path, mimeType: 'application/zip')],
+          fileNameOverrides: const ['yours-backup.zip'],
+          sharePositionOrigin: sharePositionOrigin,
+        ),
       ),
+      timeout: _shareTimeout,
     );
   }
 
@@ -86,6 +93,9 @@ class BackupPlatformBridge {
   Future<File?> pickBackupFile() async {
     if (Platform.isIOS) {
       return pickICloudBackup();
+    }
+    if (isHarmonyOS) {
+      return pickVisibleBackupIntoLocalDirectory();
     }
     final result = await FilePicker.pickFiles(
       type: FileType.custom,
@@ -156,7 +166,7 @@ class BackupPlatformBridge {
   }
 
   Future<File?> copyVisibleBackupIntoLocalDirectory() async {
-    if (!Platform.isAndroid) {
+    if (!Platform.isAndroid && !isHarmonyOS) {
       return null;
     }
     try {
@@ -174,7 +184,7 @@ class BackupPlatformBridge {
   }
 
   Future<File?> pickVisibleBackupIntoLocalDirectory() async {
-    if (!Platform.isAndroid) {
+    if (!Platform.isAndroid && !isHarmonyOS) {
       return null;
     }
     try {
@@ -207,5 +217,21 @@ class BackupPlatformBridge {
       return 'iCloud Drive 操作失败。请确认设备已登录 iCloud，且 iCloud Drive 已开启。';
     }
     return '文件操作失败：${error.code}';
+  }
+}
+
+class BackupShareTimeoutException implements Exception {
+  const BackupShareTimeoutException();
+}
+
+@visibleForTesting
+Future<ShareResult> waitForBackupShare(
+  Future<ShareResult> result, {
+  Duration timeout = const Duration(seconds: 15),
+}) async {
+  try {
+    return await result.timeout(timeout);
+  } on TimeoutException {
+    throw const BackupShareTimeoutException();
   }
 }

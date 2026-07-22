@@ -138,6 +138,10 @@ class ServerSyncSnapshotBuilder {
         'targetSets': entry.targetSets,
         'targetReps': entry.targetReps,
         if (entry.targetWeight != null) 'targetWeight': entry.targetWeight,
+        if (actions[slot.order]['targetDurationSeconds'] != null)
+          'targetDurationSeconds': actions[slot.order]['targetDurationSeconds'],
+        if (actions[slot.order]['targetRestSeconds'] != null)
+          'targetRestSeconds': actions[slot.order]['targetRestSeconds'],
         if (normalizeLocalRecordMode(entry.recordMode) != localRecordModeStandard)
           'recordMode': normalizeLocalRecordMode(entry.recordMode),
       };
@@ -166,6 +170,12 @@ class ServerSyncSnapshotBuilder {
       'routineSyncId': await _routineSyncIdById(db, session.routineId),
       'dayId': session.dayId,
       'daySyncId': await _daySyncIdById(db, session.dayId),
+      'routineNameSnapshot': session.routineNameSnapshot,
+      'routineSyncIdSnapshot': session.routineSyncIdSnapshot,
+      'dayNameSnapshot': session.dayNameSnapshot,
+      'dayWeekSnapshot': session.dayWeekSnapshot,
+      'dayIndexSnapshot': session.dayIndexSnapshot,
+      'daySyncIdSnapshot': session.daySyncIdSnapshot,
       'startedAt': session.startedAt.toIso8601String(),
       'endedAt': session.endedAt?.toIso8601String(),
       'note': session.note,
@@ -255,6 +265,11 @@ class ServerSyncSnapshotBuilder {
       'reps': log.reps,
       'rir': log.rir,
       'durationSeconds': log.durationSeconds,
+      if (log.hasActualValues) 'hasActualValues': true,
+      if (log.actualWeight != null) 'actualWeight': log.actualWeight,
+      if (log.actualReps != null) 'actualReps': log.actualReps,
+      if (log.actualDurationSeconds != null) 'actualDurationSeconds': log.actualDurationSeconds,
+      if (log.restSeconds != null) 'restSeconds': log.restSeconds,
       if (normalizeLocalRecordMode(log.recordMode) != localRecordModeStandard)
         'recordMode': normalizeLocalRecordMode(log.recordMode),
       'note': log.note,

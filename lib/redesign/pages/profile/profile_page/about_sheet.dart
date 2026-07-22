@@ -3,6 +3,7 @@ part of '../profile_page.dart';
 @visibleForTesting
 class YoursAboutSheet extends StatelessWidget {
   final String officialWebsiteUrl;
+  final String privacyPolicyUrl;
   final String githubRepositoryUrl;
   final bool showUpdateCheck;
   final AppUpdateState updateState;
@@ -10,6 +11,7 @@ class YoursAboutSheet extends StatelessWidget {
 
   const YoursAboutSheet({
     required this.officialWebsiteUrl,
+    this.privacyPolicyUrl = _privacyPolicyUrl,
     required this.githubRepositoryUrl,
     required this.showUpdateCheck,
     required this.updateState,
@@ -33,6 +35,12 @@ class YoursAboutSheet extends StatelessWidget {
               icon: Icons.language_outlined,
               label: context.l10n.officialWebsite,
               url: officialWebsiteUrl,
+            ),
+            Divider(height: 1, color: context.yoursPalette.border),
+            _AboutInfoRow(
+              icon: Icons.privacy_tip_outlined,
+              label: context.l10n.privacyPolicy,
+              url: privacyPolicyUrl,
             ),
             Divider(height: 1, color: context.yoursPalette.border),
             _AboutInfoRow(

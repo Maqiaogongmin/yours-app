@@ -17,6 +17,9 @@ BuiltInExerciseText? localizedBuiltInExercise(
   BuildContext context,
   CustomExerciseModel exercise,
 ) {
+  if (exercise.isCustom) {
+    return null;
+  }
   final key = exercise.builtInKey;
   return _localizedText(context, key);
 }

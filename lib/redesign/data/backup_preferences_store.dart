@@ -14,6 +14,7 @@ class BackupPreferencesStore {
   static const _legacyServerEventCursorKey = 'yours_sync_event_cursor';
   static const _serverDeviceIdKey = 'yours_sync_device_id_v2';
   static const _serverEventCursorKey = 'yours_sync_event_cursor_v2';
+  static const _serverLastFailureKey = 'yours_sync_last_failure_v2';
   static const _restoredSyncSettingsKey = 'redesign_sync_settings';
 
   final SharedPreferencesAsync? _prefsOverride;
@@ -151,6 +152,18 @@ class BackupPreferencesStore {
 
   Future<void> setServerEventCursor(int cursor) {
     return _prefs.setInt(_serverEventCursorKey, cursor);
+  }
+
+  Future<String?> serverLastFailure() {
+    return _prefs.getString(_serverLastFailureKey);
+  }
+
+  Future<void> setServerLastFailure(String message) {
+    return _prefs.setString(_serverLastFailureKey, message.trim());
+  }
+
+  Future<void> clearServerLastFailure() {
+    return _prefs.remove(_serverLastFailureKey);
   }
 
   static String dateKey(DateTime value) {

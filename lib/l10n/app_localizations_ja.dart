@@ -260,7 +260,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get workoutEndTitle => 'トレーニングを終了しますか?';
 
   @override
-  String get workoutEndIncomplete => 'このトレーニングプランは完了していません。保存済みのデータは保持され、未完了のトレーニングとして記録されます。';
+  String get workoutEndIncomplete => '保存済みのトレーニングデータは保持されます。このセッションのメモを追加できます。';
 
   @override
   String get workoutEndEmpty => 'セットは保存されていません。ワークアウトモードを閉じることを確認します。';
@@ -294,6 +294,18 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get workoutRestSeconds => '休息';
+
+  @override
+  String get workoutRest => '休息';
+
+  @override
+  String get workoutWeight => '重量';
+
+  @override
+  String get workoutUnitKg => 'kg';
+
+  @override
+  String get workoutUnitSeconds => '秒';
 
   @override
   String get workoutSaveSet => 'セットを保存して続行';
@@ -362,10 +374,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get workoutUndoReturnLog => '現在の設定を元に戻してログ記録に戻ります';
-
-  @override
-  String get workoutRestHint =>
-      'タイマーが終了するとここで一時停止します。スワイプするとセットのプレビューのみが表示されます。レコードの書き込みや取り消しは行いません。';
 
   @override
   String workoutCompletedSummary(int exercises, int sets) {
@@ -649,6 +657,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get profileCreateExport => '作成してエクスポート';
 
   @override
+  String get profileCreateBackup => 'バックアップを作成';
+
+  @override
   String get profileRestoreFromFile => 'ファイルから復元';
 
   @override
@@ -712,11 +723,6 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String profileRecentSnapshot(String date) {
     return '最新のスナップショット: $date';
-  }
-
-  @override
-  String profileServerDetail(String backup, int events, int cursor) {
-    return '$backup、$events イベント、カーソル $cursor';
   }
 
   @override
@@ -847,7 +853,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String profileRecentVaultExport(String name) {
-    return '最近エクスポートしたVault：$name';
+    return '前回の Vault エクスポート：$name';
   }
 
   @override
@@ -886,6 +892,21 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String profileVaultImportArchiveFailed(int count) {
+    return 'インポート済みの $count ファイルをアーカイブできなかったため、再度表示される場合があります';
+  }
+
+  @override
+  String profileVaultImportNoFiles(String sources) {
+    return '$sources にインポート可能な inbox ファイルはありません。';
+  }
+
+  @override
+  String profileVaultImportSourcesUnavailable(String sources) {
+    return '利用できません: $sources。';
+  }
+
+  @override
   String profileBackupCreated(String name) {
     return '作成されたバックアップ パッケージ: $name';
   }
@@ -896,8 +917,11 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get profileBackupShareTimedOut => 'バックアップを作成しました。選択した場所にファイルがあることを確認してください。';
+
+  @override
   String profileRecentBackupExport(String name) {
-    return '最近エクスポートされたバックアップ: $name';
+    return '前回のバックアップエクスポート: $name';
   }
 
   @override
@@ -1009,7 +1033,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String profileServerAvailable(int version, int events) {
-    return 'サーバー同期が利用可能です: プロトコル v$version、$events イベント。';
+    return 'サーバー同期が利用可能です。';
   }
 
   @override
@@ -1198,6 +1222,9 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get errorWorkoutEmptySessionActionRequired => '先に種目を追加してください';
+
+  @override
   String get backupShareTitle => 'Yoursバックアップをエクスポート';
 
   @override
@@ -1218,4 +1245,115 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get yoursVaultName => 'Yours Vault';
+
+  @override
+  String get workoutRestHint =>
+      'タイマーが終了するとここで一時停止します。スワイプするとセットのプレビューのみが表示されます。レコードの書き込みや取り消しは行いません。';
+
+  @override
+  String profileServerDetail(String backup, int events, int cursor) {
+    return '$backup、$events イベント、カーソル $cursor';
+  }
+
+  @override
+  String get exerciseCopyAsCustom => 'カスタム種目として複製';
+
+  @override
+  String get exerciseCopyTitle => '内蔵種目を複製';
+
+  @override
+  String get exerciseSaveCustomCopy => 'カスタム種目として保存';
+
+  @override
+  String get privacyPolicy => 'プライバシーポリシー';
+
+  @override
+  String get privacyConsentTitle => 'Yours プライバシーポリシー';
+
+  @override
+  String get privacyConsentMessage => 'Yoursはローカルファーストのデータ方針を採用しています。トレーニングデータはデフォルトで端末に保存されます。';
+
+  @override
+  String get privacyPolicyUpdatedAt => '更新日：2026年7月11日';
+
+  @override
+  String get privacyPolicyDataTitle => '処理する情報';
+
+  @override
+  String get privacyPolicyDataBody =>
+      'Yoursはデフォルトでアカウント登録を必要とせず、氏名、電話番号、メールアドレス、位置情報、連絡先を積極的に収集しません。\n\nアプリに入力したトレーニング計画、種目、記録、重量、回数、時間、メモは、トレーニング記録と統計機能を提供するためにのみ使用されます。';
+
+  @override
+  String get privacyPolicyStorageTitle => 'トレーニングデータの保存場所';
+
+  @override
+  String get privacyPolicyStorageBody =>
+      'トレーニング計画、種目、記録、アプリ設定は、デフォルトでアプリのローカルストレージに保存されます。\n\nローカルバックアップもアプリのローカルディレクトリに保存されます。復元を選択した場合、システムのファイル選択画面から既存のYoursバックアップを読み取れます。';
+
+  @override
+  String get privacyPolicySyncTitle => 'ネットワークと同期';
+
+  @override
+  String get privacyPolicySyncBody =>
+      'Yoursはトレーニングデータを受信または保存するサーバーを提供・運営せず、トレーニングデータをYoursに送信することもありません。\n\nセルフホスト同期サーバーを自分で設定して使用した場合に限り、そのサーバーとの間でトレーニングデータ、同期イベント、バックアップスナップショットを送受信します。サーバーアドレス、アクセストークン、サーバー内のデータは、あなたまたはサーバー管理者が管理します。';
+
+  @override
+  String get privacyPolicyPhotosTitle => '写真権限と共有ポスター';
+
+  @override
+  String get privacyPolicyPhotosBody =>
+      'トレーニング共有ポスターの保存を選択した場合に限り、写真への書き込み権限を要求します。写真ライブラリを読み取ったり、バックグラウンドでポスターをアップロードしたりすることはありません。';
+
+  @override
+  String get privacyPolicyBackupTitle => 'バックアップと復元';
+
+  @override
+  String get privacyPolicyBackupBody =>
+      'バックアップにはトレーニング計画、種目、記録、メモが含まれる場合があります。復元前にローカルの安全スナップショットを作成し、誤操作によるデータ損失のリスクを軽減します。バックアップとセルフホストサーバーの認証情報は安全に保管してください。';
+
+  @override
+  String get privacyPolicyDeletionTitle => 'データの削除';
+
+  @override
+  String get privacyPolicyDeletionBody =>
+      'Yoursのデータは次の方法で削除できます。\n\n• アプリ内でトレーニング計画、記録、カスタム種目を削除する。\n• Yoursをアンインストールして、アプリが端末内に保存したデータを削除する。\n• アプリのローカルディレクトリまたはその他の場所で自分が保管するバックアップファイルを削除する。\n\n第三者の場所にあるバックアップは、その場所から削除する必要があります。';
+
+  @override
+  String get privacyPolicyChildrenTitle => '子どものプライバシー';
+
+  @override
+  String get privacyPolicyChildrenBody => '未成年者は保護者の指導のもとでトレーニング機能を使用してください。';
+
+  @override
+  String get privacyPolicyThirdPartyTitle => '第三者サービス';
+
+  @override
+  String get privacyPolicyThirdPartyBody =>
+      'App Store、AppGallery、GitHub Releases、Cloudflareなどの配布・ホスティングサービスは、各自のプライバシーポリシーに基づき、アクセス、ダウンロード、必要なサービスログを処理します。Yoursはこれらのサービスが独自に行う処理を管理できません。';
+
+  @override
+  String get privacyPolicyContactTitle => 'お問い合わせ';
+
+  @override
+  String get privacyPolicyContactBody =>
+      '本ポリシーまたは個人情報の処理に関する質問は、mail@yours-app.ukまでメールでお問い合わせください。';
+
+  @override
+  String get privacyPolicyUpdatesTitle => 'ポリシーの更新';
+
+  @override
+  String get privacyPolicyUpdatesBody =>
+      '機能またはデータ処理方法が変更された場合、本ポリシーと更新日を更新します。再度同意が必要な場合、アプリはプライバシーポリシー確認画面を再表示します。';
+
+  @override
+  String get privacyConsentAgree => '同意して続ける';
+
+  @override
+  String get privacyConsentDecline => '同意せず終了';
+
+  @override
+  String get privacyInitializationFailed => 'アプリを初期化できませんでした。もう一度お試しください。';
+
+  @override
+  String get commonRetry => '再試行';
 }

@@ -33,6 +33,13 @@
 ### Android
 
 - APK published: `<yes/no/n/a>`
+- Emulator model/API/ABI: `<value or n/a>`
+- Emulator install and cold starts: `<pass/fail/n/a>`
+- USB device model/API/ABI: `<value or n/a>`
+- USB upgrade install and cold starts: `<pass/fail/n/a>`
+- Main navigation visual check: `<pass/fail/n/a>`
+- Updated critical flows checked: `<flows and result>`
+- Runtime fatal log check: `<pass/fail/n/a>`
 - GitHub Release URL: `<url or n/a>`
 - Download URL: `<url or n/a>`
 - Source archive attached: `<yes/no/n/a>`

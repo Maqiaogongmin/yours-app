@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
-import 'package:drift_flutter/drift_flutter.dart';
 import 'package:logging/logging.dart';
+import 'package:yours/redesign/data/yours_drift_database.dart';
 
 part 'custom_exercise_database.g.dart';
 
@@ -81,5 +81,5 @@ extension on CustomExerciseDatabase {
 }
 
 QueryExecutor _openConnection() {
-  return driftDatabase(name: 'custom_exercises');
+  return openYoursDriftDatabase('custom_exercises');
 }

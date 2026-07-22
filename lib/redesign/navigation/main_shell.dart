@@ -156,8 +156,8 @@ class _MainShellState extends State<MainShell> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.sizeOf(context).width;
-    final useTabletShell = width >= 760;
+    final size = MediaQuery.sizeOf(context);
+    final useTabletShell = _shouldUseTabletShell(size);
     final palette = context.yoursPalette;
     final pages = IndexedStack(
       index: _selectedIndex,
@@ -197,6 +197,10 @@ class _MainShellState extends State<MainShell> with WidgetsBindingObserver {
   }
 }
 
+bool _shouldUseTabletShell(Size size) {
+  return size.shortestSide >= 700 && size.width > size.height;
+}
+
 class _SideNavRail extends StatelessWidget {
   final int selectedIndex;
   final void Function(int) onTap;
@@ -223,25 +227,7 @@ class _SideNavRail extends StatelessWidget {
         children: [
           Tooltip(
             message: context.l10n.appName,
-            child: Container(
-              width: 52,
-              height: 52,
-              padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                color: palette.fg,
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: palette.accent.withValues(alpha: 0.24)),
-                boxShadow: context.yoursCardShadow,
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(13),
-                child: Image.asset(
-                  'assets/images/yours-icon-512.png',
-                  fit: BoxFit.cover,
-                  filterQuality: FilterQuality.medium,
-                ),
-              ),
-            ),
+            child: const YoursBrandMark(),
           ),
           const SizedBox(height: 24),
           for (final entry in items.asMap().entries) ...[

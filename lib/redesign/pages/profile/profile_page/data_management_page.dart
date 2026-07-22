@@ -104,10 +104,9 @@ class _YoursDataManagementPageState extends State<YoursDataManagementPage> {
     }
     final status = snapshot.serverSyncStatus;
     if (status != null && status.available) {
-      final backupText = status.latestBackupAt == null
+      return status.latestBackupAt == null
           ? context.l10n.profileNoServerSnapshot
           : context.l10n.profileRecentSnapshot(_dateText(status.latestBackupAt!));
-      return context.l10n.profileServerDetail(backupText, status.eventCount, status.latestCursor);
     }
     return snapshot.serverConfigured
         ? context.l10n.profileServerConfiguredHint
@@ -124,7 +123,10 @@ class _YoursDataManagementPageState extends State<YoursDataManagementPage> {
       return context.l10n.profileCheckingICloud;
     }
     return switch (status.state) {
-      'available' => context.l10n.profileICloudManualHint,
+      'available' =>
+        snapshot.latestBackupUpdatedAt == null
+            ? context.l10n.profileBackupNotCreated
+            : context.l10n.profileRecentBackupExport(_dateText(snapshot.latestBackupUpdatedAt!)),
       'signedOut' => context.l10n.profileICloudSignedOut,
       'containerUnavailable' => context.l10n.profileICloudContainerUnavailable,
       'unsupported' => context.l10n.profileICloudUnsupported,
@@ -201,9 +203,11 @@ class _YoursDataManagementPageState extends State<YoursDataManagementPage> {
                     label: _actionLabel(
                       context,
                       _DataManagementOperation.backupCreate,
-                      context.l10n.profileCreateExport,
+                      isHarmonyOS
+                          ? context.l10n.profileCreateBackup
+                          : context.l10n.profileCreateExport,
                     ),
-                    icon: Icons.ios_share_outlined,
+                    icon: isHarmonyOS ? Icons.archive_outlined : Icons.ios_share_outlined,
                     busy: _isRunning(_DataManagementOperation.backupCreate),
                     density: YoursComponentDensity.compact,
                     enabled: !_busy,

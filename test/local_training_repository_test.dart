@@ -7,6 +7,30 @@ import 'package:yours/redesign/data/local_training_repository.dart';
 import 'package:yours/redesign/data/sync_identity.dart';
 
 void main() {
+  test('free record actions default to one target set when sets are omitted', () async {
+    final fromJson = LocalTrainingActionModel.fromJson({
+      'name': '散步',
+      'recordMode': localRecordModeFree,
+    });
+    expect(fromJson.targetSets, 1);
+
+    final db = LocalTrainingDatabase.inMemory(NativeDatabase.memory());
+    addTearDown(db.close);
+    final repository = LocalTrainingRepository(db);
+    final plan = LocalTrainingPlanModel(name: '自由记录默认组数', totalWeeks: 1, daysPerWeek: 1);
+    plan.days['1-1'] = LocalTrainingDayModel(
+      week: 1,
+      day: 1,
+      name: 'D1',
+      actions: [LocalTrainingActionModel(name: '散步', recordMode: localRecordModeFree)],
+    );
+
+    await repository.savePlan(plan);
+    final saved = (await repository.getPlans()).single.days.values.single.actions.single;
+    expect(saved.recordMode, localRecordModeFree);
+    expect(saved.targetSets, 1);
+  });
+
   test('editing a plan keeps training days referenced by saved sessions', () async {
     final db = LocalTrainingDatabase.inMemory(NativeDatabase.memory());
     addTearDown(db.close);
@@ -668,6 +692,85 @@ void main() {
         note: '',
       ),
       throwsArgumentError,
+    );
+  });
+
+  test('reading history repairs only a single zero-duration free log', () async {
+    final db = LocalTrainingDatabase.inMemory(NativeDatabase.memory());
+    addTearDown(db.close);
+    final repository = LocalTrainingRepository(db);
+    final plan = LocalTrainingPlanModel(name: '自由记录修复', totalWeeks: 1, daysPerWeek: 1);
+    plan.days['1-1'] = LocalTrainingDayModel(
+      week: 1,
+      day: 1,
+      name: 'D1',
+      actions: [LocalTrainingActionModel(name: '散步', recordMode: localRecordModeFree)],
+    );
+    await repository.savePlan(plan);
+    final savedPlan = (await repository.getPlans()).single;
+    final day = savedPlan.days.values.single;
+    final startedAt = DateTime(2026, 7, 11, 17, 41, 38);
+    final endedAt = DateTime(2026, 7, 11, 18, 26, 40);
+
+    final repairableSessionId = await repository.startSession(savedPlan, day);
+    final repairableLogId = await repository.addLog(
+      sessionId: repairableSessionId,
+      routineId: savedPlan.id!,
+      dayId: day.id,
+      exerciseName: '散步',
+      setIndex: 1,
+      weight: 0,
+      reps: 0,
+      durationSeconds: 0,
+      recordMode: localRecordModeFree,
+    );
+    await repository.updateWorkoutSession(
+      sessionId: repairableSessionId,
+      startedAt: startedAt,
+      endedAt: endedAt,
+      note: '',
+    );
+
+    final ambiguousSessionId = await repository.startSession(savedPlan, day);
+    await repository.updateWorkoutSession(
+      sessionId: ambiguousSessionId,
+      startedAt: startedAt.add(const Duration(hours: 2)),
+      endedAt: endedAt.add(const Duration(hours: 2)),
+      note: '',
+    );
+    for (final exercise in ['散步', '慢跑']) {
+      await repository.addLog(
+        sessionId: ambiguousSessionId,
+        routineId: savedPlan.id!,
+        dayId: day.id,
+        exerciseName: exercise,
+        setIndex: 1,
+        weight: 0,
+        reps: 0,
+        durationSeconds: 0,
+        recordMode: localRecordModeFree,
+      );
+    }
+
+    final sessions = await repository.getWorkoutSessionsForDate(startedAt);
+    final repaired = sessions.singleWhere((session) => session.id == repairableSessionId);
+    final ambiguous = sessions.singleWhere((session) => session.id == ambiguousSessionId);
+    expect(repaired.logs.single.durationSeconds, 2702);
+    expect(ambiguous.logs.map((log) => log.durationSeconds), everyElement(0));
+
+    final stored = await (db.select(
+      db.localWorkoutLogs,
+    )..where((row) => row.id.equals(repairableLogId))).getSingle();
+    expect(stored.durationSeconds, 2702);
+    final queue = await db.select(db.localSyncQueue).get();
+    expect(
+      queue.where(
+        (item) =>
+            item.entityType == 'workout_log' &&
+            item.entityId == repairableLogId &&
+            item.action == 'update',
+      ),
+      hasLength(1),
     );
   });
 

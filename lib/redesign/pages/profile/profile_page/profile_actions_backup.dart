@@ -4,27 +4,43 @@ extension _ProfilePageBackupActions on _ProfilePageActions {
   Future<void> createBackup() async {
     setState(() => state._busy = true);
     try {
-      final result = await state._backupService.createBackup();
+      final exportVisible = !kIsWeb && !isHarmonyOS && !Platform.isAndroid && !Platform.isIOS;
+      final result = await state._backupService.createBackup(exportVisible: exportVisible);
       if (!state.mounted) {
         return;
       }
       setState(() {
         state._latestBackup = result.file;
         state._latestBackupUpdatedAt = result.createdAt;
+        state._iCloudActivity = YoursDataManagementActivity.recentBackupExport(
+          fileName(result.file.path),
+        );
       });
       state._publishDataManagementSnapshot();
       await state._loadPendingSyncCount();
       if (!state.mounted) {
         return;
       }
+      if (isHarmonyOS || exportVisible) {
+        _showMessage(state.context.l10n.profileBackupCreated(fileName(result.file.path)));
+        return;
+      }
       final l10n = state.context.l10n;
-      await state._backupService.shareBackup(
-        result.file,
-        sharePositionOrigin: _sharePositionOrigin(),
-        title: l10n.backupShareTitle,
-        subject: l10n.backupShareSubject,
-        text: l10n.backupShareText,
-      );
+      try {
+        await state._backupService.shareBackup(
+          result.file,
+          sharePositionOrigin: _sharePositionOrigin(),
+          title: l10n.backupShareTitle,
+          subject: l10n.backupShareSubject,
+          text: l10n.backupShareText,
+        );
+      } on BackupShareTimeoutException {
+        if (!state.mounted) {
+          return;
+        }
+        _showMessage(state.context.l10n.profileBackupShareTimedOut);
+        return;
+      }
       if (!state.mounted) {
         return;
       }
@@ -33,6 +49,12 @@ extension _ProfilePageBackupActions on _ProfilePageActions {
       if (!state.mounted) {
         return;
       }
+      setState(
+        () => state._iCloudActivity = YoursDataManagementActivity.recentBackupExportFailed(
+          _dataManagementError(error),
+        ),
+      );
+      state._publishDataManagementSnapshot();
       _showMessage(
         state.context.l10n.profileBackupFailed(localizedErrorDetail(state.context, error)),
       );
@@ -54,9 +76,10 @@ extension _ProfilePageBackupActions on _ProfilePageActions {
       }
       setState(
         () => state._iCloudActivity = YoursDataManagementActivity.recentBackupExport(
-          fileName(result.path),
+          _dataManagementDateText(result.exportedAt),
         ),
       );
+      state._publishDataManagementSnapshot();
       _showMessage(state.context.l10n.profileBackupExportedICloud(fileName(result.path)));
     } on Object catch (error) {
       if (!state.mounted) {

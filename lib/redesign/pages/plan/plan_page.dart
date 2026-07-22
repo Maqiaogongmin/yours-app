@@ -2,6 +2,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yours/redesign/data/app_database.dart';
 import 'package:yours/redesign/data/local_training_database.dart';
@@ -38,6 +39,7 @@ class PlanPage extends StatefulWidget {
 }
 
 class _PlanPageState extends State<PlanPage> {
+  static final _logger = Logger('PlanPage');
   late final LocalTrainingRepository _repository;
   late final Future<void> _initFuture;
   bool _showArchived = false;
@@ -46,7 +48,17 @@ class _PlanPageState extends State<PlanPage> {
   void initState() {
     super.initState();
     _repository = widget.repository ?? LocalTrainingRepository(locator<LocalTrainingDatabase>());
-    _initFuture = _repository.ensureSeedData();
+    _initFuture = _initializeDatabase();
+  }
+
+  Future<void> _initializeDatabase() async {
+    try {
+      await _repository.ensureSeedData();
+    } catch (error, stack) {
+      _logger.severe('Local training database initialization failed: $error');
+      _logger.fine('Local training database stack: $stack');
+      rethrow;
+    }
   }
 
   void _editPlan(AppPlan source) async {
@@ -248,15 +260,7 @@ class _PlanPageState extends State<PlanPage> {
                               key: ValueKey('plan-card-${p.id ?? i}'),
                               title: p.name,
                               subtitle: context.l10n.planSummary(p.totalWeeks, p.daysPerWeek),
-                              detail: p.syncStatus == localSyncPending
-                                  ? context.l10n.commonPendingSync
-                                  : context.l10n.commonSynced,
-                              status: YoursStatusPill(
-                                label: p.hasFullSchedule
-                                    ? context.l10n.planScheduleReady
-                                    : context.l10n.planScheduleIncomplete,
-                                tone: p.hasFullSchedule ? YoursTone.success : YoursTone.accent,
-                              ),
+                              detail: null,
                               minHeight: 110,
                               shadow: true,
                               trailing: PopupMenuButton<String>(

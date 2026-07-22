@@ -13,6 +13,10 @@ import 'package:yours/redesign/localization/localization.dart';
 import 'package:yours/redesign/design_system/yours_design_system.dart';
 import 'package:yours/redesign/theme/redesign_theme.dart';
 
+part 'exercise_library_cards.dart';
+part 'exercise_library_detail.dart';
+part 'exercise_library_editor.dart';
+
 List<String> _exerciseCategories(CustomExerciseModel exercise) {
   return [
     exercise.bodyPart.trim(),
@@ -45,6 +49,36 @@ String _exerciseSummaryText(BuildContext context, CustomExerciseModel exercise) 
     return muscles;
   }
   return context.l10n.noDescription;
+}
+
+_ExerciseEditorInitialValues _exerciseEditorInitialValues(
+  BuildContext context,
+  CustomExerciseModel? exercise,
+) {
+  if (exercise == null) {
+    return const _ExerciseEditorInitialValues();
+  }
+  final builtIn = localizedBuiltInExercise(context, exercise);
+  return _ExerciseEditorInitialValues(
+    name: builtIn?.name ?? exercise.chineseName,
+    categoryOne: builtIn?.bodyPart ?? exercise.bodyPart,
+    categoryTwo: builtIn?.equipment ?? exercise.equipment,
+    description: builtIn?.description ?? exercise.description,
+  );
+}
+
+class _ExerciseEditorInitialValues {
+  final String name;
+  final String categoryOne;
+  final String categoryTwo;
+  final String description;
+
+  const _ExerciseEditorInitialValues({
+    this.name = '',
+    this.categoryOne = '',
+    this.categoryTwo = '',
+    this.description = '',
+  });
 }
 
 class ExerciseLibraryPage extends StatefulWidget {
@@ -124,11 +158,15 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
   }
 
   Future<void> _showEditor({CustomExerciseModel? exercise}) async {
+    final initialValues = _exerciseEditorInitialValues(context, exercise);
     final result = await showModalBottomSheet<CustomExerciseModel>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => _ExerciseEditorSheet(exercise: exercise),
+      builder: (context) => _ExerciseEditorSheet(
+        exercise: exercise,
+        initialValues: initialValues,
+      ),
     );
     if (result == null || !mounted) {
       return;
@@ -229,281 +267,4 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
       },
     );
   }
-}
-
-class _ExerciseCard extends StatelessWidget {
-  final CustomExerciseModel exercise;
-  final VoidCallback onTap;
-
-  const _ExerciseCard({required this.exercise, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    final categories = _exerciseCategories(exercise);
-
-    return YoursListActionCard(
-      key: ValueKey('exercise-card-${exercise.id ?? exercise.syncId}'),
-      onTap: onTap,
-      leading: _ExerciseThumb(exercise: exercise),
-      title: localizedBuiltInExercise(context, exercise)?.name ?? exercise.displayName,
-      subtitle: _exerciseSummaryText(context, exercise),
-      status: categories.isEmpty
-          ? YoursStatusPill(label: context.l10n.notCategorized)
-          : Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                for (final category in categories)
-                  YoursStatusPill(label: localizedExerciseCategory(context, category)),
-              ],
-            ),
-    );
-  }
-}
-
-class _ExerciseThumb extends StatelessWidget {
-  final CustomExerciseModel exercise;
-
-  const _ExerciseThumb({required this.exercise});
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = context.yoursPalette;
-    final path = exercise.imagePaths.firstOrNull;
-    return Container(
-      width: 54,
-      height: 54,
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        color: palette.accentSoft,
-        borderRadius: BorderRadius.circular(18),
-      ),
-      child: path == null
-          ? Center(
-              child: Text(
-                localizedExerciseAbbr(context, exercise),
-                style: context
-                    .yoursText(YoursTextRole.body)
-                    .copyWith(
-                      color: palette.accent,
-                      fontWeight: FontWeight.w900,
-                      fontSize: 18,
-                    ),
-              ),
-            )
-          : Image.file(
-              File(path),
-              fit: BoxFit.cover,
-              errorBuilder: (_, _, _) => Center(
-                child: Text(
-                  localizedExerciseAbbr(context, exercise),
-                  style: context
-                      .yoursText(YoursTextRole.body)
-                      .copyWith(
-                        color: palette.accent,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 18,
-                      ),
-                ),
-              ),
-            ),
-    );
-  }
-}
-
-enum _ExerciseAction { edit, delete }
-
-class _ExerciseDetailSheet extends StatelessWidget {
-  final CustomExerciseModel exercise;
-
-  const _ExerciseDetailSheet({required this.exercise});
-
-  @override
-  Widget build(BuildContext context) {
-    final title = localizedBuiltInExercise(context, exercise)?.name ?? exercise.displayName;
-    return YoursSheetShell(
-      title: title,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              _ExerciseThumb(exercise: exercise),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: context.yoursText(YoursTextRole.cardTitle),
-                    ),
-                    if (localizedBuiltInExercise(context, exercise) == null &&
-                        exercise.englishName.isNotEmpty)
-                      Text(exercise.englishName, style: context.yoursText(YoursTextRole.bodyMuted)),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 18),
-          _InfoPill(text: _exerciseCategoryText(context, exercise)),
-          const SizedBox(height: 18),
-          Text(
-            _exerciseSummaryText(context, exercise),
-            style: context.yoursText(YoursTextRole.body).copyWith(fontSize: 15),
-          ),
-          const SizedBox(height: 22),
-          YoursFieldGroup(
-            children: [
-              YoursPrimaryAction(
-                label: context.l10n.commonEdit,
-                onPressed: () => Navigator.pop(context, _ExerciseAction.edit),
-              ),
-              YoursDangerAction(
-                label: context.l10n.commonDelete,
-                onPressed: () => Navigator.pop(context, _ExerciseAction.delete),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ExerciseEditorSheet extends StatefulWidget {
-  final CustomExerciseModel? exercise;
-
-  const _ExerciseEditorSheet({this.exercise});
-
-  @override
-  State<_ExerciseEditorSheet> createState() => _ExerciseEditorSheetState();
-}
-
-class _ExerciseEditorSheetState extends State<_ExerciseEditorSheet> {
-  late final TextEditingController _nameCtrl;
-  late final TextEditingController _categoryOneCtrl;
-  late final TextEditingController _categoryTwoCtrl;
-  late final TextEditingController _descriptionCtrl;
-
-  @override
-  void initState() {
-    super.initState();
-    final exercise = widget.exercise;
-    _nameCtrl = TextEditingController(text: exercise?.chineseName ?? '');
-    _categoryOneCtrl = TextEditingController(text: exercise?.bodyPart ?? '');
-    _categoryTwoCtrl = TextEditingController(text: exercise?.equipment ?? '');
-    _descriptionCtrl = TextEditingController(text: exercise?.description ?? '');
-  }
-
-  @override
-  void dispose() {
-    _nameCtrl.dispose();
-    _categoryOneCtrl.dispose();
-    _categoryTwoCtrl.dispose();
-    _descriptionCtrl.dispose();
-    super.dispose();
-  }
-
-  void _save() {
-    final name = _nameCtrl.text.trim();
-    if (name.isEmpty) {
-      return;
-    }
-    final source = widget.exercise;
-    Navigator.pop(
-      context,
-      CustomExerciseModel(
-        id: source?.id,
-        remoteId: source?.remoteId,
-        chineseName: name,
-        englishName: source?.englishName ?? '',
-        bodyPart: _categoryOneCtrl.text.trim(),
-        equipment: _categoryTwoCtrl.text.trim(),
-        primaryMuscles: source?.primaryMuscles ?? '',
-        description: _descriptionCtrl.text.trim(),
-        imagePaths: source?.imagePaths ?? [],
-        isCustom: true,
-        syncStatus: source?.syncStatus ?? 'pending',
-        deleted: false,
-        createdAt: source?.createdAt,
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return YoursSheetShell(
-      title: widget.exercise == null ? context.l10n.exerciseAdd : context.l10n.exerciseEdit,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          YoursFormField(
-            label: context.l10n.exerciseName,
-            controller: _nameCtrl,
-            hintText: context.l10n.exerciseExampleName,
-          ),
-          YoursFieldGroup(
-            children: [
-              YoursFormField(
-                label: context.l10n.exerciseCategoryOne,
-                controller: _categoryOneCtrl,
-                hintText: context.l10n.exerciseExampleCategory,
-              ),
-              YoursFormField(
-                label: context.l10n.exerciseCategoryTwo,
-                controller: _categoryTwoCtrl,
-                hintText: context.l10n.exerciseExampleEquipment,
-              ),
-            ],
-          ),
-          YoursFormField(
-            label: context.l10n.exerciseDescription,
-            controller: _descriptionCtrl,
-            hintText: context.l10n.exerciseDescription,
-            maxLines: 3,
-          ),
-          const SizedBox(height: 8),
-          YoursPrimaryAction(label: context.l10n.exerciseSaveLocal, onPressed: _save),
-        ],
-      ),
-    );
-  }
-}
-
-class _InfoPill extends StatelessWidget {
-  final String text;
-
-  const _InfoPill({required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = context.yoursPalette;
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: palette.accentSoft,
-        borderRadius: BorderRadius.circular(999),
-      ),
-      child: Text(
-        text.isEmpty ? context.l10n.exerciseNotFilled : text,
-        style: context
-            .yoursText(YoursTextRole.body)
-            .copyWith(
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
-              color: palette.accent,
-            ),
-      ),
-    );
-  }
-}
-
-extension _FirstOrNull<T> on List<T> {
-  T? get firstOrNull => isEmpty ? null : first;
 }

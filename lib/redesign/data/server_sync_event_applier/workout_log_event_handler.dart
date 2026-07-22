@@ -93,6 +93,11 @@ extension _WorkoutLogServerSyncEventApplier on ServerSyncEventApplier {
               reps: Value(_asInt(snapshot['reps']) ?? 0),
               rir: Value(_asDouble(snapshot['rir'])),
               durationSeconds: Value(_asInt(snapshot['durationSeconds']) ?? 0),
+              actualWeight: Value(_asDouble(snapshot['actualWeight'])),
+              actualReps: Value(_asInt(snapshot['actualReps'])),
+              actualDurationSeconds: Value(_asInt(snapshot['actualDurationSeconds'])),
+              restSeconds: Value(_asInt(snapshot['restSeconds'])),
+              hasActualValues: Value(snapshot['hasActualValues'] == true),
               recordMode: Value(normalizeLocalRecordMode(snapshot['recordMode'])),
               note: Value(_asString(snapshot['note'])),
               syncStatus: const Value(localSyncSynced),
@@ -118,6 +123,11 @@ extension _WorkoutLogServerSyncEventApplier on ServerSyncEventApplier {
         reps: Value(_asInt(snapshot['reps']) ?? 0),
         rir: Value(_asDouble(snapshot['rir'])),
         durationSeconds: Value(_asInt(snapshot['durationSeconds']) ?? 0),
+        actualWeight: Value(_asDouble(snapshot['actualWeight'])),
+        actualReps: Value(_asInt(snapshot['actualReps'])),
+        actualDurationSeconds: Value(_asInt(snapshot['actualDurationSeconds'])),
+        restSeconds: Value(_asInt(snapshot['restSeconds'])),
+        hasActualValues: Value(snapshot['hasActualValues'] == true),
         recordMode: Value(normalizeLocalRecordMode(snapshot['recordMode'])),
         note: Value(_asString(snapshot['note'])),
         syncStatus: const Value(localSyncSynced),
@@ -155,6 +165,7 @@ extension _WorkoutLogServerSyncEventApplier on ServerSyncEventApplier {
     if (sessionId != null) {
       query.where((row) => row.sessionId.equals(sessionId));
     }
+    query.limit(1);
     return await query.getSingleOrNull() != null;
   }
 }

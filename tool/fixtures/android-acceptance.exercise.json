@@ -1,0 +1,17 @@
+{
+  "format": "yours-exercise",
+  "formatVersion": 1,
+  "exercises": [
+    {
+      "action": "upsert",
+      "name": "Codex Android Vault 验收动作",
+      "englishName": "Codex Android Vault Acceptance",
+      "bodyPart": "测试",
+      "equipment": "徒手"
+    },
+    {
+      "action": "delete",
+      "name": "Codex Android Vault 验收动作"
+    }
+  ]
+}

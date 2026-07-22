@@ -167,23 +167,21 @@ class _LocalTrainingSeedService {
           continue;
         }
 
-        final actions = (item['actions'] as List? ?? const [])
-            .whereType<Map>()
-            .map(
-              (action) => LocalTrainingActionModel(
-                name: canonicalExerciseReference(
-                  action['name'] as String? ?? '未命名动作',
-                ),
-                targetSets: (action['targetSets'] as num?)?.toInt() ?? 3,
-                targetReps: (action['targetReps'] as num?)?.toInt() ?? 8,
-                targetWeight: (action['targetWeight'] as num?)?.toDouble(),
-                targetRestSeconds: (action['targetRestSeconds'] as num?)?.toInt(),
-                targetDurationSeconds: (action['targetDurationSeconds'] as num?)?.toInt(),
-                recordMode: normalizeLocalRecordMode(action['recordMode']),
-                note: action['note'] as String? ?? '',
-              ),
-            )
-            .toList();
+        final actions = (item['actions'] as List? ?? const []).whereType<Map>().map((action) {
+          final recordMode = normalizeLocalRecordMode(action['recordMode']);
+          return LocalTrainingActionModel(
+            name: canonicalExerciseReference(
+              action['name'] as String? ?? '未命名动作',
+            ),
+            targetSets: (action['targetSets'] as num?)?.toInt(),
+            targetReps: (action['targetReps'] as num?)?.toInt() ?? 8,
+            targetWeight: (action['targetWeight'] as num?)?.toDouble(),
+            targetRestSeconds: (action['targetRestSeconds'] as num?)?.toInt(),
+            targetDurationSeconds: (action['targetDurationSeconds'] as num?)?.toInt(),
+            recordMode: recordMode,
+            note: action['note'] as String? ?? '',
+          );
+        }).toList();
 
         final dayId = await database
             .into(database.localTrainingDays)
