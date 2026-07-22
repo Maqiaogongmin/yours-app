@@ -6,7 +6,7 @@
 - Build number: `11174`
 - arm64-v8a versionCode: `13174`
 - Internal source commit: `014e1e8468ad61e1144a0ee132989096a6249602`
-- Public source tag: `v1.11.5-public-source.1`
+- Public source tag: `v1.11.5-public-source.2`
 - Release owner: `LY`
 - Record date: `2026-07-22`
 
