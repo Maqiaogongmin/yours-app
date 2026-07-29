@@ -42,6 +42,7 @@
 - `v1.11.6-public-source.1`：同步自内部 commit `f79153d63dfb8c0a6767b7acae65c3928adcde45`，对应 `1.11.6+11176`。
 - `v1.11.6-public-source.2`：在 `1.11.6+11176` 基础上补入 HarmonyOS Flutter-OH 壳层、平台桥接、发布脚本和验收测试；签名资料、构建产物、DevEco 本机状态和 AGC 私有凭据仍不进入公开源码。
 - `v1.11.6-public-source.3`：恢复公开 CI 使用的既有 UI guard baseline，作为 `1.11.6+11176` 当前推荐公开源码快照。
+- `v1.11.6-public-source.4`：将 Android emulator smoke test 调整为 PR/手动运行，避免 GitHub runner 卡在 emulator 阶段阻塞普通公开源码同步；主 push 仍保留 UI guard、Android health gate、测试和构建。
 
 App Store Connect 已核验的首份公开基线：
 
