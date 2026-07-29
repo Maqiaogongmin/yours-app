@@ -181,6 +181,9 @@
   "workoutFinishSave": "End and Save Workout",
   "workoutOptional": "Optional",
   "workoutNote": "Note",
+  "workoutActionNote": "Action Note",
+  "workoutSpontaneousNote": "Set Note",
+  "workoutSpontaneousNoteHint": "Capture how this set felt; leave blank to keep the record empty",
   "workoutTrainingNote": "Workout Note",
   "workoutSavedBackup": "Workout saved and backed up automatically: {name}",
   "@workoutSavedBackup": {
@@ -652,6 +655,7 @@
       }
     }
   },
+  "profileBackupShareTimedOut": "Backup created; please confirm the file exists in the selected location.",
   "profileBackupFailed": "Backup failed: {error}",
   "@profileBackupFailed": {
     "placeholders": {
@@ -660,7 +664,6 @@
       }
     }
   },
-  "profileBackupShareTimedOut": "Backup created; please confirm the file exists in the selected location.",
   "profileRecentBackupExport": "Last backup export: {name}",
   "@profileRecentBackupExport": {
     "placeholders": {

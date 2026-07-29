@@ -184,6 +184,7 @@ void main() {
     expect(routine.completedWeeksJson, '[]');
     expect(entry.recordMode, localRecordModeStandard);
     expect(log.recordMode, localRecordModeStandard);
+    expect(log.noteEdited, isFalse);
 
     final exerciseFile = File('${dir.path}/custom.sqlite');
     final oldExercises = sqlite.sqlite3.open(exerciseFile.path);

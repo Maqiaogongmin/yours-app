@@ -18,6 +18,7 @@ mixin _LocalGymSessionState {
   set _actions(List<LocalTrainingActionModel> value);
   List<_CompletedSetSnapshot> get _history;
   Map<String, String> get _setNoteDrafts;
+  Map<String, bool> get _setNoteEdited;
   Map<String, LocalWorkoutInputDraft> get _inputDrafts;
   Future<void> get _draftWriteQueue;
   set _draftWriteQueue(Future<void> value);
@@ -47,6 +48,8 @@ mixin _LocalGymSessionState {
   LocalTrainingActionModel get currentAction;
   String get currentExercise;
   String get currentSetNote;
+  bool get currentSetNoteEdited;
+  String get currentSpontaneousNote;
   int get currentTargetSets;
   bool get isCurrentFreeRecord;
   bool get isRestComplete;

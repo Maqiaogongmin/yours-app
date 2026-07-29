@@ -8,6 +8,13 @@
 - Use the independent `yours-sync-server` repository as the authoritative
   self-hosted sync server implementation.
 
+## 1.11.6+11176
+
+- 调整训练计时中的组备注逻辑：计划动作备注可作为输入参考，但只有用户实际编辑后才写入训练记录。
+- 支持已完成组的备注继续编辑，并通过本地草稿、训练记录和同步队列持久化。
+- 训练结束时的练后备注与每组备注保持独立，训练记录页可分别查看和编辑。
+- Android 版本已通过静态分析、180 项 Flutter 测试、模拟器运行验收和真机验收。
+
 ## 1.11.5+11174
 
 - 修复 Android Yours Vault 公共 Documents 目录初始化和 inbox 自动导入。

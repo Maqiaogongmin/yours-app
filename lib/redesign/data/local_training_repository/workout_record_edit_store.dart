@@ -3,6 +3,28 @@ part of '../local_training_repository.dart';
 mixin _WorkoutEditMixin {
   LocalTrainingDatabase get database;
   LocalSyncQueueRepository get _syncQueue;
+
+  Future<void> updateWorkoutLogNote({
+    required int logId,
+    required String note,
+    bool noteEdited = true,
+  }) async {
+    final updated =
+        await (database.update(
+          database.localWorkoutLogs,
+        )..where((log) => log.id.equals(logId))).write(
+          LocalWorkoutLogsCompanion(
+            note: Value(note.trim()),
+            noteEdited: Value(noteEdited),
+            syncStatus: const Value(localSyncPending),
+          ),
+        );
+    if (updated == 0) {
+      throw StateError('训练组记录不存在');
+    }
+    await _syncQueue.enqueueUpdateIfNeeded('workout_log', logId);
+  }
+
   Future<void> updateWorkoutLog({
     required int logId,
     required int setIndex,
@@ -24,6 +46,7 @@ mixin _WorkoutEditMixin {
         weight: Value(weight),
         reps: Value(reps.clamp(0, 999)),
         note: Value(note.trim()),
+        noteEdited: const Value(true),
         durationSeconds: Value(durationSeconds.clamp(0, 24 * 60 * 60)),
         actualWeight: Value(actualWeight),
         actualReps: Value(actualReps),
@@ -57,6 +80,7 @@ mixin _WorkoutEditMixin {
       durationText: Value(draft.durationText),
       restText: Value(draft.restText),
       noteText: Value(draft.noteText),
+      noteEdited: Value(draft.noteEdited),
       updatedAt: Value(DateTime.now()),
     );
     if (existing == null) {

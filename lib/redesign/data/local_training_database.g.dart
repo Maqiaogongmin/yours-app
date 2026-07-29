@@ -3506,6 +3506,21 @@ class $LocalWorkoutLogsTable extends LocalWorkoutLogs
     requiredDuringInsert: false,
     defaultValue: const Constant(''),
   );
+  static const VerificationMeta _noteEditedMeta = const VerificationMeta(
+    'noteEdited',
+  );
+  @override
+  late final GeneratedColumn<bool> noteEdited = GeneratedColumn<bool>(
+    'note_edited',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("note_edited" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
   static const VerificationMeta _syncStatusMeta = const VerificationMeta(
     'syncStatus',
   );
@@ -3550,6 +3565,7 @@ class $LocalWorkoutLogsTable extends LocalWorkoutLogs
     hasActualValues,
     recordMode,
     note,
+    noteEdited,
     syncStatus,
     createdAt,
   ];
@@ -3702,6 +3718,12 @@ class $LocalWorkoutLogsTable extends LocalWorkoutLogs
         note.isAcceptableOrUnknown(data['note']!, _noteMeta),
       );
     }
+    if (data.containsKey('note_edited')) {
+      context.handle(
+        _noteEditedMeta,
+        noteEdited.isAcceptableOrUnknown(data['note_edited']!, _noteEditedMeta),
+      );
+    }
     if (data.containsKey('sync_status')) {
       context.handle(
         _syncStatusMeta,
@@ -3801,6 +3823,10 @@ class $LocalWorkoutLogsTable extends LocalWorkoutLogs
         DriftSqlType.string,
         data['${effectivePrefix}note'],
       )!,
+      noteEdited: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}note_edited'],
+      )!,
       syncStatus: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}sync_status'],
@@ -3838,6 +3864,7 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
   final bool hasActualValues;
   final String recordMode;
   final String note;
+  final bool noteEdited;
   final String syncStatus;
   final DateTime createdAt;
   const LocalWorkoutLog({
@@ -3860,6 +3887,7 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
     required this.hasActualValues,
     required this.recordMode,
     required this.note,
+    required this.noteEdited,
     required this.syncStatus,
     required this.createdAt,
   });
@@ -3899,6 +3927,7 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
     map['has_actual_values'] = Variable<bool>(hasActualValues);
     map['record_mode'] = Variable<String>(recordMode);
     map['note'] = Variable<String>(note);
+    map['note_edited'] = Variable<bool>(noteEdited);
     map['sync_status'] = Variable<String>(syncStatus);
     map['created_at'] = Variable<DateTime>(createdAt);
     return map;
@@ -3937,6 +3966,7 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
       hasActualValues: Value(hasActualValues),
       recordMode: Value(recordMode),
       note: Value(note),
+      noteEdited: Value(noteEdited),
       syncStatus: Value(syncStatus),
       createdAt: Value(createdAt),
     );
@@ -3969,6 +3999,7 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
       hasActualValues: serializer.fromJson<bool>(json['hasActualValues']),
       recordMode: serializer.fromJson<String>(json['recordMode']),
       note: serializer.fromJson<String>(json['note']),
+      noteEdited: serializer.fromJson<bool>(json['noteEdited']),
       syncStatus: serializer.fromJson<String>(json['syncStatus']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
@@ -3996,6 +4027,7 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
       'hasActualValues': serializer.toJson<bool>(hasActualValues),
       'recordMode': serializer.toJson<String>(recordMode),
       'note': serializer.toJson<String>(note),
+      'noteEdited': serializer.toJson<bool>(noteEdited),
       'syncStatus': serializer.toJson<String>(syncStatus),
       'createdAt': serializer.toJson<DateTime>(createdAt),
     };
@@ -4021,6 +4053,7 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
     bool? hasActualValues,
     String? recordMode,
     String? note,
+    bool? noteEdited,
     String? syncStatus,
     DateTime? createdAt,
   }) => LocalWorkoutLog(
@@ -4045,6 +4078,7 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
     hasActualValues: hasActualValues ?? this.hasActualValues,
     recordMode: recordMode ?? this.recordMode,
     note: note ?? this.note,
+    noteEdited: noteEdited ?? this.noteEdited,
     syncStatus: syncStatus ?? this.syncStatus,
     createdAt: createdAt ?? this.createdAt,
   );
@@ -4085,6 +4119,9 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
           ? data.recordMode.value
           : this.recordMode,
       note: data.note.present ? data.note.value : this.note,
+      noteEdited: data.noteEdited.present
+          ? data.noteEdited.value
+          : this.noteEdited,
       syncStatus: data.syncStatus.present
           ? data.syncStatus.value
           : this.syncStatus,
@@ -4114,6 +4151,7 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
           ..write('hasActualValues: $hasActualValues, ')
           ..write('recordMode: $recordMode, ')
           ..write('note: $note, ')
+          ..write('noteEdited: $noteEdited, ')
           ..write('syncStatus: $syncStatus, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
@@ -4141,6 +4179,7 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
     hasActualValues,
     recordMode,
     note,
+    noteEdited,
     syncStatus,
     createdAt,
   ]);
@@ -4167,6 +4206,7 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
           other.hasActualValues == this.hasActualValues &&
           other.recordMode == this.recordMode &&
           other.note == this.note &&
+          other.noteEdited == this.noteEdited &&
           other.syncStatus == this.syncStatus &&
           other.createdAt == this.createdAt);
 }
@@ -4191,6 +4231,7 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
   final Value<bool> hasActualValues;
   final Value<String> recordMode;
   final Value<String> note;
+  final Value<bool> noteEdited;
   final Value<String> syncStatus;
   final Value<DateTime> createdAt;
   const LocalWorkoutLogsCompanion({
@@ -4213,6 +4254,7 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
     this.hasActualValues = const Value.absent(),
     this.recordMode = const Value.absent(),
     this.note = const Value.absent(),
+    this.noteEdited = const Value.absent(),
     this.syncStatus = const Value.absent(),
     this.createdAt = const Value.absent(),
   });
@@ -4236,6 +4278,7 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
     this.hasActualValues = const Value.absent(),
     this.recordMode = const Value.absent(),
     this.note = const Value.absent(),
+    this.noteEdited = const Value.absent(),
     this.syncStatus = const Value.absent(),
     required DateTime createdAt,
   }) : sessionId = Value(sessionId),
@@ -4263,6 +4306,7 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
     Expression<bool>? hasActualValues,
     Expression<String>? recordMode,
     Expression<String>? note,
+    Expression<bool>? noteEdited,
     Expression<String>? syncStatus,
     Expression<DateTime>? createdAt,
   }) {
@@ -4287,6 +4331,7 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
       if (hasActualValues != null) 'has_actual_values': hasActualValues,
       if (recordMode != null) 'record_mode': recordMode,
       if (note != null) 'note': note,
+      if (noteEdited != null) 'note_edited': noteEdited,
       if (syncStatus != null) 'sync_status': syncStatus,
       if (createdAt != null) 'created_at': createdAt,
     });
@@ -4312,6 +4357,7 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
     Value<bool>? hasActualValues,
     Value<String>? recordMode,
     Value<String>? note,
+    Value<bool>? noteEdited,
     Value<String>? syncStatus,
     Value<DateTime>? createdAt,
   }) {
@@ -4336,6 +4382,7 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
       hasActualValues: hasActualValues ?? this.hasActualValues,
       recordMode: recordMode ?? this.recordMode,
       note: note ?? this.note,
+      noteEdited: noteEdited ?? this.noteEdited,
       syncStatus: syncStatus ?? this.syncStatus,
       createdAt: createdAt ?? this.createdAt,
     );
@@ -4403,6 +4450,9 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
     if (note.present) {
       map['note'] = Variable<String>(note.value);
     }
+    if (noteEdited.present) {
+      map['note_edited'] = Variable<bool>(noteEdited.value);
+    }
     if (syncStatus.present) {
       map['sync_status'] = Variable<String>(syncStatus.value);
     }
@@ -4434,6 +4484,7 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
           ..write('hasActualValues: $hasActualValues, ')
           ..write('recordMode: $recordMode, ')
           ..write('note: $note, ')
+          ..write('noteEdited: $noteEdited, ')
           ..write('syncStatus: $syncStatus, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
@@ -4556,6 +4607,21 @@ class $LocalWorkoutSetDraftsTable extends LocalWorkoutSetDrafts
     requiredDuringInsert: false,
     defaultValue: const Constant(''),
   );
+  static const VerificationMeta _noteEditedMeta = const VerificationMeta(
+    'noteEdited',
+  );
+  @override
+  late final GeneratedColumn<bool> noteEdited = GeneratedColumn<bool>(
+    'note_edited',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("note_edited" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
   static const VerificationMeta _updatedAtMeta = const VerificationMeta(
     'updatedAt',
   );
@@ -4578,6 +4644,7 @@ class $LocalWorkoutSetDraftsTable extends LocalWorkoutSetDrafts
     durationText,
     restText,
     noteText,
+    noteEdited,
     updatedAt,
   ];
   @override
@@ -4655,6 +4722,12 @@ class $LocalWorkoutSetDraftsTable extends LocalWorkoutSetDrafts
         noteText.isAcceptableOrUnknown(data['note_text']!, _noteTextMeta),
       );
     }
+    if (data.containsKey('note_edited')) {
+      context.handle(
+        _noteEditedMeta,
+        noteEdited.isAcceptableOrUnknown(data['note_edited']!, _noteEditedMeta),
+      );
+    }
     if (data.containsKey('updated_at')) {
       context.handle(
         _updatedAtMeta,
@@ -4712,6 +4785,10 @@ class $LocalWorkoutSetDraftsTable extends LocalWorkoutSetDrafts
         DriftSqlType.string,
         data['${effectivePrefix}note_text'],
       )!,
+      noteEdited: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}note_edited'],
+      )!,
       updatedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}updated_at'],
@@ -4736,6 +4813,7 @@ class LocalWorkoutSetDraft extends DataClass
   final String durationText;
   final String restText;
   final String noteText;
+  final bool noteEdited;
   final DateTime updatedAt;
   const LocalWorkoutSetDraft({
     required this.id,
@@ -4747,6 +4825,7 @@ class LocalWorkoutSetDraft extends DataClass
     required this.durationText,
     required this.restText,
     required this.noteText,
+    required this.noteEdited,
     required this.updatedAt,
   });
   @override
@@ -4761,6 +4840,7 @@ class LocalWorkoutSetDraft extends DataClass
     map['duration_text'] = Variable<String>(durationText);
     map['rest_text'] = Variable<String>(restText);
     map['note_text'] = Variable<String>(noteText);
+    map['note_edited'] = Variable<bool>(noteEdited);
     map['updated_at'] = Variable<DateTime>(updatedAt);
     return map;
   }
@@ -4776,6 +4856,7 @@ class LocalWorkoutSetDraft extends DataClass
       durationText: Value(durationText),
       restText: Value(restText),
       noteText: Value(noteText),
+      noteEdited: Value(noteEdited),
       updatedAt: Value(updatedAt),
     );
   }
@@ -4795,6 +4876,7 @@ class LocalWorkoutSetDraft extends DataClass
       durationText: serializer.fromJson<String>(json['durationText']),
       restText: serializer.fromJson<String>(json['restText']),
       noteText: serializer.fromJson<String>(json['noteText']),
+      noteEdited: serializer.fromJson<bool>(json['noteEdited']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
   }
@@ -4811,6 +4893,7 @@ class LocalWorkoutSetDraft extends DataClass
       'durationText': serializer.toJson<String>(durationText),
       'restText': serializer.toJson<String>(restText),
       'noteText': serializer.toJson<String>(noteText),
+      'noteEdited': serializer.toJson<bool>(noteEdited),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
   }
@@ -4825,6 +4908,7 @@ class LocalWorkoutSetDraft extends DataClass
     String? durationText,
     String? restText,
     String? noteText,
+    bool? noteEdited,
     DateTime? updatedAt,
   }) => LocalWorkoutSetDraft(
     id: id ?? this.id,
@@ -4836,6 +4920,7 @@ class LocalWorkoutSetDraft extends DataClass
     durationText: durationText ?? this.durationText,
     restText: restText ?? this.restText,
     noteText: noteText ?? this.noteText,
+    noteEdited: noteEdited ?? this.noteEdited,
     updatedAt: updatedAt ?? this.updatedAt,
   );
   LocalWorkoutSetDraft copyWithCompanion(LocalWorkoutSetDraftsCompanion data) {
@@ -4855,6 +4940,9 @@ class LocalWorkoutSetDraft extends DataClass
           : this.durationText,
       restText: data.restText.present ? data.restText.value : this.restText,
       noteText: data.noteText.present ? data.noteText.value : this.noteText,
+      noteEdited: data.noteEdited.present
+          ? data.noteEdited.value
+          : this.noteEdited,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
     );
   }
@@ -4871,6 +4959,7 @@ class LocalWorkoutSetDraft extends DataClass
           ..write('durationText: $durationText, ')
           ..write('restText: $restText, ')
           ..write('noteText: $noteText, ')
+          ..write('noteEdited: $noteEdited, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
         .toString();
@@ -4887,6 +4976,7 @@ class LocalWorkoutSetDraft extends DataClass
     durationText,
     restText,
     noteText,
+    noteEdited,
     updatedAt,
   );
   @override
@@ -4902,6 +4992,7 @@ class LocalWorkoutSetDraft extends DataClass
           other.durationText == this.durationText &&
           other.restText == this.restText &&
           other.noteText == this.noteText &&
+          other.noteEdited == this.noteEdited &&
           other.updatedAt == this.updatedAt);
 }
 
@@ -4916,6 +5007,7 @@ class LocalWorkoutSetDraftsCompanion
   final Value<String> durationText;
   final Value<String> restText;
   final Value<String> noteText;
+  final Value<bool> noteEdited;
   final Value<DateTime> updatedAt;
   const LocalWorkoutSetDraftsCompanion({
     this.id = const Value.absent(),
@@ -4927,6 +5019,7 @@ class LocalWorkoutSetDraftsCompanion
     this.durationText = const Value.absent(),
     this.restText = const Value.absent(),
     this.noteText = const Value.absent(),
+    this.noteEdited = const Value.absent(),
     this.updatedAt = const Value.absent(),
   });
   LocalWorkoutSetDraftsCompanion.insert({
@@ -4939,6 +5032,7 @@ class LocalWorkoutSetDraftsCompanion
     this.durationText = const Value.absent(),
     this.restText = const Value.absent(),
     this.noteText = const Value.absent(),
+    this.noteEdited = const Value.absent(),
     required DateTime updatedAt,
   }) : sessionId = Value(sessionId),
        actionIndex = Value(actionIndex),
@@ -4954,6 +5048,7 @@ class LocalWorkoutSetDraftsCompanion
     Expression<String>? durationText,
     Expression<String>? restText,
     Expression<String>? noteText,
+    Expression<bool>? noteEdited,
     Expression<DateTime>? updatedAt,
   }) {
     return RawValuesInsertable({
@@ -4966,6 +5061,7 @@ class LocalWorkoutSetDraftsCompanion
       if (durationText != null) 'duration_text': durationText,
       if (restText != null) 'rest_text': restText,
       if (noteText != null) 'note_text': noteText,
+      if (noteEdited != null) 'note_edited': noteEdited,
       if (updatedAt != null) 'updated_at': updatedAt,
     });
   }
@@ -4980,6 +5076,7 @@ class LocalWorkoutSetDraftsCompanion
     Value<String>? durationText,
     Value<String>? restText,
     Value<String>? noteText,
+    Value<bool>? noteEdited,
     Value<DateTime>? updatedAt,
   }) {
     return LocalWorkoutSetDraftsCompanion(
@@ -4992,6 +5089,7 @@ class LocalWorkoutSetDraftsCompanion
       durationText: durationText ?? this.durationText,
       restText: restText ?? this.restText,
       noteText: noteText ?? this.noteText,
+      noteEdited: noteEdited ?? this.noteEdited,
       updatedAt: updatedAt ?? this.updatedAt,
     );
   }
@@ -5026,6 +5124,9 @@ class LocalWorkoutSetDraftsCompanion
     if (noteText.present) {
       map['note_text'] = Variable<String>(noteText.value);
     }
+    if (noteEdited.present) {
+      map['note_edited'] = Variable<bool>(noteEdited.value);
+    }
     if (updatedAt.present) {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
@@ -5044,6 +5145,7 @@ class LocalWorkoutSetDraftsCompanion
           ..write('durationText: $durationText, ')
           ..write('restText: $restText, ')
           ..write('noteText: $noteText, ')
+          ..write('noteEdited: $noteEdited, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
         .toString();
@@ -9009,6 +9111,7 @@ typedef $$LocalWorkoutLogsTableCreateCompanionBuilder =
       Value<bool> hasActualValues,
       Value<String> recordMode,
       Value<String> note,
+      Value<bool> noteEdited,
       Value<String> syncStatus,
       required DateTime createdAt,
     });
@@ -9033,6 +9136,7 @@ typedef $$LocalWorkoutLogsTableUpdateCompanionBuilder =
       Value<bool> hasActualValues,
       Value<String> recordMode,
       Value<String> note,
+      Value<bool> noteEdited,
       Value<String> syncStatus,
       Value<DateTime> createdAt,
     });
@@ -9207,6 +9311,11 @@ class $$LocalWorkoutLogsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<bool> get noteEdited => $composableBuilder(
+    column: $table.noteEdited,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get syncStatus => $composableBuilder(
     column: $table.syncStatus,
     builder: (column) => ColumnFilters(column),
@@ -9376,6 +9485,11 @@ class $$LocalWorkoutLogsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<bool> get noteEdited => $composableBuilder(
+    column: $table.noteEdited,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get syncStatus => $composableBuilder(
     column: $table.syncStatus,
     builder: (column) => ColumnOrderings(column),
@@ -9530,6 +9644,11 @@ class $$LocalWorkoutLogsTableAnnotationComposer
   GeneratedColumn<String> get note =>
       $composableBuilder(column: $table.note, builder: (column) => column);
 
+  GeneratedColumn<bool> get noteEdited => $composableBuilder(
+    column: $table.noteEdited,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<String> get syncStatus => $composableBuilder(
     column: $table.syncStatus,
     builder: (column) => column,
@@ -9659,6 +9778,7 @@ class $$LocalWorkoutLogsTableTableManager
                 Value<bool> hasActualValues = const Value.absent(),
                 Value<String> recordMode = const Value.absent(),
                 Value<String> note = const Value.absent(),
+                Value<bool> noteEdited = const Value.absent(),
                 Value<String> syncStatus = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
               }) => LocalWorkoutLogsCompanion(
@@ -9681,6 +9801,7 @@ class $$LocalWorkoutLogsTableTableManager
                 hasActualValues: hasActualValues,
                 recordMode: recordMode,
                 note: note,
+                noteEdited: noteEdited,
                 syncStatus: syncStatus,
                 createdAt: createdAt,
               ),
@@ -9705,6 +9826,7 @@ class $$LocalWorkoutLogsTableTableManager
                 Value<bool> hasActualValues = const Value.absent(),
                 Value<String> recordMode = const Value.absent(),
                 Value<String> note = const Value.absent(),
+                Value<bool> noteEdited = const Value.absent(),
                 Value<String> syncStatus = const Value.absent(),
                 required DateTime createdAt,
               }) => LocalWorkoutLogsCompanion.insert(
@@ -9727,6 +9849,7 @@ class $$LocalWorkoutLogsTableTableManager
                 hasActualValues: hasActualValues,
                 recordMode: recordMode,
                 note: note,
+                noteEdited: noteEdited,
                 syncStatus: syncStatus,
                 createdAt: createdAt,
               ),
@@ -9841,6 +9964,7 @@ typedef $$LocalWorkoutSetDraftsTableCreateCompanionBuilder =
       Value<String> durationText,
       Value<String> restText,
       Value<String> noteText,
+      Value<bool> noteEdited,
       required DateTime updatedAt,
     });
 typedef $$LocalWorkoutSetDraftsTableUpdateCompanionBuilder =
@@ -9854,6 +9978,7 @@ typedef $$LocalWorkoutSetDraftsTableUpdateCompanionBuilder =
       Value<String> durationText,
       Value<String> restText,
       Value<String> noteText,
+      Value<bool> noteEdited,
       Value<DateTime> updatedAt,
     });
 
@@ -9943,6 +10068,11 @@ class $$LocalWorkoutSetDraftsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<bool> get noteEdited => $composableBuilder(
+    column: $table.noteEdited,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<DateTime> get updatedAt => $composableBuilder(
     column: $table.updatedAt,
     builder: (column) => ColumnFilters(column),
@@ -10021,6 +10151,11 @@ class $$LocalWorkoutSetDraftsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<bool> get noteEdited => $composableBuilder(
+    column: $table.noteEdited,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
     column: $table.updatedAt,
     builder: (column) => ColumnOrderings(column),
@@ -10089,6 +10224,11 @@ class $$LocalWorkoutSetDraftsTableAnnotationComposer
 
   GeneratedColumn<String> get noteText =>
       $composableBuilder(column: $table.noteText, builder: (column) => column);
+
+  GeneratedColumn<bool> get noteEdited => $composableBuilder(
+    column: $table.noteEdited,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<DateTime> get updatedAt =>
       $composableBuilder(column: $table.updatedAt, builder: (column) => column);
@@ -10166,6 +10306,7 @@ class $$LocalWorkoutSetDraftsTableTableManager
                 Value<String> durationText = const Value.absent(),
                 Value<String> restText = const Value.absent(),
                 Value<String> noteText = const Value.absent(),
+                Value<bool> noteEdited = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
               }) => LocalWorkoutSetDraftsCompanion(
                 id: id,
@@ -10177,6 +10318,7 @@ class $$LocalWorkoutSetDraftsTableTableManager
                 durationText: durationText,
                 restText: restText,
                 noteText: noteText,
+                noteEdited: noteEdited,
                 updatedAt: updatedAt,
               ),
           createCompanionCallback:
@@ -10190,6 +10332,7 @@ class $$LocalWorkoutSetDraftsTableTableManager
                 Value<String> durationText = const Value.absent(),
                 Value<String> restText = const Value.absent(),
                 Value<String> noteText = const Value.absent(),
+                Value<bool> noteEdited = const Value.absent(),
                 required DateTime updatedAt,
               }) => LocalWorkoutSetDraftsCompanion.insert(
                 id: id,
@@ -10201,6 +10344,7 @@ class $$LocalWorkoutSetDraftsTableTableManager
                 durationText: durationText,
                 restText: restText,
                 noteText: noteText,
+                noteEdited: noteEdited,
                 updatedAt: updatedAt,
               ),
           withReferenceMapper: (p0) => p0

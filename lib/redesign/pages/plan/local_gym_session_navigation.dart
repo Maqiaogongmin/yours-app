@@ -71,13 +71,6 @@ mixin _LocalGymSessionNavigation on ChangeNotifier, _LocalGymSessionState {
     return true;
   }
 
-  void updateCurrentSetNote(String note) {
-    if (_actions.isEmpty || _finished) {
-      return;
-    }
-    _setNoteDrafts[_currentSetKey] = note;
-  }
-
   @override
   void _moveToNextSet() {
     final previousExerciseIndex = _exerciseIndex;

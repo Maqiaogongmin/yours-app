@@ -306,6 +306,8 @@ void main() {
     expect(inputWithLabel('重量 kg').controller?.text, '80');
     expect(inputWithLabel('次数').controller?.text, '8');
     expect(inputWithLabel('休息时间 s').controller?.text, '90');
+    expect(find.text('动作备注'), findsNothing);
+    expect(find.text('即兴备注'), findsNothing);
     expect(inputWithLabel('备注').controller?.text, '计划动作备注');
 
     await tester.enterText(inputFinder('重量 kg'), '82.5');
@@ -340,8 +342,20 @@ void main() {
     expect(savedLog.actualWeight, 82.5);
     expect(savedLog.actualReps, 7);
     expect(savedLog.restSeconds, 0);
-    expect(savedLog.note, '计划动作备注');
+    expect(savedLog.note, isEmpty);
+    expect(savedLog.noteEdited, isFalse);
     expect(savedLog.hasActualValues, isTrue);
+
+    await tester.pump();
+    expect(inputWithLabel('备注').controller?.text, '计划动作备注');
+    await tester.enterText(inputFinder('备注'), '计划动作备注；第二组呼吸调整后舒服多了');
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 100)),
+    );
+    final editedDraft = (await db.select(db.localWorkoutSetDrafts).get()).single;
+    expect(editedDraft.setIndex, 2);
+    expect(editedDraft.noteText, '计划动作备注；第二组呼吸调整后舒服多了');
+    expect(editedDraft.noteEdited, isTrue);
 
     await LocalGymSessionController.instance.finishSessionLocal(
       note: 'widget smoke cleanup',
@@ -455,6 +469,8 @@ void main() {
     expect(inputWithLabel('重量 kg').controller?.text, '5');
     expect(inputWithLabel('持续时间 s').controller?.text, '900');
     expect(inputWithLabel('休息时间 s').controller?.text, '60');
+    expect(find.text('动作备注'), findsNothing);
+    expect(find.text('即兴备注'), findsNothing);
     expect(inputWithLabel('备注').controller?.text, '计划备注');
     expect(tester.takeException(), isNull);
 

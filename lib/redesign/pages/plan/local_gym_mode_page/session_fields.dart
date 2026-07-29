@@ -57,7 +57,6 @@ class _LocalGymActionNoteField extends StatelessWidget {
       style: context.yoursText(YoursTextRole.body).copyWith(color: palette.fg),
       decoration: InputDecoration(
         labelText: context.l10n.workoutNote,
-        hintText: context.l10n.workoutNoteHint,
         labelStyle: context.yoursText(YoursTextRole.bodyMuted).copyWith(color: palette.muted),
         hintStyle: context.yoursText(YoursTextRole.bodyMuted).copyWith(color: palette.subtle),
         filled: true,

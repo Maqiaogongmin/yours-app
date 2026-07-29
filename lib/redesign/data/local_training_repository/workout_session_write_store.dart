@@ -115,6 +115,7 @@ mixin _WorkoutSessionWriteMixin {
     int? restSeconds,
     bool hasActualValues = false,
     String note = '',
+    bool? noteEdited,
     String recordMode = localRecordModeStandard,
   }) async {
     final logId = await database
@@ -137,6 +138,7 @@ mixin _WorkoutSessionWriteMixin {
             restSeconds: Value(restSeconds),
             hasActualValues: Value(hasActualValues),
             note: Value(note.trim()),
+            noteEdited: Value(noteEdited ?? note.trim().isNotEmpty),
             recordMode: Value(normalizeLocalRecordMode(recordMode)),
             syncStatus: const Value(localSyncPending),
             createdAt: DateTime.now(),

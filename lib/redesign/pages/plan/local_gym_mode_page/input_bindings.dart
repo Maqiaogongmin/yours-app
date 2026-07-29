@@ -40,7 +40,7 @@ class _LocalGymInputBindings {
       freeWeightCtrl.text = draft.weightText;
       freeDurationCtrl.text = draft.durationText;
       freeRestCtrl.text = draft.restText;
-      actionNoteCtrl.text = draft.noteText;
+      actionNoteCtrl.text = session.currentSetNote;
     } else if (saved != null) {
       weightCtrl.text = _formatNullableDouble(saved.weight);
       repsCtrl.text = _formatNullableInt(saved.reps);
@@ -60,13 +60,17 @@ class _LocalGymInputBindings {
     }
   }
 
-  Future<void> persist(LocalGymSessionController session) {
+  Future<void> persist(
+    LocalGymSessionController session, {
+    bool markNoteEdited = false,
+  }) {
     return session.updateCurrentInputDraft(
       weightText: session.isCurrentFreeRecord ? freeWeightCtrl.text : weightCtrl.text,
       repsText: session.isCurrentFreeRecord ? '' : repsCtrl.text,
       durationText: session.isCurrentFreeRecord ? freeDurationCtrl.text : '',
       restText: session.isCurrentFreeRecord ? freeRestCtrl.text : restCtrl.text,
       noteText: actionNoteCtrl.text,
+      markNoteEdited: markNoteEdited,
     );
   }
 

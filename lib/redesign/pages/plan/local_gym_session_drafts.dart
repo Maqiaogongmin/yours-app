@@ -7,15 +7,21 @@ mixin _LocalGymSessionDrafts on ChangeNotifier, _LocalGymSessionState {
     String? durationText,
     String? restText,
     String? noteText,
+    bool markNoteEdited = false,
   }) {
     if (_actions.isEmpty || _finished) {
       return Future.value();
     }
+    final previous = _inputDrafts[_currentSetKey];
+    final previousNote = previous?.noteText ?? _setNoteDrafts[_currentSetKey] ?? '';
+    final previousNoteEdited = previous?.noteEdited ?? currentSetNoteEdited;
     final next =
-        (_inputDrafts[_currentSetKey] ??
+        (previous ??
                 LocalWorkoutInputDraft(
                   actionIndex: _exerciseIndex,
                   setIndex: _setIndex,
+                  noteText: previousNote,
+                  noteEdited: previousNoteEdited,
                 ))
             .copyWith(
               weightText: weightText,
@@ -23,16 +29,29 @@ mixin _LocalGymSessionDrafts on ChangeNotifier, _LocalGymSessionState {
               durationText: durationText,
               restText: restText,
               noteText: noteText,
+              noteEdited: previousNoteEdited || markNoteEdited,
             );
     _inputDrafts[_currentSetKey] = next;
     _setNoteDrafts[_currentSetKey] = next.noteText;
+    _setNoteEdited[_currentSetKey] = next.noteEdited;
+    final snapshotIndex = _currentSetSnapshotIndex;
+    final savedLogId = snapshotIndex == -1 ? null : _history[snapshotIndex].logId;
+    final noteChanged =
+        previousNoteEdited != next.noteEdited || (next.noteEdited && previousNote != next.noteText);
     final sessionId = _sessionId;
     if (sessionId == null) {
       return Future.value();
     }
-    _draftWriteQueue = _draftWriteQueue.then(
-      (_) => _repository.saveWorkoutInputDraft(sessionId: sessionId, draft: next),
-    );
+    _draftWriteQueue = _draftWriteQueue.then((_) async {
+      await _repository.saveWorkoutInputDraft(sessionId: sessionId, draft: next);
+      if (savedLogId != null && noteChanged) {
+        await _repository.updateWorkoutLogNote(
+          logId: savedLogId,
+          note: next.noteEdited ? next.noteText : '',
+          noteEdited: next.noteEdited,
+        );
+      }
+    });
     return _draftWriteQueue;
   }
 
@@ -91,6 +110,7 @@ mixin _LocalGymSessionDrafts on ChangeNotifier, _LocalGymSessionState {
     _actions = (_day?.actions ?? []).map((action) => action.copyWith()).toList();
     _history.clear();
     _setNoteDrafts.clear();
+    _setNoteEdited.clear();
     _inputDrafts.clear();
     // A training session owns its draft-write queue. Reusing a completed or
     // failed Future from an earlier session can prevent every later draft and
@@ -138,6 +158,7 @@ mixin _LocalGymSessionDrafts on ChangeNotifier, _LocalGymSessionState {
     }
     _history.clear();
     _setNoteDrafts.clear();
+    _setNoteEdited.clear();
     _inputDrafts
       ..clear()
       ..addEntries(
@@ -149,7 +170,9 @@ mixin _LocalGymSessionDrafts on ChangeNotifier, _LocalGymSessionState {
         ),
       );
     for (final draft in session.drafts) {
-      _setNoteDrafts['${draft.actionIndex}:${draft.setIndex}'] = draft.noteText;
+      final key = '${draft.actionIndex}:${draft.setIndex}';
+      _setNoteDrafts[key] = draft.noteText;
+      _setNoteEdited[key] = draft.noteEdited;
     }
     _actionStartedAtByIndex.clear();
 
@@ -173,8 +196,10 @@ mixin _LocalGymSessionDrafts on ChangeNotifier, _LocalGymSessionState {
           durationSeconds: log.recordedDurationSeconds,
         ),
       );
-      if (log.note.trim().isNotEmpty) {
-        _setNoteDrafts['$actionIndex:$setIndex'] = log.note;
+      final key = '$actionIndex:$setIndex';
+      if (!_inputDrafts.containsKey(key)) {
+        _setNoteDrafts[key] = log.note;
+        _setNoteEdited[key] = log.noteEdited;
       }
     }
 

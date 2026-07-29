@@ -168,6 +168,10 @@
   "workoutExercise": "エクササイズ",
   "workoutCurrentExercise": "現在のエクササイズ",
   "workoutRestSeconds": "休息",
+  "workoutRest": "休息",
+  "workoutWeight": "重量",
+  "workoutUnitKg": "kg",
+  "workoutUnitSeconds": "秒",
   "workoutSaveSet": "セットを保存して続行",
   "workoutUndoSet": "現在のセットを元に戻す",
   "workoutRestBetween": "セット間の休憩",
@@ -177,6 +181,9 @@
   "workoutFinishSave": "ワークアウトを終了して保存する",
   "workoutOptional": "任意",
   "workoutNote": "メモ",
+  "workoutActionNote": "動作メモ",
+  "workoutSpontaneousNote": "セットメモ",
+  "workoutSpontaneousNoteHint": "このセットで感じたことを記録します。空欄の場合は記録されません",
   "workoutTrainingNote": "トレーニングノート",
   "workoutSavedBackup": "ワークアウトが自動的に保存およびバックアップされました: {name}",
   "@workoutSavedBackup": {
@@ -624,6 +631,22 @@
       }
     }
   },
+  "profileVaultImportNoFiles": "{sources} にインポート可能な inbox ファイルはありません。",
+  "@profileVaultImportNoFiles": {
+    "placeholders": {
+      "sources": {
+        "type": "String"
+      }
+    }
+  },
+  "profileVaultImportSourcesUnavailable": "利用できません: {sources}。",
+  "@profileVaultImportSourcesUnavailable": {
+    "placeholders": {
+      "sources": {
+        "type": "String"
+      }
+    }
+  },
   "profileBackupCreated": "作成されたバックアップ パッケージ: {name}",
   "@profileBackupCreated": {
     "placeholders": {
@@ -632,6 +655,7 @@
       }
     }
   },
+  "profileBackupShareTimedOut": "バックアップを作成しました。選択した場所にファイルがあることを確認してください。",
   "profileBackupFailed": "バックアップに失敗しました: {error}",
   "@profileBackupFailed": {
     "placeholders": {

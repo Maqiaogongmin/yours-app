@@ -36,6 +36,7 @@ mixin _WorkoutQueryMixin {
         weight: log.weight,
         reps: log.reps,
         note: log.note,
+        noteEdited: log.noteEdited,
         recordMode: normalizeLocalRecordMode(log.recordMode),
         durationSeconds: log.durationSeconds,
         createdAt: log.createdAt,

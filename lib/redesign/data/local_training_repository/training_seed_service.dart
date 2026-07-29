@@ -285,6 +285,7 @@ class _LocalTrainingSeedService {
                   (item['durationSeconds'] as num?)?.toInt() ?? 0,
                 ),
                 note: Value(item['note'] as String? ?? ''),
+                noteEdited: Value((item['note'] as String? ?? '').trim().isNotEmpty),
                 recordMode: Value(normalizeLocalRecordMode(item['recordMode'])),
                 syncStatus: const Value(localSyncSynced),
                 createdAt: _parseDateTime(item['createdAt']) ?? now,

@@ -39,7 +39,6 @@ class _LocalGymModePageState extends State<LocalGymModePage> with WidgetsBinding
   final _inputs = _LocalGymInputBindings();
   final _sessionNoteCtrl = TextEditingController();
   String? _startError;
-
   @override
   void initState() {
     super.initState();
@@ -212,6 +211,7 @@ class _LocalGymModePageState extends State<LocalGymModePage> with WidgetsBinding
       return;
     }
     final messenger = ScaffoldMessenger.of(context);
+    await _inputs.persist(_session);
     await _session.finishSessionLocal(
       note: _sessionNoteCtrl.text.trim(),
     );
@@ -390,6 +390,7 @@ class _LocalGymModePageState extends State<LocalGymModePage> with WidgetsBinding
                 onSaveFreeRecord: _saveFreeRecord,
                 onUndoCurrentSet: _undoCurrentSet,
                 onInputChanged: () => unawaited(_inputs.persist(_session)),
+                onNoteChanged: () => unawaited(_inputs.persist(_session, markNoteEdited: true)),
               ),
           ],
         ),

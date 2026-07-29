@@ -97,6 +97,7 @@ class LocalWorkoutLogs extends Table {
   BoolColumn get hasActualValues => boolean().withDefault(const Constant(false))();
   TextColumn get recordMode => text().withDefault(const Constant('standard'))();
   TextColumn get note => text().withDefault(const Constant(''))();
+  BoolColumn get noteEdited => boolean().withDefault(const Constant(false))();
   TextColumn get syncStatus => text().withDefault(const Constant('pending'))();
   DateTimeColumn get createdAt => dateTime()();
 }
@@ -111,6 +112,7 @@ class LocalWorkoutSetDrafts extends Table {
   TextColumn get durationText => text().withDefault(const Constant(''))();
   TextColumn get restText => text().withDefault(const Constant(''))();
   TextColumn get noteText => text().withDefault(const Constant(''))();
+  BoolColumn get noteEdited => boolean().withDefault(const Constant(false))();
   DateTimeColumn get updatedAt => dateTime()();
 
   @override
@@ -155,7 +157,7 @@ class LocalTrainingDatabase extends _$LocalTrainingDatabase {
   LocalTrainingDatabase.inMemory(super.e);
 
   @override
-  int get schemaVersion => 8;
+  int get schemaVersion => 9;
 
   @override
   MigrationStrategy get migration {
@@ -200,6 +202,21 @@ class LocalTrainingDatabase extends _$LocalTrainingDatabase {
         }
         if (!await _hasColumn('local_workout_logs', 'note')) {
           await migrator.addColumn(localWorkoutLogs, localWorkoutLogs.note);
+        }
+        if (!await _hasColumn('local_workout_logs', 'note_edited')) {
+          await migrator.addColumn(localWorkoutLogs, localWorkoutLogs.noteEdited);
+          // Older databases did not retain note provenance. Preserve every
+          // existing non-empty note as user-visible instead of risking data
+          // loss; new writes record provenance exactly.
+          await customStatement(
+            "UPDATE local_workout_logs SET note_edited = 1 WHERE TRIM(note) <> ''",
+          );
+        }
+        if (!await _hasColumn('local_workout_set_drafts', 'note_edited')) {
+          await migrator.addColumn(localWorkoutSetDrafts, localWorkoutSetDrafts.noteEdited);
+          await customStatement(
+            "UPDATE local_workout_set_drafts SET note_edited = 1 WHERE TRIM(note_text) <> ''",
+          );
         }
         await _ensureWorkoutSessionSnapshotColumns(migrator);
         if (!await _hasColumn('local_routines', 'archived')) {

@@ -42,7 +42,8 @@ mixin _LocalGymSessionPersistence on ChangeNotifier, _LocalGymSessionState {
       actualDurationSeconds: null,
       restSeconds: restSeconds,
       hasActualValues: true,
-      note: currentSetNote,
+      note: currentSpontaneousNote,
+      noteEdited: currentSetNoteEdited,
       recordMode: localRecordModeStandard,
     );
 
@@ -119,7 +120,8 @@ mixin _LocalGymSessionPersistence on ChangeNotifier, _LocalGymSessionState {
       actualDurationSeconds: safeDurationSeconds,
       restSeconds: safeRestSeconds,
       hasActualValues: true,
-      note: currentSetNote,
+      note: currentSpontaneousNote,
+      noteEdited: currentSetNoteEdited,
       recordMode: localRecordModeFree,
     );
 

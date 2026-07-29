@@ -62,6 +62,7 @@ Future<Map<int, List<LocalWorkoutInputDraft>>> _loadWorkoutDraftsForSessionIds(
             durationText: row.durationText,
             restText: row.restText,
             noteText: row.noteText,
+            noteEdited: row.noteEdited,
           ),
         );
   }
@@ -90,6 +91,7 @@ LocalWorkoutLogEditModel _toWorkoutLogEditModel(
     weight: log.weight,
     reps: log.reps,
     note: log.note,
+    noteEdited: log.noteEdited,
     recordMode: normalizeLocalRecordMode(log.recordMode),
     durationSeconds: log.durationSeconds,
     actualWeight: log.actualWeight,

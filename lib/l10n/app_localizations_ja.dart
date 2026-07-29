@@ -335,6 +335,15 @@ class AppLocalizationsJa extends AppLocalizations {
   String get workoutNote => 'メモ';
 
   @override
+  String get workoutActionNote => '動作メモ';
+
+  @override
+  String get workoutSpontaneousNote => 'セットメモ';
+
+  @override
+  String get workoutSpontaneousNoteHint => 'このセットで感じたことを記録します。空欄の場合は記録されません';
+
+  @override
   String get workoutTrainingNote => 'トレーニングノート';
 
   @override
@@ -912,12 +921,12 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get profileBackupShareTimedOut => 'バックアップを作成しました。選択した場所にファイルがあることを確認してください。';
+
+  @override
   String profileBackupFailed(String error) {
     return 'バックアップに失敗しました: $error';
   }
-
-  @override
-  String get profileBackupShareTimedOut => 'バックアップを作成しました。選択した場所にファイルがあることを確認してください。';
 
   @override
   String profileRecentBackupExport(String name) {

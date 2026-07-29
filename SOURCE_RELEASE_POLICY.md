@@ -37,6 +37,9 @@
 当前公开快照同步自内部 commit `014e1e8468ad61e1144a0ee132989096a6249602`，
 项目版本为 `1.11.5+11174`。
 
+最新公开快照同步自内部 commit `f79153d63dfb8c0a6767b7acae65c3928adcde45`，
+项目版本为 `1.11.6+11176`。
+
 App Store Connect 已核验的上一份公开基线：
 
 - App ID: `6772104994`
@@ -58,6 +61,11 @@ App Store Connect 已核验的上一份公开基线：
 当前 `1.11.5+11174` 公开源码快照对应 Android arm64-v8a 候选包。该包
 通过 Release 健康门禁和 Redmi USB 真机运行验收，版本化证据见
 `docs/releases/android-1.11.5+11174.md`。
+
+当前 `1.11.6+11176` 公开源码快照对应 Android arm64-v8a 发布包。该包
+通过静态分析、180 项 Flutter 测试、Android 模拟器运行验收和用户确认的
+Android 真机验收，版本化证据见
+`docs/releases/android-1.11.6+11176.md`。
 
 下一个 iOS 或 Android 二进制发布应从公开仓库的已冻结 commit 构建，并在
 发布前创建精确对应的版本 tag。

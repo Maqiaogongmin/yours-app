@@ -80,6 +80,7 @@ void main() {
     expect(logSnapshot['sessionSyncId'], sessionSnapshot['syncId']);
     expect(logSnapshot['routineSyncId'], savedPlan.syncId);
     expect(logSnapshot['exerciseName'], isNotEmpty);
+    expect(logSnapshot['noteEdited'], isFalse);
   });
 
   test('server sync snapshot builder handles custom exercises and obsolete queue items', () async {

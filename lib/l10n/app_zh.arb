@@ -181,6 +181,9 @@
   "workoutFinishSave": "结束并保存训练",
   "workoutOptional": "可空",
   "workoutNote": "备注",
+  "workoutActionNote": "动作备注",
+  "workoutSpontaneousNote": "即兴备注",
+  "workoutSpontaneousNoteHint": "记录这一组的即时感受；留空则不写入训练记录",
   "workoutTrainingNote": "训练备注",
   "workoutSavedBackup": "训练已保存，并已自动备份：{name}",
   "@workoutSavedBackup": {
@@ -652,6 +655,7 @@
       }
     }
   },
+  "profileBackupShareTimedOut": "备份已创建；请确认所选位置已有文件。",
   "profileBackupFailed": "备份失败：{error}",
   "@profileBackupFailed": {
     "placeholders": {
@@ -660,7 +664,6 @@
       }
     }
   },
-  "profileBackupShareTimedOut": "备份已创建；请确认所选位置已有文件。",
   "profileRecentBackupExport": "上次导出备份：{name}",
   "@profileRecentBackupExport": {
     "placeholders": {

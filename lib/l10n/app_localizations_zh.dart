@@ -335,6 +335,15 @@ class AppLocalizationsZh extends AppLocalizations {
   String get workoutNote => '备注';
 
   @override
+  String get workoutActionNote => '动作备注';
+
+  @override
+  String get workoutSpontaneousNote => '即兴备注';
+
+  @override
+  String get workoutSpontaneousNoteHint => '记录这一组的即时感受；留空则不写入训练记录';
+
+  @override
   String get workoutTrainingNote => '训练备注';
 
   @override
@@ -912,12 +921,12 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get profileBackupShareTimedOut => '备份已创建；请确认所选位置已有文件。';
+
+  @override
   String profileBackupFailed(String error) {
     return '备份失败：$error';
   }
-
-  @override
-  String get profileBackupShareTimedOut => '备份已创建；请确认所选位置已有文件。';
 
   @override
   String profileRecentBackupExport(String name) {

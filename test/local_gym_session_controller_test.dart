@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' hide isNotNull, isNull;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:yours/redesign/data/app_database.dart';
@@ -105,19 +106,30 @@ void main() {
 
     expect(session.currentExercise, '哑铃侧平举');
     expect(session.setIndex, 1);
+    expect(session.currentNote, '动作默认备注');
     expect(session.currentSetNote, '动作默认备注');
+    expect(session.currentSetNoteEdited, isFalse);
 
-    session.updateCurrentSetNote('第一组备注');
+    await session.updateCurrentInputDraft(
+      noteText: '第一组备注',
+      markNoteEdited: true,
+    );
     expect(session.currentSetNote, '第一组备注');
+    expect(session.currentSetNoteEdited, isTrue);
 
     expect(session.previewNextSet(), isTrue);
     expect(session.setIndex, 2);
     expect(session.currentSetNote, '动作默认备注');
+    expect(session.currentSetNoteEdited, isFalse);
 
-    session.updateCurrentSetNote('第二组备注');
+    await session.updateCurrentInputDraft(
+      noteText: '第二组备注',
+      markNoteEdited: true,
+    );
     expect(session.previewNextSet(), isTrue);
     expect(session.setIndex, 3);
     expect(session.currentSetNote, '动作默认备注');
+    expect(session.currentSetNoteEdited, isFalse);
 
     expect(session.previewPreviousSet(), isTrue);
     expect(session.setIndex, 2);
@@ -413,6 +425,7 @@ void main() {
       repsText: '6',
       restText: '',
       noteText: '保留输入',
+      markNoteEdited: true,
     );
     await session.flushInputDrafts();
 
@@ -422,8 +435,88 @@ void main() {
     expect(session.previewPreviousSet(), isTrue);
     expect(session.currentInputDraft?.weightText, '72.5');
     expect(session.currentInputDraft?.noteText, '保留输入');
+    expect(session.currentInputDraft?.noteEdited, isTrue);
 
     await session.finishSessionLocal(note: '结束草稿测试');
+    expect(await db.select(db.localWorkoutSetDrafts).get(), isEmpty);
+  });
+
+  test('editing a completed set note persists without saving the set again', () async {
+    await locator.reset();
+    final db = LocalTrainingDatabase.inMemory(NativeDatabase.memory());
+    locator.registerSingleton<LocalTrainingDatabase>(db);
+    addTearDown(() async {
+      await locator.reset();
+      await db.close();
+    });
+
+    final repository = LocalTrainingRepository(db);
+    final plan = LocalTrainingPlanModel(name: '即兴备注测试', totalWeeks: 1, daysPerWeek: 1);
+    plan.days['1-1'] = LocalTrainingDayModel(
+      week: 1,
+      day: 1,
+      name: 'D1',
+      actions: [
+        LocalTrainingActionModel(
+          name: 'built_in:barbell_squat',
+          targetSets: 3,
+          targetReps: 4,
+          note: '动作备注：保持稳定和深度。',
+        ),
+      ],
+    );
+    await repository.savePlan(plan);
+    final savedPlan = (await repository.getPlans()).single;
+    final day = savedPlan.days.values.single;
+    final session = LocalGymSessionController.instance;
+    await session.startOrResume(savedPlan, day);
+
+    await session.saveSet(weight: 75, reps: 4, restSeconds: 0);
+    await session.saveSet(weight: 75, reps: 4, restSeconds: 0);
+    expect(session.setIndex, 3);
+    expect(session.previewPreviousSet(), isTrue);
+    expect(session.setIndex, 2);
+
+    const spontaneousNote = '第一组有点吃力，第二组调整了呼吸方式后舒服多了……';
+    await db
+        .update(db.localSyncQueue)
+        .write(
+          const LocalSyncQueueCompanion(status: Value(localSyncSynced)),
+        );
+    await session.updateCurrentInputDraft(
+      weightText: '75',
+      repsText: '4',
+      restText: '240',
+      noteText: '第一组有点吃力',
+      markNoteEdited: true,
+    );
+    await session.updateCurrentInputDraft(
+      weightText: '75',
+      repsText: '4',
+      restText: '240',
+      noteText: spontaneousNote,
+      markNoteEdited: true,
+    );
+    await session.finishSessionLocal(note: '整体感觉不错');
+
+    final logs = await db.select(db.localWorkoutLogs).get();
+    expect(logs, hasLength(2));
+    expect(logs.singleWhere((log) => log.setIndex == 1).note, isEmpty);
+    expect(logs.singleWhere((log) => log.setIndex == 1).noteEdited, isFalse);
+    expect(logs.singleWhere((log) => log.setIndex == 2).note, spontaneousNote);
+    expect(logs.singleWhere((log) => log.setIndex == 2).noteEdited, isTrue);
+    expect(logs.every((log) => !log.note.contains('动作备注')), isTrue);
+    expect((await db.select(db.localWorkoutSessions).get()).single.note, '整体感觉不错');
+    final noteUpdates =
+        await (db.select(db.localSyncQueue)..where(
+              (event) =>
+                  event.entityType.equals('workout_log') &
+                  event.entityId.equals(logs.singleWhere((log) => log.setIndex == 2).id) &
+                  event.action.equals('update') &
+                  event.status.equals(localSyncPending),
+            ))
+            .get();
+    expect(noteUpdates, hasLength(1));
     expect(await db.select(db.localWorkoutSetDrafts).get(), isEmpty);
   });
 

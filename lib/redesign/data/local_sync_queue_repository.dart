@@ -40,6 +40,24 @@ class LocalSyncQueueRepository {
     RedesignDataRefresh.instance.notifySyncQueueChanged();
   }
 
+  Future<void> enqueueUpdateIfNeeded(String entityType, int entityId) async {
+    final existing =
+        await (database.select(database.localSyncQueue)
+              ..where(
+                (item) =>
+                    item.entityType.equals(entityType) &
+                    item.entityId.equals(entityId) &
+                    item.action.equals('delete').not() &
+                    item.status.equals(localSyncSynced).not(),
+              )
+              ..limit(1))
+            .getSingleOrNull();
+    if (existing != null) {
+      return;
+    }
+    await enqueue(entityType, entityId, 'update');
+  }
+
   Future<int> removePendingCreate(String entityType, int entityId) async {
     final deleted =
         await (database.delete(database.localSyncQueue)..where(

@@ -181,6 +181,9 @@
   "workoutFinishSave": "ワークアウトを終了して保存する",
   "workoutOptional": "任意",
   "workoutNote": "メモ",
+  "workoutActionNote": "動作メモ",
+  "workoutSpontaneousNote": "セットメモ",
+  "workoutSpontaneousNoteHint": "このセットで感じたことを記録します。空欄の場合は記録されません",
   "workoutTrainingNote": "トレーニングノート",
   "workoutSavedBackup": "ワークアウトが自動的に保存およびバックアップされました: {name}",
   "@workoutSavedBackup": {
@@ -652,6 +655,7 @@
       }
     }
   },
+  "profileBackupShareTimedOut": "バックアップを作成しました。選択した場所にファイルがあることを確認してください。",
   "profileBackupFailed": "バックアップに失敗しました: {error}",
   "@profileBackupFailed": {
     "placeholders": {
@@ -660,7 +664,6 @@
       }
     }
   },
-  "profileBackupShareTimedOut": "バックアップを作成しました。選択した場所にファイルがあることを確認してください。",
   "profileRecentBackupExport": "前回のバックアップエクスポート: {name}",
   "@profileRecentBackupExport": {
     "placeholders": {

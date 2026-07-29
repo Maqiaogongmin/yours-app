@@ -168,6 +168,10 @@
   "workoutExercise": "Exercise",
   "workoutCurrentExercise": "Current Exercise",
   "workoutRestSeconds": "Rest s",
+  "workoutRest": "Rest",
+  "workoutWeight": "Weight",
+  "workoutUnitKg": "kg",
+  "workoutUnitSeconds": "s",
   "workoutSaveSet": "Save Set and Continue",
   "workoutUndoSet": "Undo Current Set",
   "workoutRestBetween": "Rest Between Sets",
@@ -177,6 +181,9 @@
   "workoutFinishSave": "End and Save Workout",
   "workoutOptional": "Optional",
   "workoutNote": "Note",
+  "workoutActionNote": "Action Note",
+  "workoutSpontaneousNote": "Set Note",
+  "workoutSpontaneousNoteHint": "Capture how this set felt; leave blank to keep the record empty",
   "workoutTrainingNote": "Workout Note",
   "workoutSavedBackup": "Workout saved and backed up automatically: {name}",
   "@workoutSavedBackup": {
@@ -624,6 +631,22 @@
       }
     }
   },
+  "profileVaultImportNoFiles": "No importable inbox files were found in {sources}.",
+  "@profileVaultImportNoFiles": {
+    "placeholders": {
+      "sources": {
+        "type": "String"
+      }
+    }
+  },
+  "profileVaultImportSourcesUnavailable": "Unavailable: {sources}.",
+  "@profileVaultImportSourcesUnavailable": {
+    "placeholders": {
+      "sources": {
+        "type": "String"
+      }
+    }
+  },
   "profileBackupCreated": "Backup package created: {name}",
   "@profileBackupCreated": {
     "placeholders": {
@@ -632,6 +655,7 @@
       }
     }
   },
+  "profileBackupShareTimedOut": "Backup created; please confirm the file exists in the selected location.",
   "profileBackupFailed": "Backup failed: {error}",
   "@profileBackupFailed": {
     "placeholders": {

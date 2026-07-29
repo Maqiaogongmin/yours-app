@@ -706,6 +706,24 @@ abstract class AppLocalizations {
   /// **'备注'**
   String get workoutNote;
 
+  /// No description provided for @workoutActionNote.
+  ///
+  /// In zh, this message translates to:
+  /// **'动作备注'**
+  String get workoutActionNote;
+
+  /// No description provided for @workoutSpontaneousNote.
+  ///
+  /// In zh, this message translates to:
+  /// **'即兴备注'**
+  String get workoutSpontaneousNote;
+
+  /// No description provided for @workoutSpontaneousNoteHint.
+  ///
+  /// In zh, this message translates to:
+  /// **'记录这一组的即时感受；留空则不写入训练记录'**
+  String get workoutSpontaneousNoteHint;
+
   /// No description provided for @workoutTrainingNote.
   ///
   /// In zh, this message translates to:
@@ -1708,17 +1726,17 @@ abstract class AppLocalizations {
   /// **'备份包已创建：{name}'**
   String profileBackupCreated(String name);
 
-  /// No description provided for @profileBackupFailed.
-  ///
-  /// In zh, this message translates to:
-  /// **'备份失败：{error}'**
-  String profileBackupFailed(String error);
-
   /// No description provided for @profileBackupShareTimedOut.
   ///
   /// In zh, this message translates to:
   /// **'备份已创建；请确认所选位置已有文件。'**
   String get profileBackupShareTimedOut;
+
+  /// No description provided for @profileBackupFailed.
+  ///
+  /// In zh, this message translates to:
+  /// **'备份失败：{error}'**
+  String profileBackupFailed(String error);
 
   /// No description provided for @profileRecentBackupExport.
   ///

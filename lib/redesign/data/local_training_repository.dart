@@ -98,6 +98,7 @@ class LocalTrainingRepository {
     int? restSeconds,
     bool hasActualValues = false,
     String note = '',
+    bool? noteEdited,
     String recordMode = localRecordModeStandard,
   }) async {
     return _workouts.addLog(
@@ -116,6 +117,7 @@ class LocalTrainingRepository {
       restSeconds: restSeconds,
       hasActualValues: hasActualValues,
       note: note,
+      noteEdited: noteEdited,
       recordMode: recordMode,
     );
   }
@@ -175,6 +177,16 @@ class LocalTrainingRepository {
       hasActualValues: hasActualValues,
     );
   }
+
+  Future<void> updateWorkoutLogNote({
+    required int logId,
+    required String note,
+    bool noteEdited = true,
+  }) => _workouts.updateWorkoutLogNote(
+    logId: logId,
+    note: note,
+    noteEdited: noteEdited,
+  );
 
   Future<void> saveWorkoutInputDraft({
     required int sessionId,

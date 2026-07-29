@@ -338,6 +338,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get workoutNote => 'Note';
 
   @override
+  String get workoutActionNote => 'Action Note';
+
+  @override
+  String get workoutSpontaneousNote => 'Set Note';
+
+  @override
+  String get workoutSpontaneousNoteHint =>
+      'Capture how this set felt; leave blank to keep the record empty';
+
+  @override
   String get workoutTrainingNote => 'Workout Note';
 
   @override
@@ -922,13 +932,13 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get profileBackupShareTimedOut =>
+      'Backup created; please confirm the file exists in the selected location.';
+
+  @override
   String profileBackupFailed(String error) {
     return 'Backup failed: $error';
   }
-
-  @override
-  String get profileBackupShareTimedOut =>
-      'Backup created; please confirm the file exists in the selected location.';
 
   @override
   String profileRecentBackupExport(String name) {

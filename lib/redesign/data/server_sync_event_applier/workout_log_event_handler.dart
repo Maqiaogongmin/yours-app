@@ -76,6 +76,10 @@ extension _WorkoutLogServerSyncEventApplier on ServerSyncEventApplier {
       return true;
     }
     if (logId == null) {
+      final note = _asString(snapshot['note']);
+      final noteEdited = snapshot['noteEdited'] is bool
+          ? snapshot['noteEdited'] as bool
+          : note.isNotEmpty;
       await db
           .into(db.localWorkoutLogs)
           .insert(
@@ -99,13 +103,18 @@ extension _WorkoutLogServerSyncEventApplier on ServerSyncEventApplier {
               restSeconds: Value(_asInt(snapshot['restSeconds'])),
               hasActualValues: Value(snapshot['hasActualValues'] == true),
               recordMode: Value(normalizeLocalRecordMode(snapshot['recordMode'])),
-              note: Value(_asString(snapshot['note'])),
+              note: Value(note),
+              noteEdited: Value(noteEdited),
               syncStatus: const Value(localSyncSynced),
               createdAt: createdAt,
             ),
           );
       return true;
     }
+    final note = _asString(snapshot['note']);
+    final noteEdited = snapshot['noteEdited'] is bool
+        ? snapshot['noteEdited'] as bool
+        : note.isNotEmpty;
     await (db.update(db.localWorkoutLogs)..where((row) => row.id.equals(logId))).write(
       LocalWorkoutLogsCompanion(
         syncId: Value(syncId),
@@ -129,7 +138,8 @@ extension _WorkoutLogServerSyncEventApplier on ServerSyncEventApplier {
         restSeconds: Value(_asInt(snapshot['restSeconds'])),
         hasActualValues: Value(snapshot['hasActualValues'] == true),
         recordMode: Value(normalizeLocalRecordMode(snapshot['recordMode'])),
-        note: Value(_asString(snapshot['note'])),
+        note: Value(note),
+        noteEdited: Value(noteEdited),
         syncStatus: const Value(localSyncSynced),
         createdAt: Value(createdAt),
       ),

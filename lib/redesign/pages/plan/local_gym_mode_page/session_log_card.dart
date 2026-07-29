@@ -15,6 +15,7 @@ class _LocalGymLogCard extends StatelessWidget {
     required this.onSaveFreeRecord,
     required this.onUndoCurrentSet,
     required this.onInputChanged,
+    required this.onNoteChanged,
   });
 
   final LocalGymSessionController session;
@@ -30,6 +31,7 @@ class _LocalGymLogCard extends StatelessWidget {
   final VoidCallback onSaveFreeRecord;
   final VoidCallback onUndoCurrentSet;
   final VoidCallback onInputChanged;
+  final VoidCallback onNoteChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +120,7 @@ class _LocalGymLogCard extends StatelessWidget {
         const SizedBox(height: 12),
         _LocalGymActionNoteField(
           controller: actionNoteCtrl,
-          onChanged: (_) => onInputChanged(),
+          onChanged: (_) => onNoteChanged(),
         ),
         const SizedBox(height: 18),
         _saveButton(context, onSaveFreeRecord),
@@ -160,7 +162,7 @@ class _LocalGymLogCard extends StatelessWidget {
         const SizedBox(height: 12),
         _LocalGymActionNoteField(
           controller: actionNoteCtrl,
-          onChanged: (_) => onInputChanged(),
+          onChanged: (_) => onNoteChanged(),
         ),
         const SizedBox(height: 18),
         _saveButton(context, onSaveSet),

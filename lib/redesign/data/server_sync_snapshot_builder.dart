@@ -273,6 +273,7 @@ class ServerSyncSnapshotBuilder {
       if (normalizeLocalRecordMode(log.recordMode) != localRecordModeStandard)
         'recordMode': normalizeLocalRecordMode(log.recordMode),
       'note': log.note,
+      'noteEdited': log.noteEdited,
       'createdAt': log.createdAt.toIso8601String(),
     };
   }

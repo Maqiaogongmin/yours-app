@@ -268,6 +268,7 @@ class LocalWorkoutLogEditModel {
   final double weight;
   final int reps;
   final String note;
+  final bool noteEdited;
   final String recordMode;
   final int durationSeconds;
   final double? actualWeight;
@@ -285,6 +286,7 @@ class LocalWorkoutLogEditModel {
     required this.weight,
     required this.reps,
     required this.note,
+    this.noteEdited = false,
     this.recordMode = localRecordModeStandard,
     this.durationSeconds = 0,
     this.actualWeight,
@@ -308,6 +310,7 @@ class LocalWorkoutInputDraft {
   final String durationText;
   final String restText;
   final String noteText;
+  final bool noteEdited;
 
   const LocalWorkoutInputDraft({
     required this.actionIndex,
@@ -317,6 +320,7 @@ class LocalWorkoutInputDraft {
     this.durationText = '',
     this.restText = '',
     this.noteText = '',
+    this.noteEdited = false,
   });
 
   LocalWorkoutInputDraft copyWith({
@@ -325,6 +329,7 @@ class LocalWorkoutInputDraft {
     String? durationText,
     String? restText,
     String? noteText,
+    bool? noteEdited,
   }) {
     return LocalWorkoutInputDraft(
       actionIndex: actionIndex,
@@ -334,6 +339,7 @@ class LocalWorkoutInputDraft {
       durationText: durationText ?? this.durationText,
       restText: restText ?? this.restText,
       noteText: noteText ?? this.noteText,
+      noteEdited: noteEdited ?? this.noteEdited,
     );
   }
 }

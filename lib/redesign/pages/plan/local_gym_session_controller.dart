@@ -116,6 +116,8 @@ class LocalGymSessionController extends ChangeNotifier
   @override
   final Map<String, String> _setNoteDrafts = {};
   @override
+  final Map<String, bool> _setNoteEdited = {};
+  @override
   final Map<String, LocalWorkoutInputDraft> _inputDrafts = {};
   @override
   Future<void> _draftWriteQueue = Future.value();
@@ -201,7 +203,13 @@ class LocalGymSessionController extends ChangeNotifier
   int? get currentTargetRestSeconds => currentAction.targetRestSeconds;
   String get currentNote => currentAction.note;
   @override
-  String get currentSetNote => _setNoteDrafts[_currentSetKey] ?? currentNote;
+  String get currentSetNote =>
+      currentSetNoteEdited ? (_setNoteDrafts[_currentSetKey] ?? '') : currentNote;
+  @override
+  bool get currentSetNoteEdited => _setNoteEdited[_currentSetKey] ?? false;
+  @override
+  String get currentSpontaneousNote =>
+      currentSetNoteEdited ? (_setNoteDrafts[_currentSetKey] ?? '') : '';
   Duration get currentActionElapsed {
     final value = DateTime.now().difference(_actionStartedAtFor(_exerciseIndex));
     return value.isNegative ? Duration.zero : value;
