@@ -1,0 +1,27 @@
+{
+  "format": "yours-plan",
+  "formatVersion": 1,
+  "action": "upsert",
+  "matchName": "Codex 鸿蒙 11174 验收计划",
+  "name": "Codex 鸿蒙 11174 验收计划",
+  "weeks": [
+    {
+      "week": 1,
+      "days": [
+        {
+          "day": 1,
+          "name": "Pura 90 验收",
+          "actions": [
+            {
+              "exercise": "杠铃卧推",
+              "sets": 3,
+              "reps": 8,
+              "weight": 60,
+              "restSeconds": 90
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

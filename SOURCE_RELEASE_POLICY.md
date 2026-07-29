@@ -34,13 +34,15 @@
 ## Current snapshot
 
 首次公开快照基于内部 commit `9c040543acd78ee8f75f00dffe69e073547c999f`，项目版本为 `1.11.2+11136`。
-当前公开快照同步自内部 commit `014e1e8468ad61e1144a0ee132989096a6249602`，
-项目版本为 `1.11.5+11174`。
 
-最新公开快照同步自内部 commit `f79153d63dfb8c0a6767b7acae65c3928adcde45`，
-项目版本为 `1.11.6+11176`。
+后续公开源码快照已同步到：
 
-App Store Connect 已核验的上一份公开基线：
+- `v1.11.3-public-source.1`：对应 `1.11.3+11147`。
+- `v1.11.5-public-source.2`：同步自内部 commit `014e1e8468ad61e1144a0ee132989096a6249602`，对应 `1.11.5+11174`。
+- `v1.11.6-public-source.1`：同步自内部 commit `f79153d63dfb8c0a6767b7acae65c3928adcde45`，对应 `1.11.6+11176`。
+- `v1.11.6-public-source.2`：在 `1.11.6+11176` 基础上补入 HarmonyOS Flutter-OH 壳层、平台桥接、发布脚本和验收测试；签名资料、构建产物、DevEco 本机状态和 AGC 私有凭据仍不进入公开源码。
+
+App Store Connect 已核验的首份公开基线：
 
 - App ID: `6772104994`
 - App Store version: `1.11.2`

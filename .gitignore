@@ -70,3 +70,25 @@ ios/Runner.app.dSYM.zip
 *.jks
 *.keystore
 .agc_env
+
+# iOS local and Xcode Cloud state
+ios/Runner.xcodeproj/xcshareddata/xcodecloud/
+ios/Runner.xcodeproj/project.xcworkspace/xcuserdata/
+ios/Runner.xcworkspace/xcuserdata/
+
+# HarmonyOS local tooling, signing, and generated artifacts
+ohos/.hvigor/
+ohos/.idea/
+ohos/local.properties
+ohos/build/
+ohos/node_modules/
+ohos/oh_modules/
+ohos/entry/build/
+ohos/entry/oh_modules/
+ohos/entry/libs/
+ohos/entry/src/main/resources/rawfile/flutter_assets/
+*.hap
+*.p12
+*.p7b
+*.cer
+*.p8
