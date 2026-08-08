@@ -1,29 +1,144 @@
-# 有思 Yours
+# Yours
 
-有思是一款本地优先的个人训练记录 App。它用于管理训练计划、训练计时、训练记录、自定义动作库、备份包和 Yours Vault，并让用户能够把长期训练数据交给自己选择的 AI agents 和工具分析。
+**Your training. Your data. Your AI.**
 
-## 核心原则
+Yours is a local-first, open-source workout tracker for iOS and Android, designed around **AI-native customization**.
 
-- **本地优先**：训练数据先写入设备本地 SQLite，训练过程不依赖在线账号。
-- **数据自主**：支持备份、恢复、Yours Vault 导出和可选的自托管同步。
-- **开放协作**：Yours Vault 使用可审阅文件连接用户自己的 agents 和工具链。
-- **移动优先**：官方维护和发布重点为 iOS 与 Android。
+The app handles the part that should stay reliable and close to the user: training plans, set-by-set logging, weight, reps, rest, notes, and the real history of what happened in training.
 
-## 仓库分工
+For customization and analysis, Yours takes a different approach from apps that bundle a proprietary AI coach. Through **Yours Vault** and **Yours Skills**, users can bring their own AI agents to create exercises, build training plans, read workout records, and analyze long-term training data.
 
-- 本仓库：有思 Flutter 主 App 源码。
-- [YoursVault](https://github.com/Maqiaogongmin/YoursVault)：安装包、校验值、版本说明、Vault 协议和 Agent Skill。
-- [Yours Sync Server](https://github.com/Maqiaogongmin/yours-sync-server)：协议 v2 自托管同步服务器，独立采用 Apache-2.0。
+Core workout logging works without a mandatory online account.
 
-App 内部数据库不是外部工具接口。外部工具应通过 Yours Vault 或公开同步协议协作，不应直接修改 App 数据库。
+## How Yours works
 
-## 开发
+Yours separates **training execution** from **training intelligence**.
 
-环境要求：
+```text
+Goals · schedule · equipment · preferences
+                    ↓
+              Your AI agent
+                    +
+              Yours Skill
+                    ↓
+              Yours Vault
+                    ↓
+        Exercises and training plan
+                    ↓
+                Yours App
+                    ↓
+          Real workout records
+                    ↓
+              Yours Vault
+                    ↓
+        Analysis and next cycle
+```
 
-- Flutter stable，Dart `>=3.10.0 <4.0.0`
-- iOS 构建需要 macOS 与 Xcode
-- Android 构建需要 Android SDK
+Yours intentionally ships with only a small built-in exercise set. Users can build an exercise library that matches how they actually train instead of depending on a giant universal catalog.
+
+Creating exercises and plans one item at a time can be tedious. Yours Skills are designed to move that repetitive setup work to AI: give an agent access to Yours Vault, load the Yours Skill, describe your goals and constraints, and let it follow the Skill to prepare compatible exercises or training plans.
+
+After training, the same workflow can be used to read exported records, analyze progress, and help prepare the next training cycle.
+
+**AI plans and analyzes. Yours records reality.**
+
+## Core principles
+
+- **Local-first** — workout data is written to local SQLite first and core logging does not depend on an online account.
+- **User-controlled data** — backup, restore, Yours Vault export, and optional self-hosted sync are available.
+- **Open source** — the main Flutter app source is published in this repository.
+- **AI-native customization** — users can bring their own AI tools instead of depending on a proprietary built-in coach.
+- **Reviewable integration** — external tools work through structured files or the public sync protocol instead of modifying the app database directly.
+- **Mobile-first** — iOS and Android are the officially maintained targets.
+
+## Features
+
+- Training plans and training days
+- Set-by-set workout logging
+- Weight, reps, completion status, and notes
+- Rest timer
+- Custom exercise library
+- Standard and free-form activity logging
+- Training history
+- Local backup and restore
+- Yours Vault import/export workflows
+- Yours Skills for AI-guided exercise creation, planning, and analysis
+- Optional self-hosted sync
+- Simplified Chinese, English, and Japanese interfaces
+
+## Downloads
+
+### iPhone
+
+Yours is available on the App Store:
+
+https://apps.apple.com/app/id6772104994
+
+### Android
+
+Android builds are distributed through the official website and GitHub Releases:
+
+https://yours-app.uk
+
+https://github.com/Maqiaogongmin/YoursVault/releases
+
+For APK installs, use the official sources above and verify the published SHA-256 checksum when available.
+
+## Repository map
+
+Yours is split into several public repositories with different responsibilities:
+
+- **Main app — this repository**  
+  Flutter source code for the iOS and Android app.  
+  https://github.com/Maqiaogongmin/yours-app
+
+- **YoursVault**  
+  Releases, download information, version notes, the Yours Vault file protocol, and Agent Skills.  
+  https://github.com/Maqiaogongmin/YoursVault
+
+- **Yours Sync Server**  
+  Optional self-hosted synchronization server.  
+  https://github.com/Maqiaogongmin/yours-sync-server
+
+## Yours Vault and Yours Skills
+
+**Yours Vault** is the structured exchange layer between the app and external tools.
+
+It supports:
+
+- backup and restore
+- training-plan import and export
+- exercise-library import and export
+- training-record export and analysis
+- reviewable `inbox/` imports
+
+**Yours Skills** are Markdown-based instructions that teach AI agents how to work with this structure.
+
+A typical workflow is simple:
+
+```text
+User asks an AI agent to access Yours Vault
+        ↓
+Agent loads the Yours Skill
+        ↓
+Agent follows the Skill to generate exercises / plans
+or read and analyze training records
+        ↓
+Generated files are placed in the Vault / inbox
+        ↓
+Yours validates and imports them
+```
+
+The app's internal database is not an external integration API. External tools should work through Yours Vault or the published sync protocol rather than modifying the app database directly.
+
+## Development
+
+Requirements:
+
+- Flutter stable
+- Dart `>=3.10.0 <4.0.0`
+- macOS and Xcode for iOS builds
+- Android SDK for Android builds
 
 ```bash
 flutter pub get
@@ -33,32 +148,47 @@ flutter build apk --debug
 flutter build ios --simulator --debug
 ```
 
-主要目录：
+Main directories:
 
-- `lib/redesign/`：当前 App 主体、数据层和页面。
-- `assets/data/`：有思内置动作 seed 和空白演示数据。
-- `tool/yours_cli/`：面向 Yours Vault 和 agents 的本地命令行工具。
-- `test/`：数据、同步、平台和界面行为测试。
+- `lib/redesign/` — current app, data layer, and screens
+- `assets/data/` — built-in exercise seed data and blank demo data
+- `tool/yours_cli/` — local tooling for Yours Vault and agent workflows
+- `test/` — data, sync, platform, and UI behavior tests
 
-`pubspec.yaml` 保留 `publish_to: "none"`，避免误发布到 pub.dev。
+`pubspec.yaml` keeps `publish_to: "none"` to prevent accidental publication to pub.dev.
 
-## 支持范围
+## Supported platforms
 
-- iOS、Android：官方维护和发布目标。
-- 自托管同步：使用 `protocolVersion: 2` 和 `identityMode: syncId`。
+Officially maintained and released:
 
-未使用且没有正式发布记录的 macOS、Windows、Linux runner 未纳入本仓库。
+- iOS
+- Android
 
-## 许可证
+Optional self-hosted synchronization uses:
 
-本项目作为一个整体按 **GNU Affero General Public License v3.0 or later** 发布，并附带 [App Store Additional Permission](APP_STORE_EXCEPTION.md)。
+- `protocolVersion: 2`
+- `identityMode: syncId`
 
-官方 App Store 版本可以收费。收费不改变接收者依据 AGPL 获得、修改和再分发对应源码的权利。源码版本与发布二进制的对应关系记录在 [SOURCE_RELEASE_POLICY.md](SOURCE_RELEASE_POLICY.md) 和 GitHub Releases 中。
+Unused desktop runners without an official release history are not part of the supported scope of this repository.
 
-有思最早从开源健身项目 [wger](https://github.com/wger-project/flutter) 的代码和工程实践中起步，后来经过持续拆解、重写和产品方向调整。详细来源与第三方归属见 [NOTICE.md](NOTICE.md) 和 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+## License
 
-## 反馈与贡献
+This project as a whole is released under the **GNU Affero General Public License v3.0 or later**, together with the [App Store Additional Permission](APP_STORE_EXCEPTION.md).
 
-当前欢迎通过 GitHub Issues 报告问题和提出建议。Pull Request 可以提交，但项目暂不承诺评审或合并；详见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+The official App Store build may be distributed commercially. This does not remove a recipient's AGPL rights to obtain, modify, and redistribute the corresponding source code.
 
-安全问题请按 [SECURITY.md](SECURITY.md) 私下报告，不要公开提交密钥、认证绕过或数据暴露细节。
+See:
+
+- [SOURCE_RELEASE_POLICY.md](SOURCE_RELEASE_POLICY.md)
+- [NOTICE.md](NOTICE.md)
+- [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
+
+Yours originally grew from code and engineering practices in the open-source [wger](https://github.com/wger-project/flutter) fitness project, followed by substantial restructuring, rewriting, and a different product direction. Attribution and third-party notices are documented in the files above.
+
+## Contributing
+
+Bug reports and feature suggestions are welcome through GitHub Issues.
+
+Pull requests may be submitted, but the project does not currently guarantee review or merge. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+For security issues, follow [SECURITY.md](SECURITY.md) and report them privately. Do not publish secrets, authentication bypasses, or sensitive data-exposure details in public issues.
