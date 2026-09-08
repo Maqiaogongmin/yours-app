@@ -2,7 +2,7 @@
 
 **Your training. Your data. Your AI.**
 
-Yours is a local-first, open-source workout tracker for iOS and Android, designed around **AI-native customization**.
+Yours is a local-first, open-source workout tracker for iOS, Android, and HarmonyOS, designed around **AI-native customization**.
 
 The app handles the part that should stay reliable and close to the user: training plans, set-by-set logging, weight, reps, rest, notes, and the real history of what happened in training.
 
@@ -49,7 +49,7 @@ After training, the same workflow can be used to read exported records, analyze 
 - **Open source** — the main Flutter app source is published in this repository.
 - **AI-native customization** — users can bring their own AI tools instead of depending on a proprietary built-in coach.
 - **Reviewable integration** — external tools work through structured files or the public sync protocol instead of modifying the app database directly.
-- **Mobile-first** — iOS and Android are the officially maintained targets.
+- **Mobile-first** — iOS, Android, and HarmonyOS are maintained targets; HarmonyOS uses Flutter-OH in `ohos/`.
 
 ## Features
 
@@ -89,7 +89,7 @@ For APK installs, use the official sources above and verify the published SHA-25
 Yours is split into several public repositories with different responsibilities:
 
 - **Main app — this repository**  
-  Flutter source code for the iOS and Android app.  
+  Flutter source code for the iOS, Android, and HarmonyOS app.  
   https://github.com/Maqiaogongmin/yours-app
 
 - **YoursVault**  
@@ -192,3 +192,11 @@ Bug reports and feature suggestions are welcome through GitHub Issues.
 Pull requests may be submitted, but the project does not currently guarantee review or merge. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 For security issues, follow [SECURITY.md](SECURITY.md) and report them privately. Do not publish secrets, authentication bypasses, or sensitive data-exposure details in public issues.
+
+## Release and platform status
+
+The current source version is **1.11.6+11176**. Store availability can differ while updates are reviewed. See the [release status and download checks](https://github.com/Maqiaogongmin/YoursVault/blob/main/release-status.md).
+
+- Android: [official download](https://yours-app.uk/downloads/android), hosted through Cloudflare; [GitHub Releases](https://github.com/Maqiaogongmin/YoursVault/releases) remains the release archive.
+- HarmonyOS: [Huawei AppGallery](https://appgallery.huawei.com/app/detail?id=C6917610190647926263&source=appshare).
+- iPhone: [App Store](https://apps.apple.com/app/id6772104994).
