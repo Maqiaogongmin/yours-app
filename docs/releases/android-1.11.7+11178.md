@@ -5,10 +5,10 @@ Date: 2026-10-25. Release owner: LY.
 ## Identity and artifacts
 
 - App: `com.ly.yours`, versionName `1.11.7`, product build `11178`, arm64 APK versionCode `13178`.
-- Public source tag: `v1.11.7-public-source.1`, commit `26db5dcd35f220792ff71769e725f6e4827456e4`.
+- Public source tag: `v1.11.7-public-source.2`, commit `bca4e11aaaedfd102310390af73c39e07c73427f`.
 - APK: `Yours-android-arm64-v8a-1.11.7+11178.apk`, 28,087,220 bytes.
 - APK SHA-256: `4033873dbf5a72086345224f2bb2f337ed39b741d9759eb58fce099889d063c4`.
-- Source archive: `Yours-source-1.11.7+11178.tar.gz`, SHA-256 `c8d384e7f9e461e00fa633c8d4a996234dfc457fd1f371c3598ed0e63f3f61bf`.
+- Source archive: `Yours-source-1.11.7+11178-public.2.tar.gz`, SHA-256 `e81dd34b3b2cb0525378764c642286a40736ba9743d434f0d5071765e8fe6c3b`.
 - [GitHub Release](https://github.com/Maqiaogongmin/YoursVault/releases/tag/v1.11.7%2B11178).
 - [Official download](https://yours-app.uk/downloads/android).
 
@@ -30,3 +30,5 @@ Date: 2026-10-25. Release owner: LY.
 - Official download was downloaded again and its SHA-256 matched the APK above.
 - `/latest.json` advertises version 1.11.7, product build 11178 and the official download route.
 - Website build and 40 existing website checks passed; privacy page remained HTTP 200.
+
+The public source .2 snapshot corrects the obsolete Harmony version assertion to match pubspec.yaml. This changes test metadata only; lib/assets remain byte-identical to the validated binaries.
