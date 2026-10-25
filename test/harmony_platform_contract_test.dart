@@ -4,11 +4,14 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  test('Harmony package metadata uses build 11174', () {
+  test('Harmony package metadata matches the Flutter release version', () {
     final app = jsonDecode(File('ohos/AppScope/app.json5').readAsStringSync());
     expect(app['app']['bundleName'], 'com.ly.yours');
-    expect(app['app']['versionName'], '1.11.5');
-    expect(app['app']['versionCode'], 11174);
+    final pubspec = File('pubspec.yaml').readAsStringSync();
+    final version = RegExp(r'^version:\s*(\S+)\+(\d+)\s*$', multiLine: true)
+        .firstMatch(pubspec)!;
+    expect(app['app']['versionName'], version.group(1));
+    expect(app['app']['versionCode'], int.parse(version.group(2)!));
   });
 
   test('Harmony app and recent-task labels cover Chinese English and Japanese', () {
