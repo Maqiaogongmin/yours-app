@@ -32,3 +32,5 @@ Date: 2026-10-25. Release owner: LY.
 - Website build and 40 existing website checks passed; privacy page remained HTTP 200.
 
 The public source .2 snapshot corrects the obsolete Harmony version assertion to match pubspec.yaml. This changes test metadata only; lib/assets remain byte-identical to the validated binaries.
+
+Final Android health gate passed: 72.12% overall line coverage; all four critical module groups above 80%; native release unit tests passed; Android lint reported no issues. Public source .2 CI passed: https://github.com/Maqiaogongmin/yours-app/actions/runs/40173575195 . The health-gate rebuild is verification only and did not replace the published, emulator-tested APK.
