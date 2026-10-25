@@ -276,7 +276,7 @@ void main() {
     await session.startOrResume(plan, day);
 
     expect(session.currentExercise, '蝴蝶机夹胸');
-    session.replaceCurrentAction(
+    await session.replaceCurrentAction(
       LocalTrainingActionModel(
         name: '绳索夹胸',
         targetSets: 2,
@@ -293,6 +293,103 @@ void main() {
     expect(session.currentTargetReps, 8);
     expect(day.actions.first.name, '蝴蝶机夹胸');
     expect(plan.days['1-1']!.actions.first.name, '蝴蝶机夹胸');
+  });
+
+  test('same exercise in separate action blocks keeps every saved set', () async {
+    await locator.reset();
+    final db = LocalTrainingDatabase.inMemory(NativeDatabase.memory());
+    locator.registerSingleton<LocalTrainingDatabase>(db);
+    addTearDown(() async {
+      await locator.reset();
+      await db.close();
+    });
+
+    final repository = LocalTrainingRepository(db);
+    final plan = LocalTrainingPlanModel(name: '重复动作测试', totalWeeks: 1, daysPerWeek: 1);
+    plan.days['1-1'] = LocalTrainingDayModel(
+      week: 1,
+      day: 1,
+      name: '卧推测试',
+      actions: [
+        LocalTrainingActionModel(name: '杠铃卧推', targetSets: 1, targetReps: 1),
+        LocalTrainingActionModel(name: '杠铃卧推', targetSets: 1, targetReps: 1),
+        LocalTrainingActionModel(name: '杠铃卧推', targetSets: 1, targetReps: 2),
+      ],
+    );
+    await repository.savePlan(plan);
+    final savedPlan = (await repository.getPlans()).single;
+    final day = savedPlan.days.values.single;
+
+    final session = LocalGymSessionController.instance;
+    await session.startOrResume(savedPlan, day);
+    await session.saveSet(weight: 70, reps: 1, restSeconds: 0);
+    await session.saveSet(weight: 75, reps: 1, restSeconds: 0);
+    await session.saveSet(weight: 60, reps: 2, restSeconds: 0);
+
+    final logs = await (db.select(
+      db.localWorkoutLogs,
+    )..orderBy([(row) => OrderingTerm.asc(row.actionIndex)])).get();
+    expect(logs, hasLength(3));
+    expect(logs.map((log) => log.actionIndex), [0, 1, 2]);
+    expect(logs.map((log) => log.actualWeight), [70, 75, 60]);
+  });
+
+  test('replacement clears stale drafts and persists the session action snapshot', () async {
+    await locator.reset();
+    final db = LocalTrainingDatabase.inMemory(NativeDatabase.memory());
+    locator.registerSingleton<LocalTrainingDatabase>(db);
+    addTearDown(() async {
+      await locator.reset();
+      await db.close();
+    });
+
+    final repository = LocalTrainingRepository(db);
+    final plan = LocalTrainingPlanModel(name: '替换恢复测试', totalWeeks: 1, daysPerWeek: 1);
+    plan.days['1-1'] = LocalTrainingDayModel(
+      week: 1,
+      day: 1,
+      name: 'D1',
+      actions: [
+        LocalTrainingActionModel(
+          name: 'T杠划船',
+          targetSets: 3,
+          targetReps: 6,
+          targetWeight: 35,
+        ),
+      ],
+    );
+    await repository.savePlan(plan);
+    final savedPlan = (await repository.getPlans()).single;
+    final day = savedPlan.days.values.single;
+    final session = LocalGymSessionController.instance;
+    await session.startOrResume(savedPlan, day);
+    await session.updateCurrentInputDraft(weightText: '35', repsText: '6', restText: '150');
+
+    await session.replaceCurrentAction(
+      LocalTrainingActionModel(
+        syncId: session.currentAction.syncId,
+        name: '宽距高位下拉',
+        targetSets: 2,
+        targetReps: 8,
+        targetWeight: 45,
+        targetRestSeconds: 120,
+      ),
+    );
+
+    expect(session.currentInputDraft, isNull);
+    expect(await db.select(db.localWorkoutSetDrafts).get(), isEmpty);
+    final resumable = await repository.findOpenSessionForDay(
+      routineId: savedPlan.id!,
+      dayId: day.id,
+    );
+    expect(resumable, isNotNull);
+    expect(resumable!.actions.single.name, '宽距高位下拉');
+    expect(resumable.actions.single.targetSets, 2);
+    expect(resumable.actions.single.targetReps, 8);
+    expect(resumable.actions.single.targetWeight, 45);
+    expect(resumable.actions.single.targetRestSeconds, 120);
+
+    await session.finishSessionLocal(note: '测试结束', markIncomplete: true);
   });
 
   test('free record plan targets persist through actions json', () async {

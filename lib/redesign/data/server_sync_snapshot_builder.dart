@@ -176,6 +176,8 @@ class ServerSyncSnapshotBuilder {
       'dayWeekSnapshot': session.dayWeekSnapshot,
       'dayIndexSnapshot': session.dayIndexSnapshot,
       'daySyncIdSnapshot': session.daySyncIdSnapshot,
+      'actionsSnapshot': _decodeJsonList(session.actionsSnapshotJson),
+      'actionsCustomized': session.actionsCustomized,
       'startedAt': session.startedAt.toIso8601String(),
       'endedAt': session.endedAt?.toIso8601String(),
       'note': session.note,
@@ -260,6 +262,7 @@ class ServerSyncSnapshotBuilder {
       'dayId': log.dayId,
       'daySyncId': await _daySyncIdById(db, log.dayId),
       'exerciseName': log.exerciseName,
+      if (log.actionIndex >= 0) 'actionIndex': log.actionIndex,
       'setIndex': log.setIndex,
       'weight': log.weight,
       'reps': log.reps,
@@ -293,5 +296,13 @@ class ServerSyncSnapshotBuilder {
       return value.cast<Object?>();
     }
     return const [];
+  }
+
+  List<Object?> _decodeJsonList(String encoded) {
+    try {
+      return _asList(jsonDecode(encoded));
+    } on Object {
+      return const [];
+    }
   }
 }

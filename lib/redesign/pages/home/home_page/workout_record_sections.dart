@@ -183,11 +183,19 @@ class _ExerciseLogSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            localizedExerciseName(context, exerciseName),
-            style: context
-                .yoursText(YoursTextRole.body)
-                .copyWith(fontSize: 20, fontWeight: FontWeight.w800, color: palette.fg),
+          RepaintBoundary(
+            key: ValueKey('workout-exercise-title-$exerciseName'),
+            child: Text(
+              localizedExerciseName(context, exerciseName),
+              style: context
+                  .yoursText(YoursTextRole.cardTitle)
+                  .copyWith(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    height: 1.2,
+                    color: palette.fg,
+                  ),
+            ),
           ),
           const SizedBox(height: 4),
           Text(

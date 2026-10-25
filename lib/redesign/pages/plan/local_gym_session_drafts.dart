@@ -152,6 +152,9 @@ mixin _LocalGymSessionDrafts on ChangeNotifier, _LocalGymSessionState {
 
   void _restoreOpenSession(LocalWorkoutSessionResumeModel session) {
     _sessionId = session.sessionId;
+    if (session.actions.isNotEmpty) {
+      _actions = session.actions.map((action) => action.copyWith()).toList();
+    }
     _elapsedOffset = DateTime.now().difference(session.startedAt);
     if (_elapsedOffset.isNegative) {
       _elapsedOffset = Duration.zero;
@@ -177,9 +180,12 @@ mixin _LocalGymSessionDrafts on ChangeNotifier, _LocalGymSessionState {
     _actionStartedAtByIndex.clear();
 
     for (final log in session.logs) {
-      final actionIndex = _actions.indexWhere(
-        (action) => sameExerciseIdentity(action.name, log.exerciseName),
-      );
+      final storedActionIndex = log.actionIndex;
+      final actionIndex = storedActionIndex >= 0 && storedActionIndex < _actions.length
+          ? storedActionIndex
+          : _actions.indexWhere(
+              (action) => sameExerciseIdentity(action.name, log.exerciseName),
+            );
       if (actionIndex == -1) {
         continue;
       }

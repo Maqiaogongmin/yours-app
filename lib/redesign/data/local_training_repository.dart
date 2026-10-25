@@ -87,6 +87,7 @@ class LocalTrainingRepository {
     required int routineId,
     int? dayId,
     required String exerciseName,
+    int actionIndex = -1,
     required int setIndex,
     required double weight,
     required int reps,
@@ -106,6 +107,7 @@ class LocalTrainingRepository {
       routineId: routineId,
       dayId: dayId,
       exerciseName: exerciseName,
+      actionIndex: actionIndex,
       setIndex: setIndex,
       weight: weight,
       reps: reps,
@@ -133,14 +135,26 @@ class LocalTrainingRepository {
   Future<void> deleteSetLogs({
     required int sessionId,
     required String exerciseName,
+    int? actionIndex,
     required int setIndex,
   }) async {
     await _workouts.deleteSetLogs(
       sessionId: sessionId,
       exerciseName: exerciseName,
+      actionIndex: actionIndex,
       setIndex: setIndex,
     );
   }
+
+  Future<void> replaceWorkoutSessionActionState({
+    required int sessionId,
+    required int actionIndex,
+    required List<LocalTrainingActionModel> actions,
+  }) => _workouts.replaceWorkoutSessionActionState(
+    sessionId: sessionId,
+    actionIndex: actionIndex,
+    actions: actions,
+  );
 
   Future<List<LocalWorkoutLogEditModel>> getLogsForDate(DateTime date) async {
     return _workouts.getLogsForDate(date);

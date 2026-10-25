@@ -1,19 +1,34 @@
 part of 'local_gym_session_controller.dart';
 
 mixin _LocalGymSessionNavigation on ChangeNotifier, _LocalGymSessionState {
-  void replaceCurrentAction(LocalTrainingActionModel action) {
+  Future<void> replaceCurrentAction(LocalTrainingActionModel action) async {
     if (_actions.isEmpty || _finished || action.name.trim().isEmpty) {
       return;
     }
-    _actions[_exerciseIndex] = action.copyWith(name: action.name);
+    final actionIndex = _exerciseIndex;
+    final replacement = action.copyWith(name: action.name);
+    final nextActions = [..._actions]..[actionIndex] = replacement;
+    final sessionId = _sessionId;
+    if (sessionId != null) {
+      await _repository.replaceWorkoutSessionActionState(
+        sessionId: sessionId,
+        actionIndex: actionIndex,
+        actions: nextActions,
+      );
+    }
+    _actions = nextActions;
+    final prefix = '$actionIndex:';
+    _inputDrafts.removeWhere((key, _) => key.startsWith(prefix));
+    _setNoteDrafts.removeWhere((key, _) => key.startsWith(prefix));
+    _setNoteEdited.removeWhere((key, _) => key.startsWith(prefix));
     notifyListeners();
   }
 
-  void replaceCurrentExercise(String exerciseName) {
+  Future<void> replaceCurrentExercise(String exerciseName) async {
     if (_actions.isEmpty) {
       return;
     }
-    replaceCurrentAction(currentAction.copyWith(name: exerciseName));
+    await replaceCurrentAction(currentAction.copyWith(name: exerciseName));
   }
 
   @override

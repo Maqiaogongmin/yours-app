@@ -87,6 +87,7 @@ LocalWorkoutLogEditModel _toWorkoutLogEditModel(
     id: log.id,
     sessionId: log.sessionId,
     exerciseName: log.exerciseName,
+    actionIndex: log.actionIndex,
     setIndex: displaySetIndex ?? log.setIndex,
     weight: log.weight,
     reps: log.reps,

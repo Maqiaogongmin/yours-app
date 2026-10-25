@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.11.7+11178
+
+- 修复同一次训练中重复同名动作互相覆盖的问题，按动作块保存每组记录。
+- 保存替换动作的自定义参数与动作快照，冷启动后继续训练时保留替换结果。
+- 同步备份与服务器同步中的动作身份、训练快照和数据库迁移。
+- 修复训练记录标题中部分中文字形重影。
+- Android 与 HarmonyOS 对齐 iOS 1.11.7 的共享业务代码。
+
 ## Unreleased
 
 - Prepare the main Flutter application for public source distribution.

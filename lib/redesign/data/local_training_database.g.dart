@@ -2493,6 +2493,33 @@ class $LocalWorkoutSessionsTable extends LocalWorkoutSessions
         requiredDuringInsert: false,
         defaultValue: const Constant(''),
       );
+  static const VerificationMeta _actionsSnapshotJsonMeta =
+      const VerificationMeta('actionsSnapshotJson');
+  @override
+  late final GeneratedColumn<String> actionsSnapshotJson =
+      GeneratedColumn<String>(
+        'actions_snapshot_json',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: const Constant('[]'),
+      );
+  static const VerificationMeta _actionsCustomizedMeta = const VerificationMeta(
+    'actionsCustomized',
+  );
+  @override
+  late final GeneratedColumn<bool> actionsCustomized = GeneratedColumn<bool>(
+    'actions_customized',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("actions_customized" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
   static const VerificationMeta _startedAtMeta = const VerificationMeta(
     'startedAt',
   );
@@ -2561,6 +2588,8 @@ class $LocalWorkoutSessionsTable extends LocalWorkoutSessions
     dayWeekSnapshot,
     dayIndexSnapshot,
     daySyncIdSnapshot,
+    actionsSnapshotJson,
+    actionsCustomized,
     startedAt,
     endedAt,
     note,
@@ -2662,6 +2691,24 @@ class $LocalWorkoutSessionsTable extends LocalWorkoutSessions
         ),
       );
     }
+    if (data.containsKey('actions_snapshot_json')) {
+      context.handle(
+        _actionsSnapshotJsonMeta,
+        actionsSnapshotJson.isAcceptableOrUnknown(
+          data['actions_snapshot_json']!,
+          _actionsSnapshotJsonMeta,
+        ),
+      );
+    }
+    if (data.containsKey('actions_customized')) {
+      context.handle(
+        _actionsCustomizedMeta,
+        actionsCustomized.isAcceptableOrUnknown(
+          data['actions_customized']!,
+          _actionsCustomizedMeta,
+        ),
+      );
+    }
     if (data.containsKey('started_at')) {
       context.handle(
         _startedAtMeta,
@@ -2749,6 +2796,14 @@ class $LocalWorkoutSessionsTable extends LocalWorkoutSessions
         DriftSqlType.string,
         data['${effectivePrefix}day_sync_id_snapshot'],
       )!,
+      actionsSnapshotJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}actions_snapshot_json'],
+      )!,
+      actionsCustomized: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}actions_customized'],
+      )!,
       startedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}started_at'],
@@ -2791,6 +2846,8 @@ class LocalWorkoutSession extends DataClass
   final int? dayWeekSnapshot;
   final int? dayIndexSnapshot;
   final String daySyncIdSnapshot;
+  final String actionsSnapshotJson;
+  final bool actionsCustomized;
   final DateTime startedAt;
   final DateTime? endedAt;
   final String note;
@@ -2808,6 +2865,8 @@ class LocalWorkoutSession extends DataClass
     this.dayWeekSnapshot,
     this.dayIndexSnapshot,
     required this.daySyncIdSnapshot,
+    required this.actionsSnapshotJson,
+    required this.actionsCustomized,
     required this.startedAt,
     this.endedAt,
     required this.note,
@@ -2836,6 +2895,8 @@ class LocalWorkoutSession extends DataClass
       map['day_index_snapshot'] = Variable<int>(dayIndexSnapshot);
     }
     map['day_sync_id_snapshot'] = Variable<String>(daySyncIdSnapshot);
+    map['actions_snapshot_json'] = Variable<String>(actionsSnapshotJson);
+    map['actions_customized'] = Variable<bool>(actionsCustomized);
     map['started_at'] = Variable<DateTime>(startedAt);
     if (!nullToAbsent || endedAt != null) {
       map['ended_at'] = Variable<DateTime>(endedAt);
@@ -2867,6 +2928,8 @@ class LocalWorkoutSession extends DataClass
           ? const Value.absent()
           : Value(dayIndexSnapshot),
       daySyncIdSnapshot: Value(daySyncIdSnapshot),
+      actionsSnapshotJson: Value(actionsSnapshotJson),
+      actionsCustomized: Value(actionsCustomized),
       startedAt: Value(startedAt),
       endedAt: endedAt == null && nullToAbsent
           ? const Value.absent()
@@ -2898,6 +2961,10 @@ class LocalWorkoutSession extends DataClass
       dayWeekSnapshot: serializer.fromJson<int?>(json['dayWeekSnapshot']),
       dayIndexSnapshot: serializer.fromJson<int?>(json['dayIndexSnapshot']),
       daySyncIdSnapshot: serializer.fromJson<String>(json['daySyncIdSnapshot']),
+      actionsSnapshotJson: serializer.fromJson<String>(
+        json['actionsSnapshotJson'],
+      ),
+      actionsCustomized: serializer.fromJson<bool>(json['actionsCustomized']),
       startedAt: serializer.fromJson<DateTime>(json['startedAt']),
       endedAt: serializer.fromJson<DateTime?>(json['endedAt']),
       note: serializer.fromJson<String>(json['note']),
@@ -2920,6 +2987,8 @@ class LocalWorkoutSession extends DataClass
       'dayWeekSnapshot': serializer.toJson<int?>(dayWeekSnapshot),
       'dayIndexSnapshot': serializer.toJson<int?>(dayIndexSnapshot),
       'daySyncIdSnapshot': serializer.toJson<String>(daySyncIdSnapshot),
+      'actionsSnapshotJson': serializer.toJson<String>(actionsSnapshotJson),
+      'actionsCustomized': serializer.toJson<bool>(actionsCustomized),
       'startedAt': serializer.toJson<DateTime>(startedAt),
       'endedAt': serializer.toJson<DateTime?>(endedAt),
       'note': serializer.toJson<String>(note),
@@ -2940,6 +3009,8 @@ class LocalWorkoutSession extends DataClass
     Value<int?> dayWeekSnapshot = const Value.absent(),
     Value<int?> dayIndexSnapshot = const Value.absent(),
     String? daySyncIdSnapshot,
+    String? actionsSnapshotJson,
+    bool? actionsCustomized,
     DateTime? startedAt,
     Value<DateTime?> endedAt = const Value.absent(),
     String? note,
@@ -2961,6 +3032,8 @@ class LocalWorkoutSession extends DataClass
         ? dayIndexSnapshot.value
         : this.dayIndexSnapshot,
     daySyncIdSnapshot: daySyncIdSnapshot ?? this.daySyncIdSnapshot,
+    actionsSnapshotJson: actionsSnapshotJson ?? this.actionsSnapshotJson,
+    actionsCustomized: actionsCustomized ?? this.actionsCustomized,
     startedAt: startedAt ?? this.startedAt,
     endedAt: endedAt.present ? endedAt.value : this.endedAt,
     note: note ?? this.note,
@@ -2992,6 +3065,12 @@ class LocalWorkoutSession extends DataClass
       daySyncIdSnapshot: data.daySyncIdSnapshot.present
           ? data.daySyncIdSnapshot.value
           : this.daySyncIdSnapshot,
+      actionsSnapshotJson: data.actionsSnapshotJson.present
+          ? data.actionsSnapshotJson.value
+          : this.actionsSnapshotJson,
+      actionsCustomized: data.actionsCustomized.present
+          ? data.actionsCustomized.value
+          : this.actionsCustomized,
       startedAt: data.startedAt.present ? data.startedAt.value : this.startedAt,
       endedAt: data.endedAt.present ? data.endedAt.value : this.endedAt,
       note: data.note.present ? data.note.value : this.note,
@@ -3016,6 +3095,8 @@ class LocalWorkoutSession extends DataClass
           ..write('dayWeekSnapshot: $dayWeekSnapshot, ')
           ..write('dayIndexSnapshot: $dayIndexSnapshot, ')
           ..write('daySyncIdSnapshot: $daySyncIdSnapshot, ')
+          ..write('actionsSnapshotJson: $actionsSnapshotJson, ')
+          ..write('actionsCustomized: $actionsCustomized, ')
           ..write('startedAt: $startedAt, ')
           ..write('endedAt: $endedAt, ')
           ..write('note: $note, ')
@@ -3038,6 +3119,8 @@ class LocalWorkoutSession extends DataClass
     dayWeekSnapshot,
     dayIndexSnapshot,
     daySyncIdSnapshot,
+    actionsSnapshotJson,
+    actionsCustomized,
     startedAt,
     endedAt,
     note,
@@ -3059,6 +3142,8 @@ class LocalWorkoutSession extends DataClass
           other.dayWeekSnapshot == this.dayWeekSnapshot &&
           other.dayIndexSnapshot == this.dayIndexSnapshot &&
           other.daySyncIdSnapshot == this.daySyncIdSnapshot &&
+          other.actionsSnapshotJson == this.actionsSnapshotJson &&
+          other.actionsCustomized == this.actionsCustomized &&
           other.startedAt == this.startedAt &&
           other.endedAt == this.endedAt &&
           other.note == this.note &&
@@ -3079,6 +3164,8 @@ class LocalWorkoutSessionsCompanion
   final Value<int?> dayWeekSnapshot;
   final Value<int?> dayIndexSnapshot;
   final Value<String> daySyncIdSnapshot;
+  final Value<String> actionsSnapshotJson;
+  final Value<bool> actionsCustomized;
   final Value<DateTime> startedAt;
   final Value<DateTime?> endedAt;
   final Value<String> note;
@@ -3096,6 +3183,8 @@ class LocalWorkoutSessionsCompanion
     this.dayWeekSnapshot = const Value.absent(),
     this.dayIndexSnapshot = const Value.absent(),
     this.daySyncIdSnapshot = const Value.absent(),
+    this.actionsSnapshotJson = const Value.absent(),
+    this.actionsCustomized = const Value.absent(),
     this.startedAt = const Value.absent(),
     this.endedAt = const Value.absent(),
     this.note = const Value.absent(),
@@ -3114,6 +3203,8 @@ class LocalWorkoutSessionsCompanion
     this.dayWeekSnapshot = const Value.absent(),
     this.dayIndexSnapshot = const Value.absent(),
     this.daySyncIdSnapshot = const Value.absent(),
+    this.actionsSnapshotJson = const Value.absent(),
+    this.actionsCustomized = const Value.absent(),
     required DateTime startedAt,
     this.endedAt = const Value.absent(),
     this.note = const Value.absent(),
@@ -3134,6 +3225,8 @@ class LocalWorkoutSessionsCompanion
     Expression<int>? dayWeekSnapshot,
     Expression<int>? dayIndexSnapshot,
     Expression<String>? daySyncIdSnapshot,
+    Expression<String>? actionsSnapshotJson,
+    Expression<bool>? actionsCustomized,
     Expression<DateTime>? startedAt,
     Expression<DateTime>? endedAt,
     Expression<String>? note,
@@ -3154,6 +3247,9 @@ class LocalWorkoutSessionsCompanion
       if (dayWeekSnapshot != null) 'day_week_snapshot': dayWeekSnapshot,
       if (dayIndexSnapshot != null) 'day_index_snapshot': dayIndexSnapshot,
       if (daySyncIdSnapshot != null) 'day_sync_id_snapshot': daySyncIdSnapshot,
+      if (actionsSnapshotJson != null)
+        'actions_snapshot_json': actionsSnapshotJson,
+      if (actionsCustomized != null) 'actions_customized': actionsCustomized,
       if (startedAt != null) 'started_at': startedAt,
       if (endedAt != null) 'ended_at': endedAt,
       if (note != null) 'note': note,
@@ -3174,6 +3270,8 @@ class LocalWorkoutSessionsCompanion
     Value<int?>? dayWeekSnapshot,
     Value<int?>? dayIndexSnapshot,
     Value<String>? daySyncIdSnapshot,
+    Value<String>? actionsSnapshotJson,
+    Value<bool>? actionsCustomized,
     Value<DateTime>? startedAt,
     Value<DateTime?>? endedAt,
     Value<String>? note,
@@ -3193,6 +3291,8 @@ class LocalWorkoutSessionsCompanion
       dayWeekSnapshot: dayWeekSnapshot ?? this.dayWeekSnapshot,
       dayIndexSnapshot: dayIndexSnapshot ?? this.dayIndexSnapshot,
       daySyncIdSnapshot: daySyncIdSnapshot ?? this.daySyncIdSnapshot,
+      actionsSnapshotJson: actionsSnapshotJson ?? this.actionsSnapshotJson,
+      actionsCustomized: actionsCustomized ?? this.actionsCustomized,
       startedAt: startedAt ?? this.startedAt,
       endedAt: endedAt ?? this.endedAt,
       note: note ?? this.note,
@@ -3241,6 +3341,14 @@ class LocalWorkoutSessionsCompanion
     if (daySyncIdSnapshot.present) {
       map['day_sync_id_snapshot'] = Variable<String>(daySyncIdSnapshot.value);
     }
+    if (actionsSnapshotJson.present) {
+      map['actions_snapshot_json'] = Variable<String>(
+        actionsSnapshotJson.value,
+      );
+    }
+    if (actionsCustomized.present) {
+      map['actions_customized'] = Variable<bool>(actionsCustomized.value);
+    }
     if (startedAt.present) {
       map['started_at'] = Variable<DateTime>(startedAt.value);
     }
@@ -3273,6 +3381,8 @@ class LocalWorkoutSessionsCompanion
           ..write('dayWeekSnapshot: $dayWeekSnapshot, ')
           ..write('dayIndexSnapshot: $dayIndexSnapshot, ')
           ..write('daySyncIdSnapshot: $daySyncIdSnapshot, ')
+          ..write('actionsSnapshotJson: $actionsSnapshotJson, ')
+          ..write('actionsCustomized: $actionsCustomized, ')
           ..write('startedAt: $startedAt, ')
           ..write('endedAt: $endedAt, ')
           ..write('note: $note, ')
@@ -3373,6 +3483,18 @@ class $LocalWorkoutLogsTable extends LocalWorkoutLogs
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+  );
+  static const VerificationMeta _actionIndexMeta = const VerificationMeta(
+    'actionIndex',
+  );
+  @override
+  late final GeneratedColumn<int> actionIndex = GeneratedColumn<int>(
+    'action_index',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(-1),
   );
   static const VerificationMeta _setIndexMeta = const VerificationMeta(
     'setIndex',
@@ -3553,6 +3675,7 @@ class $LocalWorkoutLogsTable extends LocalWorkoutLogs
     routineId,
     dayId,
     exerciseName,
+    actionIndex,
     setIndex,
     weight,
     reps,
@@ -3628,6 +3751,15 @@ class $LocalWorkoutLogsTable extends LocalWorkoutLogs
       );
     } else if (isInserting) {
       context.missing(_exerciseNameMeta);
+    }
+    if (data.containsKey('action_index')) {
+      context.handle(
+        _actionIndexMeta,
+        actionIndex.isAcceptableOrUnknown(
+          data['action_index']!,
+          _actionIndexMeta,
+        ),
+      );
     }
     if (data.containsKey('set_index')) {
       context.handle(
@@ -3775,6 +3907,10 @@ class $LocalWorkoutLogsTable extends LocalWorkoutLogs
         DriftSqlType.string,
         data['${effectivePrefix}exercise_name'],
       )!,
+      actionIndex: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}action_index'],
+      )!,
       setIndex: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}set_index'],
@@ -3852,6 +3988,7 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
   final int routineId;
   final int? dayId;
   final String exerciseName;
+  final int actionIndex;
   final int setIndex;
   final double weight;
   final int reps;
@@ -3875,6 +4012,7 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
     required this.routineId,
     this.dayId,
     required this.exerciseName,
+    required this.actionIndex,
     required this.setIndex,
     required this.weight,
     required this.reps,
@@ -3905,6 +4043,7 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
       map['day_id'] = Variable<int>(dayId);
     }
     map['exercise_name'] = Variable<String>(exerciseName);
+    map['action_index'] = Variable<int>(actionIndex);
     map['set_index'] = Variable<int>(setIndex);
     map['weight'] = Variable<double>(weight);
     map['reps'] = Variable<int>(reps);
@@ -3946,6 +4085,7 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
           ? const Value.absent()
           : Value(dayId),
       exerciseName: Value(exerciseName),
+      actionIndex: Value(actionIndex),
       setIndex: Value(setIndex),
       weight: Value(weight),
       reps: Value(reps),
@@ -3985,6 +4125,7 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
       routineId: serializer.fromJson<int>(json['routineId']),
       dayId: serializer.fromJson<int?>(json['dayId']),
       exerciseName: serializer.fromJson<String>(json['exerciseName']),
+      actionIndex: serializer.fromJson<int>(json['actionIndex']),
       setIndex: serializer.fromJson<int>(json['setIndex']),
       weight: serializer.fromJson<double>(json['weight']),
       reps: serializer.fromJson<int>(json['reps']),
@@ -4015,6 +4156,7 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
       'routineId': serializer.toJson<int>(routineId),
       'dayId': serializer.toJson<int?>(dayId),
       'exerciseName': serializer.toJson<String>(exerciseName),
+      'actionIndex': serializer.toJson<int>(actionIndex),
       'setIndex': serializer.toJson<int>(setIndex),
       'weight': serializer.toJson<double>(weight),
       'reps': serializer.toJson<int>(reps),
@@ -4041,6 +4183,7 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
     int? routineId,
     Value<int?> dayId = const Value.absent(),
     String? exerciseName,
+    int? actionIndex,
     int? setIndex,
     double? weight,
     int? reps,
@@ -4064,6 +4207,7 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
     routineId: routineId ?? this.routineId,
     dayId: dayId.present ? dayId.value : this.dayId,
     exerciseName: exerciseName ?? this.exerciseName,
+    actionIndex: actionIndex ?? this.actionIndex,
     setIndex: setIndex ?? this.setIndex,
     weight: weight ?? this.weight,
     reps: reps ?? this.reps,
@@ -4093,6 +4237,9 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
       exerciseName: data.exerciseName.present
           ? data.exerciseName.value
           : this.exerciseName,
+      actionIndex: data.actionIndex.present
+          ? data.actionIndex.value
+          : this.actionIndex,
       setIndex: data.setIndex.present ? data.setIndex.value : this.setIndex,
       weight: data.weight.present ? data.weight.value : this.weight,
       reps: data.reps.present ? data.reps.value : this.reps,
@@ -4139,6 +4286,7 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
           ..write('routineId: $routineId, ')
           ..write('dayId: $dayId, ')
           ..write('exerciseName: $exerciseName, ')
+          ..write('actionIndex: $actionIndex, ')
           ..write('setIndex: $setIndex, ')
           ..write('weight: $weight, ')
           ..write('reps: $reps, ')
@@ -4167,6 +4315,7 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
     routineId,
     dayId,
     exerciseName,
+    actionIndex,
     setIndex,
     weight,
     reps,
@@ -4194,6 +4343,7 @@ class LocalWorkoutLog extends DataClass implements Insertable<LocalWorkoutLog> {
           other.routineId == this.routineId &&
           other.dayId == this.dayId &&
           other.exerciseName == this.exerciseName &&
+          other.actionIndex == this.actionIndex &&
           other.setIndex == this.setIndex &&
           other.weight == this.weight &&
           other.reps == this.reps &&
@@ -4219,6 +4369,7 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
   final Value<int> routineId;
   final Value<int?> dayId;
   final Value<String> exerciseName;
+  final Value<int> actionIndex;
   final Value<int> setIndex;
   final Value<double> weight;
   final Value<int> reps;
@@ -4242,6 +4393,7 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
     this.routineId = const Value.absent(),
     this.dayId = const Value.absent(),
     this.exerciseName = const Value.absent(),
+    this.actionIndex = const Value.absent(),
     this.setIndex = const Value.absent(),
     this.weight = const Value.absent(),
     this.reps = const Value.absent(),
@@ -4266,6 +4418,7 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
     required int routineId,
     this.dayId = const Value.absent(),
     required String exerciseName,
+    this.actionIndex = const Value.absent(),
     required int setIndex,
     this.weight = const Value.absent(),
     this.reps = const Value.absent(),
@@ -4294,6 +4447,7 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
     Expression<int>? routineId,
     Expression<int>? dayId,
     Expression<String>? exerciseName,
+    Expression<int>? actionIndex,
     Expression<int>? setIndex,
     Expression<double>? weight,
     Expression<int>? reps,
@@ -4318,6 +4472,7 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
       if (routineId != null) 'routine_id': routineId,
       if (dayId != null) 'day_id': dayId,
       if (exerciseName != null) 'exercise_name': exerciseName,
+      if (actionIndex != null) 'action_index': actionIndex,
       if (setIndex != null) 'set_index': setIndex,
       if (weight != null) 'weight': weight,
       if (reps != null) 'reps': reps,
@@ -4345,6 +4500,7 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
     Value<int>? routineId,
     Value<int?>? dayId,
     Value<String>? exerciseName,
+    Value<int>? actionIndex,
     Value<int>? setIndex,
     Value<double>? weight,
     Value<int>? reps,
@@ -4369,6 +4525,7 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
       routineId: routineId ?? this.routineId,
       dayId: dayId ?? this.dayId,
       exerciseName: exerciseName ?? this.exerciseName,
+      actionIndex: actionIndex ?? this.actionIndex,
       setIndex: setIndex ?? this.setIndex,
       weight: weight ?? this.weight,
       reps: reps ?? this.reps,
@@ -4411,6 +4568,9 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
     }
     if (exerciseName.present) {
       map['exercise_name'] = Variable<String>(exerciseName.value);
+    }
+    if (actionIndex.present) {
+      map['action_index'] = Variable<int>(actionIndex.value);
     }
     if (setIndex.present) {
       map['set_index'] = Variable<int>(setIndex.value);
@@ -4472,6 +4632,7 @@ class LocalWorkoutLogsCompanion extends UpdateCompanion<LocalWorkoutLog> {
           ..write('routineId: $routineId, ')
           ..write('dayId: $dayId, ')
           ..write('exerciseName: $exerciseName, ')
+          ..write('actionIndex: $actionIndex, ')
           ..write('setIndex: $setIndex, ')
           ..write('weight: $weight, ')
           ..write('reps: $reps, ')
@@ -8235,6 +8396,8 @@ typedef $$LocalWorkoutSessionsTableCreateCompanionBuilder =
       Value<int?> dayWeekSnapshot,
       Value<int?> dayIndexSnapshot,
       Value<String> daySyncIdSnapshot,
+      Value<String> actionsSnapshotJson,
+      Value<bool> actionsCustomized,
       required DateTime startedAt,
       Value<DateTime?> endedAt,
       Value<String> note,
@@ -8254,6 +8417,8 @@ typedef $$LocalWorkoutSessionsTableUpdateCompanionBuilder =
       Value<int?> dayWeekSnapshot,
       Value<int?> dayIndexSnapshot,
       Value<String> daySyncIdSnapshot,
+      Value<String> actionsSnapshotJson,
+      Value<bool> actionsCustomized,
       Value<DateTime> startedAt,
       Value<DateTime?> endedAt,
       Value<String> note,
@@ -8422,6 +8587,16 @@ class $$LocalWorkoutSessionsTableFilterComposer
 
   ColumnFilters<String> get daySyncIdSnapshot => $composableBuilder(
     column: $table.daySyncIdSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get actionsSnapshotJson => $composableBuilder(
+    column: $table.actionsSnapshotJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get actionsCustomized => $composableBuilder(
+    column: $table.actionsCustomized,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -8602,6 +8777,16 @@ class $$LocalWorkoutSessionsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get actionsSnapshotJson => $composableBuilder(
+    column: $table.actionsSnapshotJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get actionsCustomized => $composableBuilder(
+    column: $table.actionsCustomized,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get startedAt => $composableBuilder(
     column: $table.startedAt,
     builder: (column) => ColumnOrderings(column),
@@ -8719,6 +8904,16 @@ class $$LocalWorkoutSessionsTableAnnotationComposer
 
   GeneratedColumn<String> get daySyncIdSnapshot => $composableBuilder(
     column: $table.daySyncIdSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get actionsSnapshotJson => $composableBuilder(
+    column: $table.actionsSnapshotJson,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get actionsCustomized => $composableBuilder(
+    column: $table.actionsCustomized,
     builder: (column) => column,
   );
 
@@ -8890,6 +9085,8 @@ class $$LocalWorkoutSessionsTableTableManager
                 Value<int?> dayWeekSnapshot = const Value.absent(),
                 Value<int?> dayIndexSnapshot = const Value.absent(),
                 Value<String> daySyncIdSnapshot = const Value.absent(),
+                Value<String> actionsSnapshotJson = const Value.absent(),
+                Value<bool> actionsCustomized = const Value.absent(),
                 Value<DateTime> startedAt = const Value.absent(),
                 Value<DateTime?> endedAt = const Value.absent(),
                 Value<String> note = const Value.absent(),
@@ -8907,6 +9104,8 @@ class $$LocalWorkoutSessionsTableTableManager
                 dayWeekSnapshot: dayWeekSnapshot,
                 dayIndexSnapshot: dayIndexSnapshot,
                 daySyncIdSnapshot: daySyncIdSnapshot,
+                actionsSnapshotJson: actionsSnapshotJson,
+                actionsCustomized: actionsCustomized,
                 startedAt: startedAt,
                 endedAt: endedAt,
                 note: note,
@@ -8926,6 +9125,8 @@ class $$LocalWorkoutSessionsTableTableManager
                 Value<int?> dayWeekSnapshot = const Value.absent(),
                 Value<int?> dayIndexSnapshot = const Value.absent(),
                 Value<String> daySyncIdSnapshot = const Value.absent(),
+                Value<String> actionsSnapshotJson = const Value.absent(),
+                Value<bool> actionsCustomized = const Value.absent(),
                 required DateTime startedAt,
                 Value<DateTime?> endedAt = const Value.absent(),
                 Value<String> note = const Value.absent(),
@@ -8943,6 +9144,8 @@ class $$LocalWorkoutSessionsTableTableManager
                 dayWeekSnapshot: dayWeekSnapshot,
                 dayIndexSnapshot: dayIndexSnapshot,
                 daySyncIdSnapshot: daySyncIdSnapshot,
+                actionsSnapshotJson: actionsSnapshotJson,
+                actionsCustomized: actionsCustomized,
                 startedAt: startedAt,
                 endedAt: endedAt,
                 note: note,
@@ -9099,6 +9302,7 @@ typedef $$LocalWorkoutLogsTableCreateCompanionBuilder =
       required int routineId,
       Value<int?> dayId,
       required String exerciseName,
+      Value<int> actionIndex,
       required int setIndex,
       Value<double> weight,
       Value<int> reps,
@@ -9124,6 +9328,7 @@ typedef $$LocalWorkoutLogsTableUpdateCompanionBuilder =
       Value<int> routineId,
       Value<int?> dayId,
       Value<String> exerciseName,
+      Value<int> actionIndex,
       Value<int> setIndex,
       Value<double> weight,
       Value<int> reps,
@@ -9248,6 +9453,11 @@ class $$LocalWorkoutLogsTableFilterComposer
 
   ColumnFilters<String> get exerciseName => $composableBuilder(
     column: $table.exerciseName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get actionIndex => $composableBuilder(
+    column: $table.actionIndex,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -9425,6 +9635,11 @@ class $$LocalWorkoutLogsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<int> get actionIndex => $composableBuilder(
+    column: $table.actionIndex,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get setIndex => $composableBuilder(
     column: $table.setIndex,
     builder: (column) => ColumnOrderings(column),
@@ -9591,6 +9806,11 @@ class $$LocalWorkoutLogsTableAnnotationComposer
 
   GeneratedColumn<String> get exerciseName => $composableBuilder(
     column: $table.exerciseName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get actionIndex => $composableBuilder(
+    column: $table.actionIndex,
     builder: (column) => column,
   );
 
@@ -9766,6 +9986,7 @@ class $$LocalWorkoutLogsTableTableManager
                 Value<int> routineId = const Value.absent(),
                 Value<int?> dayId = const Value.absent(),
                 Value<String> exerciseName = const Value.absent(),
+                Value<int> actionIndex = const Value.absent(),
                 Value<int> setIndex = const Value.absent(),
                 Value<double> weight = const Value.absent(),
                 Value<int> reps = const Value.absent(),
@@ -9789,6 +10010,7 @@ class $$LocalWorkoutLogsTableTableManager
                 routineId: routineId,
                 dayId: dayId,
                 exerciseName: exerciseName,
+                actionIndex: actionIndex,
                 setIndex: setIndex,
                 weight: weight,
                 reps: reps,
@@ -9814,6 +10036,7 @@ class $$LocalWorkoutLogsTableTableManager
                 required int routineId,
                 Value<int?> dayId = const Value.absent(),
                 required String exerciseName,
+                Value<int> actionIndex = const Value.absent(),
                 required int setIndex,
                 Value<double> weight = const Value.absent(),
                 Value<int> reps = const Value.absent(),
@@ -9837,6 +10060,7 @@ class $$LocalWorkoutLogsTableTableManager
                 routineId: routineId,
                 dayId: dayId,
                 exerciseName: exerciseName,
+                actionIndex: actionIndex,
                 setIndex: setIndex,
                 weight: weight,
                 reps: reps,

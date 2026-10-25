@@ -2,8 +2,8 @@
   "app": {
     "bundleName": "com.ly.yours",
     "vendor": "LY",
-    "versionCode": 11174,
-    "versionName": "1.11.5",
+    "versionCode": 11178,
+    "versionName": "1.11.7",
     "icon": "$media:app_icon",
     "label": "$string:app_name"
   }

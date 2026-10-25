@@ -27,6 +27,13 @@ mixin _WorkoutSessionWriteMixin {
             dayWeekSnapshot: Value(day?.week),
             dayIndexSnapshot: Value(day?.day),
             daySyncIdSnapshot: Value(day?.syncId?.trim() ?? ''),
+            actionsSnapshotJson: Value(
+              jsonEncode(
+                (day?.actions ?? const <LocalTrainingActionModel>[])
+                    .map((a) => a.toJson())
+                    .toList(),
+              ),
+            ),
             startedAt: now,
             syncStatus: const Value(localSyncPending),
             updatedAt: now,
@@ -86,7 +93,7 @@ mixin _WorkoutSessionWriteMixin {
     for (final session in sessions) {
       final logs = logsBySessionId[session.id] ?? <LocalWorkoutLog>[];
       final drafts = draftsBySessionId[session.id] ?? <LocalWorkoutInputDraft>[];
-      if (logs.isEmpty && drafts.isEmpty) {
+      if (logs.isEmpty && drafts.isEmpty && !session.actionsCustomized) {
         continue;
       }
       return LocalWorkoutSessionResumeModel(
@@ -94,6 +101,7 @@ mixin _WorkoutSessionWriteMixin {
         startedAt: session.startedAt,
         logs: logs.map(_toWorkoutLogEditModel).toList(),
         drafts: drafts,
+        actions: _decodeSessionActions(session.actionsSnapshotJson),
       );
     }
     return null;
@@ -104,6 +112,7 @@ mixin _WorkoutSessionWriteMixin {
     required int routineId,
     int? dayId,
     required String exerciseName,
+    int actionIndex = -1,
     required int setIndex,
     required double weight,
     required int reps,
@@ -127,6 +136,7 @@ mixin _WorkoutSessionWriteMixin {
             routineId: routineId,
             dayId: Value(dayId),
             exerciseName: canonicalExerciseReference(exerciseName),
+            actionIndex: Value(actionIndex),
             setIndex: setIndex,
             weight: Value(weight),
             reps: Value(reps),
@@ -206,11 +216,38 @@ mixin _WorkoutSessionWriteMixin {
     });
   }
 
-  /// Delete all logs for a given session + exercise + set index combination.
+  Future<void> replaceWorkoutSessionActionState({
+    required int sessionId,
+    required int actionIndex,
+    required List<LocalTrainingActionModel> actions,
+  }) async {
+    final now = DateTime.now();
+    await database.transaction(() async {
+      await (database.update(
+        database.localWorkoutSessions,
+      )..where((row) => row.id.equals(sessionId))).write(
+        LocalWorkoutSessionsCompanion(
+          actionsSnapshotJson: Value(jsonEncode(actions.map((a) => a.toJson()).toList())),
+          actionsCustomized: const Value(true),
+          syncStatus: const Value(localSyncPending),
+          updatedAt: Value(now),
+        ),
+      );
+      await (database.delete(database.localWorkoutSetDrafts)..where(
+            (row) => row.sessionId.equals(sessionId) & row.actionIndex.equals(actionIndex),
+          ))
+          .go();
+    });
+    await _syncQueue.enqueue('workout_session', sessionId, 'update');
+  }
+
+  /// Delete logs for a session action + set, falling back to the legacy
+  /// exercise-name identity when no action index is available.
   /// Used to ensure at-most-one record per set before inserting a correction.
   Future<void> deleteSetLogs({
     required int sessionId,
     required String exerciseName,
+    int? actionIndex,
     required int setIndex,
   }) async {
     final reference = canonicalExerciseReference(exerciseName);
@@ -218,12 +255,26 @@ mixin _WorkoutSessionWriteMixin {
         await (database.select(database.localWorkoutLogs)..where(
               (log) =>
                   log.sessionId.equals(sessionId) &
-                  log.exerciseName.equals(reference) &
+                  (actionIndex != null && actionIndex >= 0
+                      ? log.actionIndex.equals(actionIndex)
+                      : log.exerciseName.equals(reference)) &
                   log.setIndex.equals(setIndex),
             ))
             .get();
     for (final row in rows) {
       await deleteWorkoutLog(row.id);
+    }
+  }
+
+  List<LocalTrainingActionModel> _decodeSessionActions(String encoded) {
+    try {
+      final decoded = jsonDecode(encoded);
+      if (decoded is! List) {
+        return const [];
+      }
+      return decoded.map(LocalTrainingActionModel.fromJson).toList();
+    } on Object {
+      return const [];
     }
   }
 }

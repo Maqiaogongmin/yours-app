@@ -372,6 +372,8 @@ class ServerSyncEventApplier {
           LocalWorkoutSessionsCompanion.insert(
             syncId: Value(syncId),
             routineId: routineId,
+            actionsSnapshotJson: const Value('[]'),
+            actionsCustomized: const Value(false),
             startedAt: startedAt,
             note: const Value(''),
             syncStatus: const Value(localSyncSynced),

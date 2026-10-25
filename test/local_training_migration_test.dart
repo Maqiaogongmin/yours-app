@@ -185,6 +185,9 @@ void main() {
     expect(entry.recordMode, localRecordModeStandard);
     expect(log.recordMode, localRecordModeStandard);
     expect(log.noteEdited, isFalse);
+    expect(log.actionIndex, -1);
+    expect(session.actionsSnapshotJson, '[]');
+    expect(session.actionsCustomized, isFalse);
 
     final exerciseFile = File('${dir.path}/custom.sqlite');
     final oldExercises = sqlite.sqlite3.open(exerciseFile.path);

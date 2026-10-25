@@ -92,6 +92,7 @@ extension _WorkoutLogServerSyncEventApplier on ServerSyncEventApplier {
               exerciseName: canonicalExerciseReference(
                 _asString(snapshot['exerciseName'], fallback: '同步动作'),
               ),
+              actionIndex: Value(_asInt(snapshot['actionIndex']) ?? -1),
               setIndex: _asInt(snapshot['setIndex']) ?? 1,
               weight: Value(_asDouble(snapshot['weight']) ?? 0),
               reps: Value(_asInt(snapshot['reps']) ?? 0),
@@ -127,6 +128,7 @@ extension _WorkoutLogServerSyncEventApplier on ServerSyncEventApplier {
             _asString(snapshot['exerciseName'], fallback: '同步动作'),
           ),
         ),
+        actionIndex: Value(_asInt(snapshot['actionIndex']) ?? -1),
         setIndex: Value(_asInt(snapshot['setIndex']) ?? 1),
         weight: Value(_asDouble(snapshot['weight']) ?? 0),
         reps: Value(_asInt(snapshot['reps']) ?? 0),
@@ -174,6 +176,10 @@ extension _WorkoutLogServerSyncEventApplier on ServerSyncEventApplier {
       );
     if (sessionId != null) {
       query.where((row) => row.sessionId.equals(sessionId));
+    }
+    final actionIndex = _asInt(snapshot['actionIndex']);
+    if (actionIndex != null && actionIndex >= 0) {
+      query.where((row) => row.actionIndex.equals(actionIndex));
     }
     query.limit(1);
     return await query.getSingleOrNull() != null;

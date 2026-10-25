@@ -15,13 +15,19 @@ mixin _LocalGymSessionPersistence on ChangeNotifier, _LocalGymSessionState {
     _saving = true;
     notifyListeners();
 
-    // Delete any existing log for this session + exercise + set
-    // at the database level, so correcting a saved set always overwrites.
-    await _repository.deleteSetLogs(
-      sessionId: sessionId,
-      exerciseName: currentExercise,
-      setIndex: _setIndex,
-    );
+    // Delete only the matching action block + set, so repeated occurrences of
+    // the same exercise remain independent.
+    final existingSnapshotIndex = _currentSetSnapshotIndex;
+    if (existingSnapshotIndex == -1) {
+      await _repository.deleteSetLogs(
+        sessionId: sessionId,
+        exerciseName: currentExercise,
+        actionIndex: _exerciseIndex,
+        setIndex: _setIndex,
+      );
+    } else {
+      await _repository.deleteWorkoutLog(_history[existingSnapshotIndex].logId);
+    }
     // Also purge matching snapshots from in-memory history.
     _history.removeWhere(
       (s) => s.exerciseIndex == _exerciseIndex && s.setIndex == _setIndex,
@@ -32,6 +38,7 @@ mixin _LocalGymSessionPersistence on ChangeNotifier, _LocalGymSessionState {
       routineId: routineId,
       dayId: _day?.id,
       exerciseName: currentExercise,
+      actionIndex: _exerciseIndex,
       setIndex: _setIndex,
       weight: weight ?? 0,
       reps: reps ?? 0,
@@ -96,11 +103,17 @@ mixin _LocalGymSessionPersistence on ChangeNotifier, _LocalGymSessionState {
     final safeDurationSeconds = durationSeconds?.clamp(0, 24 * 60 * 60);
     final safeRestSeconds = restSeconds?.clamp(0, 3600);
 
-    await _repository.deleteSetLogs(
-      sessionId: sessionId,
-      exerciseName: currentExercise,
-      setIndex: _setIndex,
-    );
+    final existingSnapshotIndex = _currentSetSnapshotIndex;
+    if (existingSnapshotIndex == -1) {
+      await _repository.deleteSetLogs(
+        sessionId: sessionId,
+        exerciseName: currentExercise,
+        actionIndex: _exerciseIndex,
+        setIndex: _setIndex,
+      );
+    } else {
+      await _repository.deleteWorkoutLog(_history[existingSnapshotIndex].logId);
+    }
     _history.removeWhere(
       (s) => s.exerciseIndex == _exerciseIndex && s.setIndex == _setIndex,
     );
@@ -110,6 +123,7 @@ mixin _LocalGymSessionPersistence on ChangeNotifier, _LocalGymSessionState {
       routineId: routineId,
       dayId: _day?.id,
       exerciseName: currentExercise,
+      actionIndex: _exerciseIndex,
       setIndex: _setIndex,
       weight: weight ?? 0,
       reps: 0,

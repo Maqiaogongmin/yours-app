@@ -67,6 +67,8 @@ class LocalWorkoutSessions extends Table {
   IntColumn get dayWeekSnapshot => integer().nullable()();
   IntColumn get dayIndexSnapshot => integer().nullable()();
   TextColumn get daySyncIdSnapshot => text().withDefault(const Constant(''))();
+  TextColumn get actionsSnapshotJson => text().withDefault(const Constant('[]'))();
+  BoolColumn get actionsCustomized => boolean().withDefault(const Constant(false))();
   DateTimeColumn get startedAt => dateTime()();
   DateTimeColumn get endedAt => dateTime().nullable()();
   TextColumn get note => text().withDefault(const Constant(''))();
@@ -82,6 +84,7 @@ class LocalWorkoutLogs extends Table {
   IntColumn get routineId => integer().references(LocalRoutines, #id)();
   IntColumn get dayId => integer().nullable().references(LocalTrainingDays, #id)();
   TextColumn get exerciseName => text()();
+  IntColumn get actionIndex => integer().withDefault(const Constant(-1))();
   IntColumn get setIndex => integer()();
   RealColumn get weight => real().withDefault(const Constant(0))();
   IntColumn get reps => integer().withDefault(const Constant(0))();
@@ -157,7 +160,7 @@ class LocalTrainingDatabase extends _$LocalTrainingDatabase {
   LocalTrainingDatabase.inMemory(super.e);
 
   @override
-  int get schemaVersion => 9;
+  int get schemaVersion => 10;
 
   @override
   MigrationStrategy get migration {
@@ -211,6 +214,21 @@ class LocalTrainingDatabase extends _$LocalTrainingDatabase {
           await customStatement(
             "UPDATE local_workout_logs SET note_edited = 1 WHERE TRIM(note) <> ''",
           );
+        }
+        if (!await _hasColumn('local_workout_sessions', 'actions_snapshot_json')) {
+          await migrator.addColumn(
+            localWorkoutSessions,
+            localWorkoutSessions.actionsSnapshotJson,
+          );
+        }
+        if (!await _hasColumn('local_workout_sessions', 'actions_customized')) {
+          await migrator.addColumn(
+            localWorkoutSessions,
+            localWorkoutSessions.actionsCustomized,
+          );
+        }
+        if (!await _hasColumn('local_workout_logs', 'action_index')) {
+          await migrator.addColumn(localWorkoutLogs, localWorkoutLogs.actionIndex);
         }
         if (!await _hasColumn('local_workout_set_drafts', 'note_edited')) {
           await migrator.addColumn(localWorkoutSetDrafts, localWorkoutSetDrafts.noteEdited);

@@ -264,6 +264,7 @@ class LocalWorkoutLogEditModel {
   final int id;
   final int sessionId;
   final String exerciseName;
+  final int actionIndex;
   final int setIndex;
   final double weight;
   final int reps;
@@ -282,6 +283,7 @@ class LocalWorkoutLogEditModel {
     required this.id,
     required this.sessionId,
     required this.exerciseName,
+    this.actionIndex = -1,
     required this.setIndex,
     required this.weight,
     required this.reps,
@@ -379,11 +381,13 @@ class LocalWorkoutSessionResumeModel {
   final DateTime startedAt;
   final List<LocalWorkoutLogEditModel> logs;
   final List<LocalWorkoutInputDraft> drafts;
+  final List<LocalTrainingActionModel> actions;
 
   const LocalWorkoutSessionResumeModel({
     required this.sessionId,
     required this.startedAt,
     required this.logs,
     this.drafts = const [],
+    this.actions = const [],
   });
 }
